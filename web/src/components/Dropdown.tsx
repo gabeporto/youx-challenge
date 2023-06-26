@@ -12,7 +12,7 @@ const LogoImage = styled.img`
 `;
 
 const DropdownContainer = styled.div`
-    position: relative;
+    position: relative
     display: inline-block;
 `;
 
@@ -86,7 +86,8 @@ const DropdownSubItem = styled.a`
     }
 `;
 
-const Dropdown = () => {
+
+export default function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -112,4 +113,3 @@ const Dropdown = () => {
   );
 };
 
-export default Dropdown;

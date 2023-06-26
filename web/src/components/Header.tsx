@@ -19,7 +19,7 @@ const UserContainer = styled.div`
 
 const UserDiv = styled.div`
     padding-top: 25px;
-    margin-right: 30px;
+    margin-right: 25px;
 `
 
 const UserName = styled.p`
@@ -58,7 +58,7 @@ export default function Header() {
 
         <HeaderContainer>
             <div>
-                <Dropdown/>
+                <Dropdown />
             </div>
 
             <UserContainer>
