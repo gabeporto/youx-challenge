@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Logo from '../assets/youx-logo.png'
+import { Link } from 'react-router-dom';
 
 const LogoImage = styled.img`
     position: relative;
@@ -70,20 +71,20 @@ const DropdownItem = styled.a`
     opacity: 1;
 `;
 
-const DropdownSubItem = styled.a`
-    display: block;
-    margin-top: 10px;
-    padding-left: 52px;
-    color: #FFFFFF;
-    opacity: 0.5;
-    text-decoration: none;
-    font-size: 25px;
-    cursor: pointer;
-    transition: opacity 0.3s ease;
+const DropdownSubItem = styled(Link)`
+  display: block;
+  margin-top: 10px;
+  padding-left: 52px;
+  color: #FFFFFF;
+  opacity: 0.5;
+  text-decoration: none;
+  font-size: 25px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
 
-    &:hover {
-        opacity: 1;
-    }
+  &:hover {
+      opacity: 1;
+  }
 `;
 
 
@@ -95,21 +96,22 @@ export default function Dropdown() {
   };
 
   return (
-    <DropdownContainer>
-        <LogoImage src={Logo} alt="YouX Group Logo" onClick={toggleDropdown}/>
-        <DropdownContent itemScope={isOpen}>
-            <DropdownItem href="#">Gestão de Clientes</DropdownItem>
-            <DropdownSubItem href="#">Lista de clientes</DropdownSubItem>
-            <DropdownSubItem href="#">Cadastrar cliente</DropdownSubItem>
+      <DropdownContainer>
+          <LogoImage src={Logo} alt="YouX Group Logo" onClick={toggleDropdown}/>
+          <DropdownContent itemScope={isOpen}>
+              <DropdownItem href="#">Gestão de Clientes</DropdownItem>
+              <DropdownSubItem to="/clients">Lista de clientes</DropdownSubItem>
+              <DropdownSubItem to="/clients">Cadastrar cliente</DropdownSubItem>
 
-            <DropdownItem href="#">Gestão de Vendas</DropdownItem>
-            <DropdownSubItem href="#">Lista de vendas</DropdownSubItem>
-            <DropdownSubItem href="#">Cadastrar venda</DropdownSubItem>
+              <DropdownItem href="#">Gestão de Vendas</DropdownItem>
+              <DropdownSubItem to="/sales">Lista de vendas</DropdownSubItem>
+              <DropdownSubItem to="/sales">Cadastrar venda</DropdownSubItem>
 
-            <DropdownItem href="#">Relatórios</DropdownItem>
-            <DropdownSubItem href="#">Relatórios</DropdownSubItem>
-        </DropdownContent>
-    </DropdownContainer>
+              <DropdownItem href="#">Relatórios</DropdownItem>
+              <DropdownSubItem to="/report">Relatórios</DropdownSubItem>
+
+          </DropdownContent>
+      </DropdownContainer>
   );
 };
 
