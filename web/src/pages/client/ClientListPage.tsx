@@ -1,11 +1,13 @@
 import Header from "../../components/Header";
-import ClientTable from "../../components/ClientTable";
+import Title from "../../components/Title";
+import ClientTable from "../../components/client/ClientTable";
 
 export default function ClientList() {
   return (
       <>
         <Header />
-         <ClientTable />
+        <Title title="Lista de Clientes"/>
+        <ClientTable />
       </>
   );
 }

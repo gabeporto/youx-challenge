@@ -122,30 +122,42 @@ const TableInfo = styled.div`
 `
 
 interface Column {
-    name: string;
-    dataKey: string;
-  }
-  
-interface TableProps {
-    columns: Column[];
-    data: {
-    id: number;
-    nome: string;
-    cnpj: string;
-    email: string;
-    telefone: string;
-    }[];
+  name: string;
+  dataKey: string;
 }
 
+interface ClientData {
+  id: number;
+  type: string;
+  nome: string;
+  cnpj: string;
+  email: string;
+  telefone: string;
+}
+
+interface SaleData {
+  id: number;
+  type: string;
+  client: string;
+  date: string;
+  status: string;
+  value: string;
+}
+
+interface TableProps {
+  columns: Column[];
+  data: (ClientData | SaleData)[];
+}
+  
 const Table: React.FC<TableProps> = ({ columns, data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
   const itemsPerPage = 10;
 
-  const totalPages = Math.ceil(data.length / itemsPerPage);
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+
+  const totalPages = data && Array.isArray(data) ? Math.ceil(data.length / itemsPerPage) : 0;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber: number) => {
@@ -174,33 +186,63 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                 </TableHeader>
              ))}
             <TableHeader>Ações</TableHeader>
-             
-          {/* Restante do código... */}
+            
           </tr>
         </thead>
         <tbody>
           {currentItems.map((item) => (
+
             <TableRow key={item.id}>
-              <TableCell>{item.nome}</TableCell>
-              <TableCell>{item.cnpj}</TableCell>
-              <TableCell>{item.email}</TableCell>
-              <TableCell>{item.telefone}</TableCell>
-              <TableCell>
-                <DropdownContainer>
-                  <DropdownButton onClick={() => renderActionsDropdown(item.id)}>
-                    Ações
-                    <ChevronDownIcon />
-                  </DropdownButton>
-                  <DropdownList open={openDropdownId === item.id}>
-                    <DropdownItem onClick={() => handleEdit(item.id)}>
-                        <EditIcon />
-                        Editar</DropdownItem>
-                    <DropdownItem onClick={() => handleDelete(item.id)}>
-                        <DeleteIcon />
-                        Deletar</DropdownItem>
-                  </DropdownList>
-                </DropdownContainer>
-              </TableCell>
+            {item.type === 'client' ? (
+              <>
+                {('nome' in item) && (
+                  <TableCell>{item.nome}</TableCell>
+                )}
+                {('cnpj' in item) && (
+                  <TableCell>{item.cnpj}</TableCell>
+                )}
+                {('email' in item) && (
+                  <TableCell>{item.email}</TableCell>
+                )}
+                {('telefone' in item) && (
+                  <TableCell>{item.telefone}</TableCell>
+                )}
+              </>
+            ) : null}
+            {item.type === 'sale' ? (
+              <>
+                {('client' in item) && (
+                  <TableCell>{item.client}</TableCell>
+                )}
+                {('date' in item) && (
+                  <TableCell>{item.date}</TableCell>
+                )}
+                {('status' in item) && (
+                  <TableCell>{item.status}</TableCell>
+                )}
+                {('value' in item) && (
+                  <TableCell>{item.value}</TableCell>
+                )}
+              </>
+            ) : null}
+            <TableCell>
+              <DropdownContainer>
+                <DropdownButton onClick={() => renderActionsDropdown(item.id)}>
+                  Ações
+                  <ChevronDownIcon />
+                </DropdownButton>
+                <DropdownList open={openDropdownId === item.id}>
+                  <DropdownItem onClick={() => handleEdit(item.id)}>
+                    <EditIcon />
+                    Editar
+                  </DropdownItem>
+                  <DropdownItem onClick={() => handleDelete(item.id)}>
+                    <DeleteIcon />
+                    Deletar
+                  </DropdownItem>
+                </DropdownList>
+              </DropdownContainer>
+            </TableCell>
             </TableRow>
           ))}
         </tbody>
