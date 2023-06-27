@@ -10,6 +10,7 @@ const HeaderContainer = styled.header`
     width: 100%;
     height: 115px;
     background-color: #023E8A;
+    user-select: none;
 `;
 
 const UserContainer = styled.div`

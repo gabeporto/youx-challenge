@@ -10,6 +10,7 @@ const LogoImage = styled.img`
     height: 59px;
     width: 59px;
     cursor: pointer;
+    user-select: none;
 `;
 
 const DropdownContainer = styled.div`
@@ -59,7 +60,7 @@ const fadeOut = keyframes`
   }
 `;
 
-const DropdownItem = styled.a`
+const DropdownItem = styled(Link)`
     display: block;
     padding-top: 40px;
     padding-left: 52px;
@@ -99,15 +100,15 @@ export default function Dropdown() {
       <DropdownContainer>
           <LogoImage src={Logo} alt="YouX Group Logo" onClick={toggleDropdown}/>
           <DropdownContent itemScope={isOpen}>
-              <DropdownItem href="#">Gestão de Clientes</DropdownItem>
-              <DropdownSubItem to="/clients">Lista de clientes</DropdownSubItem>
-              <DropdownSubItem to="/clients">Cadastrar cliente</DropdownSubItem>
+              <DropdownItem to="/client">Gestão de Clientes</DropdownItem>
+              <DropdownSubItem to="/client">Lista de clientes</DropdownSubItem>
+              <DropdownSubItem to="/client">Cadastrar cliente</DropdownSubItem>
 
-              <DropdownItem href="#">Gestão de Vendas</DropdownItem>
-              <DropdownSubItem to="/sales">Lista de vendas</DropdownSubItem>
-              <DropdownSubItem to="/sales">Cadastrar venda</DropdownSubItem>
+              <DropdownItem to="/sale">Gestão de Vendas</DropdownItem>
+              <DropdownSubItem to="/sale">Lista de vendas</DropdownSubItem>
+              <DropdownSubItem to="/sale">Cadastrar venda</DropdownSubItem>
 
-              <DropdownItem href="#">Relatórios</DropdownItem>
+              <DropdownItem to="/report">Relatórios</DropdownItem>
               <DropdownSubItem to="/report">Relatórios</DropdownSubItem>
 
           </DropdownContent>
