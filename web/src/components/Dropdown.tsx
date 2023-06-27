@@ -14,8 +14,9 @@ const LogoImage = styled.img`
 `;
 
 const DropdownContainer = styled.div`
-    position: relative
+    position: relative;
     display: inline-block;
+    z-index: 9999;
 `;
 
 const DropdownContent = styled.div`
@@ -25,7 +26,7 @@ const DropdownContent = styled.div`
     top: 120px;
     left: 0px;
     width: 408px;
-    min-height: 100vh;
+    min-height: 110vh;
     background-color: #023E8A;
     border: 1px solid #707070;
     opacity: ${props => (props.itemScope ? '1' : '0')};
@@ -34,7 +35,7 @@ const DropdownContent = styled.div`
     transition: visibility 0.3s;
 
   &:hover {
-    visibility: visible; /* Manter visível durante o hover */
+    visibility: visible; 
   }
 `;
 

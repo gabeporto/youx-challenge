@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import MoneyIcon from "../assets/icons/MoneyIcon"
+import GraphUpIcon from "../assets/icons/GraphUpIcon"
 
 const CardStyled = styled.div`
     width: 389px;
@@ -51,6 +52,7 @@ const CardValue = styled.label`
 interface CardProps {
     title: string;
     value: string;
+    iconType: string;
 }
 
 export default function Card(props : CardProps) {
@@ -62,7 +64,12 @@ export default function Card(props : CardProps) {
                         <CardTitle>{props.title}</CardTitle>
                     </CardTitleSection>
                     <CardValueSection>
-                        <MoneyIcon color="#023E8A" width={32} height={54} />
+                        { props.iconType === 'money' ? ( 
+                            <MoneyIcon color="#023E8A" width={32} height={54} /> 
+                        ) : ( 
+                            <GraphUpIcon color="#023E8A" width={32} height={54} /> 
+                            )
+                        }
                         <CardValue>{props.value}</CardValue>
                     </CardValueSection>
                 </CardDiv>

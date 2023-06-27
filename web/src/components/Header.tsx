@@ -21,7 +21,6 @@ const UserContainer = styled.div`
 const UserDiv = styled.div`
     padding-top: 25px;
     margin-right: 25px;
-    
 `
 
 const UserName = styled.p`
@@ -51,6 +50,10 @@ const LogoutDiv = styled.div`
     cursor: pointer;
 `
 
+const DropdownDiv = styled.div`
+    height: 100%;
+`
+
 export default function Header() {
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -73,9 +76,9 @@ export default function Header() {
     return (
 
         <HeaderContainer>
-            <div>
+            <DropdownDiv>
                 <Dropdown />
-            </div>
+            </DropdownDiv>
 
             <UserContainer>
                 {!hideUser && (
