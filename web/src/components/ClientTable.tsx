@@ -4,8 +4,8 @@ import Button from "./Button";
 import Table from "./Table";
 
 const Container = styled.h1`
-    padding-left: 102px;
-    padding-top: 74px; 
+    padding-left: 5%;
+    padding-top: 50px; 
 `;
 
 const PageTitle = styled.h1`
@@ -29,7 +29,8 @@ const TableTitle = styled.h1`
 `;
 
 const SearchInput = styled.input`
-    width: 80%;
+    width: 75%;
+    min-width: 200px;
     height: 55px;
     background: #FFFFFF 0% 0% no-repeat padding-box;
     border: 1px solid #CCCCCC;
@@ -41,6 +42,8 @@ const SearchInput = styled.input`
 
 const SearchContainer = styled.div`
     display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     align-items: center;
     margin-top: 43px;
 `;
@@ -49,10 +52,10 @@ export default function ClientTable() {
     const data = [
         {
           id: 1,
-          nome: 'Cliente 1',
-          cnpj: '123456789',
-          email: 'cliente1@example.com',
-          telefone: '1234567890',
+          nome: 'Comércio de Livros LTDA',
+          cnpj: '85.681.832/0001-73',
+          email: 'comerciodelivros@email.com',
+          telefone: '(35) 92854-1548',
         },
         {
           id: 2,
@@ -167,7 +170,7 @@ export default function ClientTable() {
             telefone: '1234567890',
           },
           {
-            id: 19,
+            id: 18,
             nome: 'Cliente 2',
             cnpj: '987654321',
             email: 'cliente2@example.com',
@@ -206,7 +209,7 @@ export default function ClientTable() {
                 <Button title="Cadastrar cliente" />
             </SearchContainer>
 
-            <TableTitle>Clientes Cadastrados</TableTitle>
+            <TableTitle>Clientes cadastrados</TableTitle>
             <Table columns={columns} data={data} />
         </Container>
     )

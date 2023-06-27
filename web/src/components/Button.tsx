@@ -13,6 +13,12 @@ const CreateButton = styled.div`
     font-size: 18px;
     justify-content: center;
     padding: 12px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+    opacity: 0.8;
+    }
 `
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

@@ -20,12 +20,14 @@ const UserContainer = styled.div`
 const UserDiv = styled.div`
     padding-top: 25px;
     margin-right: 25px;
+    
 `
 
 const UserName = styled.p`
     color: #fff;
     font-size: 1.5rem;
     font-weight: normal;
+    cursor: pointer;
 `;
 
 const UserRole = styled.p`
@@ -33,7 +35,20 @@ const UserRole = styled.p`
     font-size: 1rem;
     font-weight: lighter;
     margin-top: 2px;
+    cursor: pointer;
 `;
+
+const UserIconDiv = styled.div`
+    padding-top: 40px;
+    margin-right: 15px;
+    cursor: pointer;
+`
+
+const LogoutDiv = styled.div`
+    padding-top: 40px;
+    margin-right: 30px;
+    cursor: pointer;
+`
 
 export default function Header() {
 
@@ -63,9 +78,9 @@ export default function Header() {
 
             <UserContainer>
                 {!hideUser && (
-                    <div className="py-10 mr-4">
+                    <UserIconDiv>
                         <UserIcon/>
-                    </div>
+                    </UserIconDiv>
                 )}
 
                 {!hideUserInformations && (
@@ -75,9 +90,9 @@ export default function Header() {
                     </UserDiv>
                 )}
 
-                <div className="py-10 mr-7">
+                <LogoutDiv>
                     <LogoutIcon />
-                </div>
+                </LogoutDiv>
             </UserContainer>
         </HeaderContainer>
 

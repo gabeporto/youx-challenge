@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import ChevronDownIcon from '../assets/icons/ChevronDownIcon';
+import EditIcon from '../assets/icons/EditIcon';
+import DeleteIcon from '../assets/icons/DeleteIcon';
 
 const TableContainer = styled.div`
   margin-bottom: 16px;
   width: 94%;
+  overflow: auto;
 
   th,
   td {
@@ -20,7 +24,6 @@ const TableContainer = styled.div`
   }
 `;
 
-
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -29,8 +32,10 @@ const StyledTable = styled.table`
 const TableHeader = styled.th`
   padding: 8px;
   text-align: left;
-  font-weight: bold;
+  font-weight: light;
   border-bottom: 1px solid #ccc;
+  font-size: 18px;
+  color: #6E6E6E;
 `;
 
 const TableRow = styled.tr`
@@ -69,28 +74,38 @@ const DropdownContainer = styled.div`
 const DropdownButton = styled(ActionButton)`
   display: flex;
   align-items: center;
+  gap: 5px;
 `;
 
 const DropdownList = styled.ul<{ open: boolean }>`
   position: absolute;
-  top: 100%;
-  left: 0;
+  top: 110%;
+  left: -86px;
   z-index: 1;
   display: ${({ open }) => (open ? 'flex' : 'none')};
   flex-direction: column;
   padding: 8px;
   background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #aaa;
+  border-radius: 5px;
   list-style: none;
+  width: 179px;
+  height: 99px;
 `;
 
 const DropdownItem = styled.li`
   padding: 4px;
   cursor: pointer;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 20px;
+  color: #707070;
+  padding-left: 20px;
 
   &:hover {
     background-color: #f5f5f5;
+    border-radius: 5px;
   }
 `;
 
@@ -99,6 +114,11 @@ const TableBorder = styled.div`
     margin-bottom: 5px;
     border: 1px solid #AAA;
     width: 1709px;
+`
+
+const TableInfo = styled.div`
+  color: #686868;
+  margin-top: 5px;
 `
 
 interface Column {
@@ -150,7 +170,8 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
         <thead>
           <tr>
             {columns.map((column) => (
-                <TableHeader key={column.dataKey}>{column.name}</TableHeader>
+                <TableHeader key={column.dataKey}>{column.name}
+                </TableHeader>
              ))}
             <TableHeader>Ações</TableHeader>
              
@@ -168,10 +189,15 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                 <DropdownContainer>
                   <DropdownButton onClick={() => renderActionsDropdown(item.id)}>
                     Ações
+                    <ChevronDownIcon />
                   </DropdownButton>
                   <DropdownList open={openDropdownId === item.id}>
-                    <DropdownItem onClick={() => handleEdit(item.id)}>Editar</DropdownItem>
-                    <DropdownItem onClick={() => handleDelete(item.id)}>Deletar</DropdownItem>
+                    <DropdownItem onClick={() => handleEdit(item.id)}>
+                        <EditIcon />
+                        Editar</DropdownItem>
+                    <DropdownItem onClick={() => handleDelete(item.id)}>
+                        <DeleteIcon />
+                        Deletar</DropdownItem>
                   </DropdownList>
                 </DropdownContainer>
               </TableCell>
@@ -182,11 +208,11 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
 
       <TableBorder/>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between d-flex flex-wrap">
 
-        <div>
+        <TableInfo>
             Exibindo de {indexOfFirstItem + 1} a {Math.min(indexOfLastItem, data.length)} de {data.length} registros
-        </div>
+        </TableInfo>
 
         <div>
             <button className="mr-2" disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
