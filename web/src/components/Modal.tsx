@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Map from "./Map";
+import { SetStateAction, useState } from "react";
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -54,7 +55,7 @@ const ButtonsDiv = styled.div`
 `
 
 const SaveButton = styled.button`
-    width: 100px;
+    width: 150px;
     font-size: 15px;
     margin-top: 10px;
     padding: 8px 16px;
@@ -66,7 +67,7 @@ const SaveButton = styled.button`
 `
 
 const CancelButton = styled.button`
-    width: 100px;
+    width: 150px;
     font-size: 15px;
     margin-top: 10px;
     padding: 8px 16px;
@@ -95,6 +96,14 @@ const StyledInput = styled.input`
     border-radius: 3px;
 `
 
+const StyledSelect = styled.select`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+`
+
 const FlexDiv = styled.div`
     width: 100%;
     display: flex;
@@ -112,6 +121,8 @@ const LabelComponent = styled.div`
 `
 
 const MapContainer = styled.div`
+    margin-top: 15px;
+    margin-bottom: 10px;
     width: 100%;
     height: 100%;
 `
@@ -123,6 +134,28 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
+
+    const [name, setName] = useState('');
+    const [cnpj, setCNPJ] = useState('');
+    const [phone, setPhone] = useState('');
+    const [uf, setUf] = useState('');
+    const [email, setEmail] = useState('');
+
+    const nameInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setName(event.target.value);
+    }
+    const cnpjInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setCNPJ(event.target.value);
+    }
+    const phoneInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setPhone(event.target.value);
+    }
+    const ufInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setUf(event.target.value);
+    }
+    const emailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setEmail(event.target.value);
+    }
 
     if (!isOpen) return null;
 
@@ -150,6 +183,17 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
             title = "Modal";
     }
 
+    const states = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
+
+    const addClient = () => {
+        const currentName = name;
+        const currentCNPJ = cnpj;
+        const currentUf = uf;
+        const currentPhone = phone;
+        const currentEmail = email;
+        console.log(currentName, currentCNPJ, currentUf, currentPhone, currentEmail);
+    }
+
     return (
         <ModalWrapper>
             <ModalDiv>
@@ -159,42 +203,45 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
                 </ModalBar>
                     <LabelComponent>
                         <StyledLabel>Nome *</StyledLabel>
-                        <StyledInput type="text" placeholder="Nome" />
+                        <StyledInput type="text" placeholder="Nome" onChange={nameInputChange}/>
                     </LabelComponent>
 
                     <FlexDiv>
                         <LabelComponent>
                             <StyledLabel>CNPJ *</StyledLabel>
-                            <StyledInput type="text" placeholder="CNPJ" />
+                            <StyledInput type="text" placeholder="CNPJ" onChange={cnpjInputChange}/>
                         </LabelComponent>
                         
                         <LabelComponent>
                             <StyledLabel>Telefone *</StyledLabel>
-                            <StyledInput type="text" placeholder="Telefone" />
+                            <StyledInput type="text" placeholder="Telefone" onChange={phoneInputChange}/>
                         </LabelComponent>
                     </FlexDiv>
 
                     <FlexDiv>
                         <LabelComponent>
                             <StyledLabel>UF *</StyledLabel>
-                            <StyledInput>
-                                {/* Opções para o select de UF */}
-                            </StyledInput>
+                            <StyledSelect onChange={ufInputChange}>
+                                <option value="" selected disabled hidden>Escolha um</option>
+                                {states.map((state, index) => (
+                                    <option key={index} value={state}>{state}</option>
+                                ))}
+                            </StyledSelect>
                         </LabelComponent>
                         
                         <LabelComponent>
                             <StyledLabel>E-mail *</StyledLabel>
-                            <StyledInput type="email" placeholder="E-mail" />
+                            <StyledInput type="email" placeholder="E-mail" onChange={emailInputChange}/>
                         </LabelComponent>
                     </FlexDiv>
 
                     <MapContainer>
-                        <Map />
+                        <Map height={250}/>
                     </MapContainer>
 
                     <ButtonsDiv>
                         <CancelButton onClick={onClose}>Cancelar</CancelButton>
-                        <SaveButton>Salvar</SaveButton>
+                        <SaveButton onClick={addClient}>Salvar</SaveButton>
                     </ButtonsDiv>
 
                 </ModalContent>

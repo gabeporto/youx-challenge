@@ -205,7 +205,7 @@ const ReportTabbed: React.FC = () => {
             </TabButtonContainer>
             <TabContent>
                 {activeTab === 'tab1' && 
-                    <Map />
+                    <Map height={576}/>
                 }
                 {activeTab === 'tab2' && 
                     <ContentDiv>

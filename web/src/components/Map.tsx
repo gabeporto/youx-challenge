@@ -2,10 +2,20 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import "../styles/styles.css"
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngExpression } from 'leaflet';
+import { styled } from 'styled-components';
 
-export default function Map() {
+interface MapProp  {
+    height: number;
+}
 
-    // markers
+const StyledMapContainer = styled.div<MapProp>`
+    height: ${props => props.height}px;
+    width: 100%;
+`
+
+export default function Map(props : MapProp) {
+    
+    // Examples 
     const markers = [
         {
         id: 1,
@@ -30,15 +40,17 @@ export default function Map() {
     }); 
     
     return (
-        <MapContainer center={[-22.252252, -45.703597]} zoom={13}>
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {markers.map((marker) => {
-                const markerCoordinates: LatLngExpression = [marker.geocode[0], marker.geocode[1]];
-                return <Marker position={markerCoordinates} icon={customIcon} key={marker.id} /> ;
-            })}
-        </MapContainer>
+        <StyledMapContainer height={props.height}>
+            <MapContainer center={[-22.252252, -45.703597]} zoom={13}>
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {markers.map((marker) => {
+                    const markerCoordinates: LatLngExpression = [marker.geocode[0], marker.geocode[1]];
+                    return <Marker position={markerCoordinates} icon={customIcon} key={marker.id} /> ;
+                })}
+            </MapContainer>
+        </StyledMapContainer>
     )
 }
