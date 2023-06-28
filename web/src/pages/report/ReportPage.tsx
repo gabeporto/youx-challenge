@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Card from "../../components/Card";
 import Header from "../../components/Header";
 import Title from "../../components/Title";
-import Tabbed from "../../components/Tabbed";
+import ReportTabbed from "../../components/report/ReportTabbed";
 
 const CardSection = styled.div`
     padding-left: 6%;
@@ -23,7 +23,7 @@ export default function ReportPage() {
                 <Card title="Cliente com Maior Faturamento (Mês)" value="SEU BAR (R$ 5.000,00)" iconType="money"/>
                 <Card title="Cliente com Maior Faturamento (Ano)" value="SEU BAR (R$ 50.000,00)" iconType="money"/>
             </CardSection>
-            <Tabbed />
+            <ReportTabbed />
         </>
     )
 }

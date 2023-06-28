@@ -9,6 +9,10 @@ const CardStyled = styled.div`
     box-shadow: 5px 5px 20px #00000029;
     border-radius: 8px;
     opacity: 1;
+
+    @media only screen and (max-width: 425px) {
+        width: 340px;
+    }
 `
 
 const CardDiv = styled.div`
