@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ChevronDownIcon from '../assets/icons/ChevronDownIcon';
 import EditIcon from '../assets/icons/EditIcon';
 import DeleteIcon from '../assets/icons/DeleteIcon';
+import Modal from './Modal';
 
 const TableContainer = styled.div`
   margin-bottom: 16px;
@@ -93,7 +94,7 @@ const DropdownList = styled.ul<{ open: boolean }>`
   height: 99px;
 `;
 
-const DropdownItem = styled.li`
+const DropdownItem = styled.button`
   padding: 4px;
   cursor: pointer;
   display: flex;
@@ -164,16 +165,28 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
     setCurrentPage(pageNumber);
   };
 
+  // Actions (Edit and Delete)
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [removeModalOpen, setRemoveModalOpen] = useState(false);
+
   const renderActionsDropdown = (itemId: number) => {
     setOpenDropdownId(itemId === openDropdownId ? null : itemId);
   };
 
-  const handleEdit = (id: number) => {
-    console.log(`Editar item com ID ${id}`);
+  const openEditModal = () => {
+    setEditModalOpen(true);
   };
 
-  const handleDelete = (id: number) => {
-    console.log(`Deletar item com ID ${id}`);
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+  };
+
+  const openRemoveModal = () => {
+    setRemoveModalOpen(true);
+  };
+
+  const closeRemoveModal = () => {
+    setRemoveModalOpen(false);
   };
 
   return (
@@ -231,16 +244,20 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                   Ações
                   <ChevronDownIcon />
                 </DropdownButton>
+                
                 <DropdownList open={openDropdownId === item.id}>
-                  <DropdownItem onClick={() => handleEdit(item.id)}>
+                  <DropdownItem onClick={openEditModal}>
                     <EditIcon />
                     Editar
                   </DropdownItem>
-                  <DropdownItem onClick={() => handleDelete(item.id)}>
+                  <Modal isOpen={editModalOpen} onClose={closeEditModal} type="editClient"/>
+                  <DropdownItem onClick={openRemoveModal}>
                     <DeleteIcon />
                     Deletar
                   </DropdownItem>
+                  <Modal isOpen={removeModalOpen} onClose={closeRemoveModal} type="removeClient"/>
                 </DropdownList>
+
               </DropdownContainer>
             </TableCell>
             </TableRow>

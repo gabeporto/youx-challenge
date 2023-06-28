@@ -84,7 +84,7 @@ const StyledLabel = styled.p`
     text-align: left;
     font-size: 16px;
     letter-spacing: 0px;
-    color: #444444;
+    color: #707070;
     opacity: 1;
 `
 
@@ -146,6 +146,7 @@ interface UFsProps {
 
 const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
 
+    // API to get Brazil UFs
     const [ufsApi, setUfsApi] = useState<UFsProps[]>([]);
 
     useEffect(() => {
@@ -162,6 +163,8 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
         fecthStates();
       }, []);
 
+    // Inputs
+    const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [cnpj, setCNPJ] = useState('');
     const [phone, setPhone] = useState('');
@@ -171,20 +174,22 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
     const nameInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setName(event.target.value);
     }
+
     const cnpjInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setCNPJ(event.target.value);
     }
+
     const phoneInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setPhone(event.target.value);
     }
+
     const ufInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setUf(event.target.value);
     }
+
     const emailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setEmail(event.target.value);
     }
-
-    if (!isOpen) return null;
 
     let title = "";
     switch (type) {
@@ -195,7 +200,7 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
             title = "Editar Cliente";
             break;
         case "removeClient":
-            title = "Deletar Cliente";
+            title = "Excluir Cliente";
             break;
         case "addSale":
             title = "Cadastrar Venda";
@@ -204,13 +209,14 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
             title = "Editar Venda";
             break;
         case "removeSale":
-            title = "Deletar Venda";
+            title = "Excluir Venda";
             break;
         default:
             title = "Modal";
     }
 
     const addClient = () => {
+        // Rotina de Adição.
         const currentName = name;
         const currentCNPJ = cnpj;
         const currentUf = uf;
@@ -219,6 +225,25 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
         console.log(currentName, currentCNPJ, currentUf, currentPhone, currentEmail);
     }
 
+    const editClient = () => {
+        // Rotina de Edição.
+        const currentId = id;
+        const currentName = name;
+        const currentCNPJ = cnpj;
+        const currentUf = uf;
+        const currentPhone = phone;
+        const currentEmail = email;
+        console.log(currentId, currentName, currentCNPJ, currentUf, currentPhone, currentEmail);
+    }
+
+    const removeClient = () => {
+        // Rotina de exclusão.
+        const currentId = id;
+        console.log(currentId);
+    }
+
+    if (!isOpen) return null;
+
     return (
         <ModalWrapper>
             <ModalDiv>
@@ -226,48 +251,75 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
                 <ModalBar>
                 <ModalTitle>{title}</ModalTitle>
                 </ModalBar>
-                    <LabelComponent>
-                        <StyledLabel>Nome *</StyledLabel>
-                        <StyledInput type="text" placeholder="Nome" onChange={nameInputChange}/>
-                    </LabelComponent>
 
-                    <FlexDiv>
-                        <LabelComponent>
-                            <StyledLabel>CNPJ *</StyledLabel>
-                            <StyledInput type="text" placeholder="CNPJ" onChange={cnpjInputChange}/>
-                        </LabelComponent>
-                        
-                        <LabelComponent>
-                            <StyledLabel>Telefone *</StyledLabel>
-                            <StyledInput type="text" placeholder="Telefone" onChange={phoneInputChange}/>
-                        </LabelComponent>
-                    </FlexDiv>
 
-                    <FlexDiv>
+                    {/* Add/Edit Client Modal */}
+                    {type === 'addClient' || type === 'editClient' ? (
+                        <>
                         <LabelComponent>
-                            <StyledLabel>UF *</StyledLabel>
-                            <StyledSelect onChange={ufInputChange}>
-                                <option value="" selected disabled hidden></option>
-                                {ufsApi.map((uf) => (
-                                    <option key={uf.id} value={uf.sigla}>{uf.sigla}</option>
-                                ))}
-                            </StyledSelect>
+                            {type === 'editClient' && (
+                                <StyledInput type="number" name="id" id="id" hidden/>
+                            )}
+
+                            <StyledLabel>Nome *</StyledLabel>
+                            <StyledInput type="text" placeholder="Nome" name="name" id="name" onChange={nameInputChange} />
                         </LabelComponent>
-                        
+
+                        <FlexDiv>
+                            <LabelComponent>
+                                <StyledLabel>CNPJ *</StyledLabel>
+                                <StyledInput type="text" placeholder="CNPJ" name="cnpj" id="cnpj" onChange={cnpjInputChange} />
+                            </LabelComponent>
+
+                            <LabelComponent>
+                                <StyledLabel>Telefone *</StyledLabel>
+                                <StyledInput type="text" placeholder="Telefone" name="phone" id="phone" onChange={phoneInputChange} />
+                            </LabelComponent>
+                        </FlexDiv>
+                            
+                            <FlexDiv>
+                                <LabelComponent>
+                                    <StyledLabel>UF *</StyledLabel>
+                                    <StyledSelect onChange={ufInputChange}>
+                                        <option value="" selected disabled hidden></option>
+                                        {ufsApi.map((uf) => (
+                                            <option key={uf.id} value={uf.sigla}>{uf.sigla}</option>
+                                        ))}
+                                    </StyledSelect>
+                                </LabelComponent>
+
+                                <LabelComponent>
+                                    <StyledLabel>E-mail *</StyledLabel>
+                                    <StyledInput type="email" placeholder="E-mail" name="email" id="email" onChange={emailInputChange} />
+                                </LabelComponent>
+                            </FlexDiv>
+
+                            <MapContainer>
+                                <Map height={250} />
+                            </MapContainer>
+
+                            <ButtonsDiv>
+                                <CancelButton onClick={onClose}>Cancelar</CancelButton>
+                                <SaveButton onClick={addClient}>Salvar</SaveButton>
+                            </ButtonsDiv>
+                        </>
+                    ) : (
+                        <>
+
+                        <StyledInput type="number" name="id" id="id" hidden/>
+
                         <LabelComponent>
-                            <StyledLabel>E-mail *</StyledLabel>
-                            <StyledInput type="email" placeholder="E-mail" onChange={emailInputChange}/>
+                            <StyledLabel>Deseja excluir este cliente? Esta ação é irreversível e todas as vendas vinculadas ao cliente serão excluídas.</StyledLabel>
                         </LabelComponent>
-                    </FlexDiv>
 
-                    <MapContainer>
-                        <Map height={250}/>
-                    </MapContainer>
+                        <ButtonsDiv>
+                            <CancelButton onClick={onClose}>Cancelar</CancelButton>
+                            <SaveButton onClick={removeClient}>Excluir</SaveButton>
+                        </ButtonsDiv>
+                        </>
+                    )}
+                    {/* End of Client Modal */}
 
-                    <ButtonsDiv>
-                        <CancelButton onClick={onClose}>Cancelar</CancelButton>
-                        <SaveButton onClick={addClient}>Salvar</SaveButton>
-                    </ButtonsDiv>
 
                 </ModalContent>
             </ModalDiv>
