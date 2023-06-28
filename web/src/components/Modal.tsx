@@ -127,6 +127,15 @@ const MapContainer = styled.div`
     height: 100%;
 `
 
+const StyledSubtitle = styled.p`
+    text-align: left;
+    font-size: 22px;
+    letter-spacing: 0px;
+    color: #707070;
+    opacity: 1;
+    margin-top: 20px;
+`
+
 interface ModalProps {
     type: string;
     isOpen: boolean;
@@ -163,13 +172,18 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
         fecthStates();
       }, []);
 
-    // Inputs
+    
     const [id, setId] = useState(null);
     const [name, setName] = useState('');
     const [cnpj, setCNPJ] = useState('');
     const [phone, setPhone] = useState('');
     const [uf, setUf] = useState('');
     const [email, setEmail] = useState('');
+
+    const [client, setClient] = useState('');
+    const [date, setDate] = useState('');
+    const [status, setStatus] = useState('');
+    const [value, setValue] = useState('');
 
     const nameInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setName(event.target.value);
@@ -189,6 +203,22 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
 
     const emailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setEmail(event.target.value);
+    }
+
+    const clientInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setClient(event.target.value);
+    }
+
+    const dateInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setDate(event.target.value);
+    }
+
+    const statusInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setStatus(event.target.value);
+    }
+
+    const valueInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setValue(event.target.value);
     }
 
     let title = "";
@@ -242,6 +272,31 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
         console.log(currentId);
     }
 
+    const addSale = () => {
+        // Rotina de Adição.
+        const currentClient = client;
+        const currentDate = date;
+        const currentStatus = status;
+        const currentValue = value;
+        console.log(currentClient, currentDate, currentStatus, currentValue);
+    }
+
+    const editSale = () => {
+        // Rotina de Edição.
+        const currentId = id;
+        const currentClient = client;
+        const currentDate = date;
+        const currentStatus = status;
+        const currentValue = value;
+        console.log(currentId, currentClient, currentDate, currentStatus, currentValue);
+    }
+
+    const removeSale = () => {
+        // Rotina de exclusão.
+        const currentId = id;
+        console.log(currentId);
+    }
+
     if (!isOpen) return null;
 
     return (
@@ -253,14 +308,14 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
                 </ModalBar>
 
 
-                    {/* Add/Edit Client Modal */}
+                    {/* Add/Edit/Remove Client Modal */}
                     {type === 'addClient' || type === 'editClient' ? (
                         <>
-                        <LabelComponent>
-                            {type === 'editClient' && (
+                        {type === 'editClient' && (
                                 <StyledInput type="number" name="id" id="id" hidden/>
-                            )}
+                        )}
 
+                        <LabelComponent>
                             <StyledLabel>Nome *</StyledLabel>
                             <StyledInput type="text" placeholder="Nome" name="name" id="name" onChange={nameInputChange} />
                         </LabelComponent>
@@ -300,12 +355,14 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
 
                             <ButtonsDiv>
                                 <CancelButton onClick={onClose}>Cancelar</CancelButton>
-                                <SaveButton onClick={addClient}>Salvar</SaveButton>
+                                {type === 'addClient' && (<SaveButton onClick={addClient}>Salvar</SaveButton>)}
+                                {type === 'editClient' && (<SaveButton onClick={editClient}>Salvar</SaveButton>)}
                             </ButtonsDiv>
                         </>
-                    ) : (
-                        <>
+                    ) : null}
 
+                    {type === 'removeClient' && (
+                        <>
                         <StyledInput type="number" name="id" id="id" hidden/>
 
                         <LabelComponent>
@@ -320,6 +377,77 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
                     )}
                     {/* End of Client Modal */}
 
+                    {/* Add/Edit/Remove Sale Modal */}
+                    {type === 'addSale' || type === 'editSale' ? (
+                        <>
+                            {type === 'editSale' && (
+                                <>
+                                <StyledInput type="number" name="id" id="id" hidden/>
+                                <LabelComponent>
+                                    <StyledSubtitle>Venda #15 - Comércio de Livros LTDA - 16/10/2022</StyledSubtitle>
+                                </LabelComponent>
+                                </>
+                            )}
+                        
+                            <LabelComponent>
+                                <StyledLabel>Cliente *</StyledLabel>
+                                <StyledSelect name="client" id="client" onChange={clientInputChange}>
+                                    <option value="" selected disabled hidden></option>
+                                    <option key={1} value={1}>Comércio de Livros LTDA</option>
+                                    <option key={2} value={2}>Loja 1</option>
+                                    <option key={3} value={3}>Loja 2</option>
+                                    <option key={4} value={4}>Loja 3</option>
+                                </StyledSelect>
+                            </LabelComponent>
+
+                            <FlexDiv>
+                                <LabelComponent>
+                                    <StyledLabel>Data da venda *</StyledLabel>
+                                    <StyledInput placeholder='22/06/2023' name="date" id="date" onChange={dateInputChange}/>
+                                </LabelComponent>
+
+                                <LabelComponent>
+                                    <StyledLabel>Situação</StyledLabel>
+                                    <StyledSelect name="status" id="status" onChange={statusInputChange}>
+                                        <option value="" selected disabled hidden></option>
+                                        <option key={1} value={1}>Aguardando pagamento</option>
+                                        <option key={2} value={2}>Pagamento aprovado</option>
+                                        <option key={3} value={3}>Aguardando envio</option>
+                                        <option key={4} value={4}>À caminho</option>
+                                        <option key={5} value={5}>Finalizado</option>
+                                </StyledSelect>
+                                </LabelComponent>
+                            </FlexDiv>
+
+                            <LabelComponent>
+                                <StyledLabel>Valor da Venda</StyledLabel>
+                                <StyledInput type="money" name="value" id="value" onChange={valueInputChange}/>
+                            </LabelComponent>
+
+                            <ButtonsDiv>
+                                <CancelButton onClick={onClose}>Cancelar</CancelButton>
+                                {type === 'addSale' && (<SaveButton onClick={addSale}>Salvar</SaveButton>)}
+                                {type === 'editSale' && (<SaveButton onClick={editSale}>Salvar</SaveButton>)}
+                            </ButtonsDiv>
+                            
+                        </>
+                    ) : null}
+
+                    {type === 'removeSale' && (
+                        <>
+                        <StyledInput type="number" name="id" id="id" hidden/>
+
+                        <LabelComponent>
+                            <StyledLabel>Deseja excluir esta venda? Esta ação é irreversível e não poderá ser desfeita.</StyledLabel>
+                        </LabelComponent>
+
+                        <ButtonsDiv>
+                            <CancelButton onClick={onClose}>Cancelar</CancelButton>
+                            <SaveButton onClick={removeSale}>Excluir</SaveButton>
+                        </ButtonsDiv>
+                        </>
+                    )}
+                    {/* End of Sale Modal */}
 
                 </ModalContent>
             </ModalDiv>

@@ -2,6 +2,8 @@
 import styled from "styled-components";
 import Button from "../Button";
 import Table from "../Table";
+import { useState } from "react";
+import Modal from "../Modal";
 
 const Container = styled.h1`
     padding-left: 6%;
@@ -41,7 +43,6 @@ export default function SaleTable() {
         {
           id: 1,
           client: 'Comércio de Livros LTDA',
-          type: 'sale',
           date: '26/08/2022',
           status: 'À caminho',
           value: 'R$ 350,00',
@@ -49,177 +50,165 @@ export default function SaleTable() {
         {
           id: 2,
           client: 'Comércio de Livros LTDA',
-          type: 'sale',
           date: '26/08/2022',
           status: 'À caminho',
           value: 'R$ 350,00',
         },
         {
-            id: 3,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 4,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 5,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 6,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 7,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 8,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 9,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 10,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 11,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 12,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 13,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 14,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 15,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 16,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 17,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 18,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 19,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
-          {
-            id: 20,
-            client: 'Comércio de Livros LTDA',
-            type: 'sale',
-            date: '26/08/2022',
-            status: 'À caminho',
-            value: 'R$ 350,00',
-          },
+          id: 3,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 4,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 5,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 6,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 7,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 8,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 9,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 10,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 11,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 12,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 13,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 14,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 15,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 16,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 17,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 18,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 19,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
+        {
+          id: 20,
+          client: 'Comércio de Livros LTDA',
+          date: '26/08/2022',
+          status: 'À caminho',
+          value: 'R$ 350,00',
+        },
       ];
 
-      const columns = [
-        { name: "Cliente", dataKey: "client" },
-        { name: "Data", dataKey: "date" },
-        { name: "Status", dataKey: "status" },
-        { name: "Valor", dataKey: "value" },
-      ];
+    const columns = [
+      { name: "Cliente", dataKey: "client" },
+      { name: "Data", dataKey: "date" },
+      { name: "Status", dataKey: "status" },
+      { name: "Valor", dataKey: "value" },
+    ];
+    
+    const [modalOpen, setModalOpen] = useState(false);
 
-      const addSale = () => {
-        console.log("Cadastrar Venda");
-      }
+    const openModal = () => {
+      setModalOpen(true);
+    };
+
+    const closeModal = () => {
+      setModalOpen(false);
+    };
 
     return (
         <Container>
             <SearchContainer>
                 <SearchInput placeholder="Digite o nome do cliente que deseja pesquisar" />
-                <Button title="Cadastrar vendas" onClick={addSale}/>
+                <Button title="Cadastrar vendas" onClick={openModal}/>
+                <Modal isOpen={modalOpen} onClose={closeModal} type="addSale"/>
             </SearchContainer>
 
             <TableTitle>Vendas cadastradas</TableTitle>
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={data} type="sale"/>
         </Container>
     )
 }

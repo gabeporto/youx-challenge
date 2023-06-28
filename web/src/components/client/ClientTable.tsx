@@ -43,7 +43,6 @@ export default function ClientTable() {
         {
           id: 1,
           nome: 'Comércio de Livros LTDA',
-          type: 'client',
           cnpj: '85.681.832/0001-73',
           email: 'comerciodelivros@email.com',
           telefone: '(35) 92854-1548',
@@ -51,7 +50,6 @@ export default function ClientTable() {
         {
           id: 2,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -59,7 +57,6 @@ export default function ClientTable() {
         {
           id: 3,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -67,7 +64,6 @@ export default function ClientTable() {
         {
           id: 4,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -75,7 +71,6 @@ export default function ClientTable() {
         {
           id: 5,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -83,7 +78,6 @@ export default function ClientTable() {
         {
           id: 6,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -91,7 +85,6 @@ export default function ClientTable() {
         {
           id: 7,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -99,7 +92,6 @@ export default function ClientTable() {
         {
           id: 8,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -107,7 +99,6 @@ export default function ClientTable() {
         {
           id: 9,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -115,7 +106,6 @@ export default function ClientTable() {
         {
           id: 10,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -123,7 +113,6 @@ export default function ClientTable() {
         {
           id: 11,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -131,7 +120,6 @@ export default function ClientTable() {
         {
           id: 12,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -139,7 +127,6 @@ export default function ClientTable() {
         {
           id: 13,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -147,7 +134,6 @@ export default function ClientTable() {
         {
           id: 14,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -155,7 +141,6 @@ export default function ClientTable() {
         {
           id: 15,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -163,7 +148,6 @@ export default function ClientTable() {
         {
           id: 16,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -171,7 +155,6 @@ export default function ClientTable() {
         {
           id: 17,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -179,7 +162,6 @@ export default function ClientTable() {
         {
           id: 18,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -187,7 +169,6 @@ export default function ClientTable() {
         {
           id: 19,
           nome: 'Cliente 1',
-          type: 'client',
           cnpj: '123456789',
           email: 'cliente1@example.com',
           telefone: '1234567890',
@@ -195,7 +176,6 @@ export default function ClientTable() {
         {
           id: 20,
           nome: 'Cliente 2',
-          type: 'client',
           cnpj: '987654321',
           email: 'cliente2@example.com',
           telefone: '9876543210',
@@ -228,7 +208,7 @@ export default function ClientTable() {
             </SearchContainer>
 
             <TableTitle>Clientes cadastrados</TableTitle>
-            <Table columns={columns} data={data} />
+            <Table columns={columns} data={data} type="client"/>
         </Container>
     )
 }

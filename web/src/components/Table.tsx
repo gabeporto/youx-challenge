@@ -129,7 +129,6 @@ interface Column {
 
 interface ClientData {
   id: number;
-  type: string;
   nome: string;
   cnpj: string;
   email: string;
@@ -138,7 +137,6 @@ interface ClientData {
 
 interface SaleData {
   id: number;
-  type: string;
   client: string;
   date: string;
   status: string;
@@ -148,9 +146,10 @@ interface SaleData {
 interface TableProps {
   columns: Column[];
   data: (ClientData | SaleData)[];
+  type: string;
 }
   
-const Table: React.FC<TableProps> = ({ columns, data }) => {
+const Table: React.FC<TableProps> = ({ columns, data, type }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
   const itemsPerPage = 10;
@@ -206,7 +205,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
           {currentItems.map((item) => (
 
             <TableRow key={item.id}>
-            {item.type === 'client' ? (
+            {type === 'client' ? (
               <>
                 {('nome' in item) && (
                   <TableCell>{item.nome}</TableCell>
@@ -222,7 +221,7 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                 )}
               </>
             ) : null}
-            {item.type === 'sale' ? (
+            {type === 'sale' ? (
               <>
                 {('client' in item) && (
                   <TableCell>{item.client}</TableCell>
@@ -246,16 +245,21 @@ const Table: React.FC<TableProps> = ({ columns, data }) => {
                 </DropdownButton>
                 
                 <DropdownList open={openDropdownId === item.id}>
+
                   <DropdownItem onClick={openEditModal}>
                     <EditIcon />
                     Editar
                   </DropdownItem>
-                  <Modal isOpen={editModalOpen} onClose={closeEditModal} type="editClient"/>
+                  {type === 'client' && <Modal isOpen={editModalOpen} onClose={closeEditModal} type="editClient"/>}
+                  {type === 'sale' && <Modal isOpen={editModalOpen} onClose={closeEditModal} type="editSale"/>}
+
                   <DropdownItem onClick={openRemoveModal}>
                     <DeleteIcon />
                     Deletar
                   </DropdownItem>
-                  <Modal isOpen={removeModalOpen} onClose={closeRemoveModal} type="removeClient"/>
+                  {type === 'client' && <Modal isOpen={removeModalOpen} onClose={closeRemoveModal} type="removeClient"/>}
+                  {type === 'sale' && <Modal isOpen={removeModalOpen} onClose={closeRemoveModal} type="removeSale"/>}
+
                 </DropdownList>
 
               </DropdownContainer>
