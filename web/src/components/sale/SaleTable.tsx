@@ -207,11 +207,15 @@ export default function SaleTable() {
         { name: "Valor", dataKey: "value" },
       ];
 
+      const addSale = () => {
+        console.log("Cadastrar Venda");
+      }
+
     return (
         <Container>
             <SearchContainer>
                 <SearchInput placeholder="Digite o nome do cliente que deseja pesquisar" />
-                <Button title="Cadastrar vendas" />
+                <Button title="Cadastrar vendas" onClick={addSale}/>
             </SearchContainer>
 
             <TableTitle>Vendas cadastradas</TableTitle>

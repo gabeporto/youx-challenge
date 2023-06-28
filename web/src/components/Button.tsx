@@ -1,8 +1,7 @@
-import { ButtonHTMLAttributes } from 'react';
 import styled from 'styled-components';
 import PlusIcon from '../assets/icons/PlusIcon';
 
-const CreateButton = styled.div`
+const CreateButton = styled.button`
     display: flex;
     width: 203px;
     height: 54px;
@@ -21,15 +20,18 @@ const CreateButton = styled.div`
     }
 `
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type BotaoProps = {
     title: string;
-}
+    onClick: () => void;
+  };
 
-export default function Button(props : ButtonProps) {
+const Button = ({ title, onClick }: BotaoProps) => {
     return (
-        <CreateButton>
+        <CreateButton onClick={onClick}>
             <PlusIcon />
-            {props.title}
+            {title}
         </CreateButton>
     )
 }
+
+export default Button;

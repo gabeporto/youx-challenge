@@ -2,6 +2,8 @@
 import styled from "styled-components";
 import Button from "../Button";
 import Table from "../Table";
+import Modal from "../Modal";
+import { useState } from "react";
 
 const Container = styled.h1`
     padding-left: 6%;
@@ -207,11 +209,22 @@ export default function ClientTable() {
         { name: "Telefone", dataKey: "telefone" },
       ];
 
+      const [modalOpen, setModalOpen] = useState(false);
+
+      const openModal = () => {
+        setModalOpen(true);
+      };
+
+      const closeModal = () => {
+        setModalOpen(false);
+      };
+
     return (
         <Container>
             <SearchContainer>
                 <SearchInput placeholder="Digite o nome ou CNPJ do cliente que deseja pesquisar" />
-                <Button title="Cadastrar cliente" />
+                <Button title="Cadastrar cliente" onClick={openModal}/>
+                <Modal isOpen={modalOpen} onClose={closeModal} type="addClient"/>
             </SearchContainer>
 
             <TableTitle>Clientes cadastrados</TableTitle>
