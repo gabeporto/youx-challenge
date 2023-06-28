@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker } from 'react-leaflet'; 
+import { MapContainer, TileLayer, Marker, WMSTileLayer } from 'react-leaflet'; 
 import "../styles/styles.css"
 import "leaflet/dist/leaflet.css"
 import { Icon, LatLngExpression } from 'leaflet';
@@ -45,6 +45,12 @@ export default function Map(props : MapProp) {
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <WMSTileLayer
+                    url="http://sistemas.gt4w.com.br/geoserver/processo_seletivo/wms"
+                    layers="processo_seletivo:ufs_brasil"
+                    format="image/png"
+                    transparent={true}
                 />
                 {markers.map((marker) => {
                     const markerCoordinates: LatLngExpression = [marker.geocode[0], marker.geocode[1]];

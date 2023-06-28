@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Map from "./Map";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -133,7 +133,34 @@ interface ModalProps {
     onClose: () => void;
 }
 
+interface UFsProps {
+    id: number,
+    sigla: string,
+    nome: string,
+    regiao : {
+        id: number,
+        sigla: string,
+        nome: string,
+    }
+}
+
 const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
+
+    const [ufsApi, setUfsApi] = useState<UFsProps[]>([]);
+
+    useEffect(() => {
+        const fecthStates = async () => {
+          try {
+            const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+            const data = await response.json();
+            setUfsApi(data);
+          } catch (error) {
+            console.error('Erro ao buscar os estados:', error);
+          }
+        };
+    
+        fecthStates();
+      }, []);
 
     const [name, setName] = useState('');
     const [cnpj, setCNPJ] = useState('');
@@ -183,8 +210,6 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
             title = "Modal";
     }
 
-    const states = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];
-
     const addClient = () => {
         const currentName = name;
         const currentCNPJ = cnpj;
@@ -222,9 +247,9 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
                         <LabelComponent>
                             <StyledLabel>UF *</StyledLabel>
                             <StyledSelect onChange={ufInputChange}>
-                                <option value="" selected disabled hidden>Escolha um</option>
-                                {states.map((state, index) => (
-                                    <option key={index} value={state}>{state}</option>
+                                <option value="" selected disabled hidden></option>
+                                {ufsApi.map((uf) => (
+                                    <option key={uf.id} value={uf.sigla}>{uf.sigla}</option>
                                 ))}
                             </StyledSelect>
                         </LabelComponent>
