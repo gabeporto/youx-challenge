@@ -23,6 +23,7 @@ const TableContainer = styled.div`
   tr:last-child td {
     border-bottom: none;
   }
+
 `;
 
 const StyledTable = styled.table`
@@ -114,7 +115,7 @@ const TableBorder = styled.div`
     margin-top: 15px;
     margin-bottom: 5px;
     border: 1px solid #AAA;
-    width: 1709px;
+    width: 100%;
 `
 
 const TableInfo = styled.div`
@@ -267,36 +268,36 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
             </TableRow>
           ))}
         </tbody>
-      </StyledTable>
+        </StyledTable>
 
-      <TableBorder/>
+        <TableBorder/>
 
-      <div className="flex justify-between d-flex flex-wrap">
+        <div className="flex justify-between d-flex flex-wrap">
 
-        <TableInfo>
-            Exibindo de {indexOfFirstItem + 1} a {Math.min(indexOfLastItem, data.length)} de {data.length} registros
-        </TableInfo>
+          <TableInfo>
+              Exibindo de {indexOfFirstItem + 1} a {Math.min(indexOfLastItem, data.length)} de {data.length} registros
+          </TableInfo>
 
-        <div>
-            <button className="mr-2" disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
-            {'<<'}
-            </button>
-            {Array.from({ length: totalPages }).map((_, index) => (
-            <button
-                className="mr-2"
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                style={{ fontWeight: index + 1 === currentPage ? 'bold' : 'normal' }}
-            >
-                {index + 1}
-            </button>
-            ))}
-            <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
-            {'>>'}
-            </button>
+          <div>
+              <button className="mr-2" disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+              {'<<'}
+              </button>
+              {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                  className="mr-2"
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  style={{ fontWeight: index + 1 === currentPage ? 'bold' : 'normal' }}
+              >
+                  {index + 1}
+              </button>
+              ))}
+              <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+              {'>>'}
+              </button>
+          </div>
+
         </div>
-
-      </div>
     </TableContainer>
   );
 };

@@ -64,6 +64,10 @@ const SaveButton = styled.button`
     border: none;
     border-radius: 4px;
     cursor: pointer;
+
+    @media only screen and (max-width: 425px) {
+        width: 100px;
+    }
 `
 
 const CancelButton = styled.button`
@@ -76,6 +80,10 @@ const CancelButton = styled.button`
     border: none;
     border-radius: 4px;
     cursor: pointer;
+
+    @media only screen and (max-width: 425px) {
+        width: 100px;
+    }
 `
 
 const StyledLabel = styled.p`
@@ -91,9 +99,11 @@ const StyledLabel = styled.p`
 const StyledInput = styled.input`
     width: 100%;
     margin-bottom: 10px;
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #CCCCCC;
     border-radius: 3px;
+    color: #686868;
+    font-size: 16px;
 `
 
 const StyledSelect = styled.select`
