@@ -60,6 +60,8 @@ const TableRow = styled.tr`
 
 const TableCell = styled.td`
   padding: 8px;
+  color: #686868;
+  font-weight: regular;
 `;
 
 const ActionButton = styled.button`
