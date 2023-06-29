@@ -40,6 +40,17 @@ const TableHeader = styled.th`
   color: #6E6E6E;
 `;
 
+const TableHeaderActions = styled.th`
+  padding: 8px;
+  text-align: left;
+  font-weight: light;
+  border-bottom: 1px solid #ccc;
+  font-size: 18px;
+  color: #6E6E6E;
+  right: 0;
+  width: 150px;
+`;
+
 const TableRow = styled.tr`
     height: 50px;
   &:nth-child(even) {
@@ -198,7 +209,7 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
                 <TableHeader key={column.dataKey}>{column.name}
                 </TableHeader>
              ))}
-            <TableHeader>Ações</TableHeader>
+            <TableHeaderActions>Ações</TableHeaderActions>
             
           </tr>
         </thead>
