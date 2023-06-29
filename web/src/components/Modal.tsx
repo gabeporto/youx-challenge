@@ -21,6 +21,8 @@ const ModalContent = styled.div`
     border-radius: 8px;
     width: 70%;
     max-width: 900px;
+    max-height: 600px;
+    overflow: auto;
 `;
 
 const ModalBar = styled.div`
@@ -94,6 +96,10 @@ const StyledLabel = styled.p`
     letter-spacing: 0px;
     color: #707070;
     opacity: 1;
+
+    @media only screen and (max-width: 490px) {
+        margin-top: 5px;
+    }
 `
 
 const StyledInput = styled.input`
@@ -119,10 +125,10 @@ const FlexDiv = styled.div`
     display: flex;
     gap: 20px;
 
-
     @media only screen and (max-width: 490px) {
         display: flex;
         flex-wrap: wrap;
+        gap: 0px;
     }
 `
 

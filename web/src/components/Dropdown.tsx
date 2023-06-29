@@ -17,7 +17,11 @@ const LogoImage = styled.img`
 const DropdownContainer = styled.div`
     position: relative;
     display: inline-block;
-    z-index: 9999;
+    z-index: 2000;
+
+    @media only screen and (max-width: 600px) {
+      z-index: 1;
+  }
 `;
 
 const DropdownContent = styled.div`
