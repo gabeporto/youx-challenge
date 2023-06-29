@@ -14,19 +14,15 @@ const Container = styled.div`
 const Card = styled.div`
     display: flex;
     flex-direction: column;
-    height: 75%;
     width: 500px;
     box-shadow: 5px 5px 20px #00000029;
     border-radius: 12px;
 
-    @media only screen and (max-width: 330px) {
-        height: 80%;
-    }
 `
 
 const FirstSection = styled.div`
     width: 100%;
-    height: 20%;
+    min-height: 80px;
     background-color: #023E8A;
     border-radius: 12px 12px 0 0;
     position: relative;
@@ -38,6 +34,7 @@ const SecondSection = styled.div`
     height: 80%;
     width: 100%;
     padding: 30px 50px;
+    justify-content: center;
 
     @media only screen and (max-width: 330px) {
         padding: 30px 15px;
@@ -45,12 +42,13 @@ const SecondSection = styled.div`
 `
 
 const Logo = styled.img`
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
 `;
 
 const StyledLabel = styled.p`
@@ -96,6 +94,11 @@ const FirstButton = styled.button`
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
 `;
 
 const SecondButton = styled(Link)`
@@ -105,6 +108,7 @@ const SecondButton = styled(Link)`
     cursor: pointer;
     font-size: 13px;
     text-align: center;
+    transition: color 0.3s ease;
 
     &:hover {
         color: #023E8A
