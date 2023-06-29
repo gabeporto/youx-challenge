@@ -3,6 +3,7 @@ import LogoutIcon from '../assets/icons/LogoutIcon'
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Dropdown from './Dropdown';
+import { Link } from 'react-router-dom';
 
 const HeaderContainer = styled.header`
     display: flex;
@@ -44,7 +45,7 @@ const UserIconDiv = styled.div`
     cursor: pointer;
 `
 
-const LogoutDiv = styled.div`
+const LogoutDiv = styled(Link)`
     padding-top: 40px;
     margin-right: 30px;
     cursor: pointer;
@@ -53,6 +54,8 @@ const LogoutDiv = styled.div`
 const DropdownDiv = styled.div`
     height: 100%;
 `
+
+
 
 export default function Header() {
 
@@ -94,7 +97,7 @@ export default function Header() {
                     </UserDiv>
                 )}
 
-                <LogoutDiv>
+                <LogoutDiv to="/login">
                     <LogoutIcon />
                 </LogoutDiv>
             </UserContainer>

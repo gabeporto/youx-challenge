@@ -67,15 +67,15 @@ const fadeOut = keyframes`
 `;
 
 const DropdownItem = styled(Link)`
-    display: block;
-    padding-top: 40px;
-    padding-left: 52px;
-    color: #FFFFFF;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: medium;
-    font-size: 25px;
-    opacity: 1;
+  display: block;
+  padding-top: 40px;
+  padding-left: 52px;
+  color: #FFFFFF;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: medium;
+  font-size: 25px;
+  opacity: 1;
 `;
 
 const DropdownSubItem = styled(Link)`
