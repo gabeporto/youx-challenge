@@ -4,6 +4,7 @@ import Button from "../Button";
 import Table from "../Table";
 import { useState } from "react";
 import Modal from "../Modal";
+import SearchInput from "../SearchInput";
 
 const Container = styled.h1`
     padding-left: 6%;
@@ -17,18 +18,6 @@ const TableTitle = styled.h1`
     margin-top: 40px;
     margin-bottom: 10px;
 `;
-
-const SearchInput = styled.input`
-    width: 75%;
-    min-width: 200px;
-    height: 55px;
-    background: #FFFFFF 0% 0% no-repeat padding-box;
-    border: 1px solid #CCCCCC;
-    border-radius: 3px;
-    opacity: 1;
-    margin-right: 50px;
-    padding: 15px;
-`
 
 const SearchContainer = styled.div`
     display: flex;
