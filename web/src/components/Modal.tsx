@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import Map from "./Map";
 import { SetStateAction, useEffect, useState } from "react";
+import InputMask from 'react-input-mask'; 
+import { NumericFormat } from 'react-number-format';
+
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -21,8 +24,11 @@ const ModalContent = styled.div`
     border-radius: 8px;
     width: 70%;
     max-width: 900px;
-    max-height: 600px;
-    overflow: auto;
+    max-height: 700px;
+
+    @media only screen and (max-width: 425px) {
+        overflow: auto;
+    }
 `;
 
 const ModalBar = styled.div`
@@ -103,6 +109,26 @@ const StyledLabel = styled.p`
 `
 
 const StyledInput = styled.input`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    color: #686868;
+    font-size: 16px;
+`
+
+const StyledInputMask = styled(InputMask)`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    color: #686868;
+    font-size: 16px;
+`
+
+const StyledMoneyMask = styled(NumericFormat)`
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
@@ -199,7 +225,7 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
     const [client, setClient] = useState('');
     const [date, setDate] = useState('');
     const [status, setStatus] = useState('');
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState<number>(0.00);
 
     const nameInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setName(event.target.value);
@@ -231,10 +257,6 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
 
     const statusInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setStatus(event.target.value);
-    }
-
-    const valueInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setValue(event.target.value);
     }
 
     let title = "";
@@ -339,12 +361,12 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
                         <FlexDiv>
                             <LabelComponent>
                                 <StyledLabel>CNPJ *</StyledLabel>
-                                <StyledInput type="text" placeholder="CNPJ" name="cnpj" id="cnpj" onChange={cnpjInputChange} />
+                                <StyledInputMask type="text" placeholder="CNPJ" name="cnpj" id="cnpj" mask="99.999.999/9999-99" onChange={cnpjInputChange} />
                             </LabelComponent>
 
                             <LabelComponent>
                                 <StyledLabel>Telefone *</StyledLabel>
-                                <StyledInput type="text" placeholder="Telefone" name="phone" id="phone" onChange={phoneInputChange} />
+                                <StyledInputMask type="text" placeholder="Telefone" name="phone" id="phone" mask="(99) 99999-9999" onChange={phoneInputChange} />
                             </LabelComponent>
                         </FlexDiv>
                             
@@ -437,7 +459,12 @@ const Modal: React.FC<ModalProps> = ({ type, isOpen, onClose }) => {
 
                             <LabelComponent>
                                 <StyledLabel>Valor da Venda</StyledLabel>
-                                <StyledInput type="money" name="value" id="value" onChange={valueInputChange}/>
+                                <StyledMoneyMask 
+                                thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true}
+                                name="value" id="value" onValueChange={(values: { floatValue: any; }) => {
+                                    const { floatValue } = values;
+                                    setValue(floatValue);
+                                  }}/>
                             </LabelComponent>
 
                             <ButtonsDiv>
