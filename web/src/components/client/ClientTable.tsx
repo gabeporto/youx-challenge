@@ -28,6 +28,10 @@ const SearchInput = styled.input`
     opacity: 1;
     margin-right: 50px;
     padding: 15px;
+
+    @media only screen and (max-width: 226px) {
+      min-width: 90%;
+    }
 `
 
 const SearchContainer = styled.div`

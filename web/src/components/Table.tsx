@@ -123,15 +123,26 @@ const DropdownItem = styled.button`
 `;
 
 const TableBorder = styled.div`
-    margin-top: 15px;
-    margin-bottom: 5px;
-    border: 1px solid #AAA;
-    width: 100%;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  border: 1px solid #AAA;
+  width: 100%;
 `
 
 const TableInfo = styled.div`
   color: #686868;
   margin-top: 5px;
+`
+
+const TableInfoDiv = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+`
+
+const ButtonNextPage = styled.button`
+  margin-right: 10px;
+  color: #686868;
 `
 
 interface Column {
@@ -283,32 +294,31 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
 
         <TableBorder/>
 
-        <div className="flex justify-between d-flex flex-wrap">
+        <TableInfoDiv>
 
           <TableInfo>
               Exibindo de {indexOfFirstItem + 1} a {Math.min(indexOfLastItem, data.length)} de {data.length} registros
           </TableInfo>
 
           <div>
-              <button className="mr-2" disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
+              <ButtonNextPage disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
               {'<<'}
-              </button>
+              </ButtonNextPage>
               {Array.from({ length: totalPages }).map((_, index) => (
-              <button
-                  className="mr-2"
+              <ButtonNextPage
                   key={index + 1}
                   onClick={() => handlePageChange(index + 1)}
                   style={{ fontWeight: index + 1 === currentPage ? 'bold' : 'normal' }}
               >
                   {index + 1}
-              </button>
+              </ButtonNextPage>
               ))}
-              <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
+              <ButtonNextPage disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
               {'>>'}
-              </button>
+              </ButtonNextPage>
           </div>
 
-        </div>
+        </TableInfoDiv>
     </TableContainer>
   );
 };
