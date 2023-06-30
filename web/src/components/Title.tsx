@@ -1,10 +1,5 @@
 import styled from "styled-components";
 
-const Container = styled.h1`
-    padding-left: 6%;
-    padding-top: 50px; 
-`;
-
 const PageTitle = styled.h1`
     font-weight: bold;
     font-size: 35px;
@@ -26,9 +21,9 @@ interface TitleProps {
 
 export default function Title(props : TitleProps) {
     return (
-        <Container>
+        <>
             <PageTitle>{props.title}</PageTitle>
             <TitleBorder/>
-        </Container>
+        </>
     )
 }

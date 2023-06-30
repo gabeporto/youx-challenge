@@ -1,6 +1,6 @@
 import styled from "styled-components"
-import MoneyIcon from "../assets/icons/MoneyIcon"
-import GraphUpIcon from "../assets/icons/GraphUpIcon"
+import MoneyIcon from '@mui/icons-material/AttachMoney';
+import GraphUpIcon from '@mui/icons-material/TrendingUp';
 
 const CardStyled = styled.div`
     width: 389px;
@@ -42,7 +42,7 @@ const CardValueSection = styled.div`
     justify-content: center;
     opacity: 1;
     flex: 1;
-    gap: 15px;
+    gap: 10px;
 `
 
 const CardValue = styled.label`
@@ -69,9 +69,9 @@ export default function Card(props : CardProps) {
                     </CardTitleSection>
                     <CardValueSection>
                         { props.iconType === 'money' ? ( 
-                            <MoneyIcon color="#023E8A" width={32} height={54} /> 
+                            <MoneyIcon htmlColor="#023E8A" fontSize="large"/> 
                         ) : ( 
-                            <GraphUpIcon color="#023E8A" width={32} height={54} /> 
+                            <GraphUpIcon htmlColor="#023E8A" fontSize="large"/> 
                             )
                         }
                         <CardValue>{props.value}</CardValue>

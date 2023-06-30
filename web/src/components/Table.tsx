@@ -1,29 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import ChevronDownIcon from '../assets/icons/ChevronDownIcon';
-import EditIcon from '../assets/icons/EditIcon';
-import DeleteIcon from '../assets/icons/DeleteIcon';
 import Modal from './Modal';
+import EditIcon from '@mui/icons-material/ModeEdit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const TableContainer = styled.div`
-  margin-bottom: 16px;
-  width: 94%;
+  width: 100%;
   overflow: auto;
-
-  th,
-  td {
-    padding: 8px;
-    text-align: left;
-  }
-
-  th {
-    font-weight: bold;
-  }
-
-  tr:last-child td {
-    border-bottom: none;
-  }
-
 `;
 
 const StyledTable = styled.table`
@@ -35,7 +19,6 @@ const TableHeader = styled.th`
   padding: 8px;
   text-align: left;
   font-weight: light;
-  border-bottom: 1px solid #ccc;
   font-size: 18px;
   color: #6E6E6E;
 `;
@@ -43,17 +26,21 @@ const TableHeader = styled.th`
 const TableHeaderActions = styled.th`
   padding: 8px;
   text-align: left;
-  font-weight: light;
-  border-bottom: 1px solid #ccc;
+  font-weight: regular;
   font-size: 18px;
   color: #6E6E6E;
   right: 0;
-  width: 150px;
+  width: 120px;
 `;
 
 const TableRow = styled.tr`
-    height: 50px;
+  height: 50px;
+
   &:nth-child(even) {
+    background-color: #FFF;
+  }
+
+  &:nth-child(odd) {
     background-color: #f9f9f9;
   }
 `;
@@ -65,21 +52,21 @@ const TableCell = styled.td`
 `;
 
 const ActionButton = styled.button`
-    width: 93px;
-    height: 34px;
-    font-size: 15px;
-    color: #FFFFFF;
-    background-color: #023E8A;
-    border-radius: 3px;
-    opacity: 1;
-    border: none;
-    cursor: pointer;
-    justify-content: center;
-    transition: opacity 0.3s ease;
+  width: 93px;
+  height: 34px;
+  font-size: 15px;
+  color: #FFFFFF;
+  background-color: #023E8A;
+  border-radius: 3px;
+  opacity: 1;
+  border: none;
+  cursor: pointer;
+  justify-content: center;
+  transition: opacity 0.3s ease;
 
-    &:hover {
-    opacity: 0.8;
-    }
+  &:hover {
+  opacity: 0.8;
+  }
 `;
 
 const DropdownContainer = styled.div`
@@ -89,7 +76,7 @@ const DropdownContainer = styled.div`
 const DropdownButton = styled(ActionButton)`
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-conent: center;
 `;
 
 const DropdownList = styled.ul<{ open: boolean }>`
@@ -112,7 +99,7 @@ const DropdownItem = styled.button`
   padding: 4px;
   cursor: pointer;
   display: flex;
-  gap: 10px;
+  gap: 15px;
   align-items: center;
   font-size: 20px;
   color: #707070;
@@ -125,9 +112,9 @@ const DropdownItem = styled.button`
 `;
 
 const TableBorder = styled.div`
-  margin-top: 15px;
+  margin-top: 12px;
   margin-bottom: 5px;
-  border: 1px solid #AAA;
+  border-bottom: 1px solid #ccc;
   width: 100%;
 `
 
@@ -145,6 +132,10 @@ const TableInfoDiv = styled.div`
 const ButtonNextPage = styled.button`
   margin-right: 10px;
   color: #686868;
+`
+
+const ButtonName = styled.label`
+  margin-left: 6px;
 `
 
 interface Column {
@@ -225,6 +216,7 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
           <tr>
             {columns.map((column) => (
                 <TableHeader key={column.dataKey}>{column.name}
+                <ArrowDownIcon />
                 </TableHeader>
              ))}
             <TableHeaderActions>Ações</TableHeaderActions>
@@ -270,8 +262,8 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
             <TableCell>
               <DropdownContainer>
                 <DropdownButton onClick={() => renderActionsDropdown(item.id)}>
-                  Ações
-                  <ChevronDownIcon />
+                  <ButtonName>Ações</ButtonName>
+                  <ArrowDownIcon  fontSize='small'/>
                 </DropdownButton>
                 
                 <DropdownList open={openDropdownId === item.id}>

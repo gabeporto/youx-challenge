@@ -1,40 +1,43 @@
 import styled from 'styled-components';
-import PlusIcon from '../assets/icons/PlusIcon';
+import AddIcon from '@mui/icons-material/Add';
 
 const StyledButton = styled.div`
     display: flex;
+    padding: 5px;
     width: 203px;
     min-height: 54px;
     background: #023E8A 0% 0% no-repeat padding-box;
     border-radius: 5px;
     opacity: 1;
-    padding: 12px;
     cursor: pointer;
-    transition: opacity 0.3s ease;
     color: #FFFFFF;
-    font-size: 18px;
-    justify-content: center;
+    font-size: 16px;
+    justify-content: center; 
+    align-items: center;
+    gap: 4px;
+    transition: opacity 0.3s ease;
 
     &:hover {
-    opacity: 0.8;
+        opacity: 0.8;
     }
 
     @media only screen and (max-width: 226px) {
         width: 90%;
+        font-size: 14px;
     }
 
 `
 
-
 type BotaoProps = {
     title: string;
+    type: string;
     onClick: () => void;
   };
 
-const Button = ({ title, onClick }: BotaoProps) => {
+const Button = ({ title, type, onClick }: BotaoProps) => {
     return (
         <StyledButton onClick={onClick}>
-            <PlusIcon />
+            {type === 'add' && ( <AddIcon /> ) }
             {title}
         </StyledButton>
     )

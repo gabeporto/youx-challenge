@@ -11,8 +11,8 @@ interface InvoicingData {
 interface InvoicingTableProps {
     columns: string[],
     data: InvoicingData[],
+    name: string,
 }
-
 
 const StyledButton = styled.button`
     width: 100px;
@@ -21,6 +21,7 @@ const StyledButton = styled.button`
     font-size: 12px;
     font-weight: medium;
     text-align: center;
+    justify-content: center; 
     letter-spacing: 0px;
     color: #FFFFFF;
     background-color: #1F78B4;
@@ -34,15 +35,14 @@ const StyledButton = styled.button`
     }
 `
 
-export default function CSVButton(props : InvoicingTableProps) {
+export default function SecondaryButton(props : InvoicingTableProps) {
 
-    const exportCSV = () => {
-        // Exportar CSV
-        console.log(props.columns, props.data);
+    const exportData = () => {
+        // Exportar File
     }
     return (
-        <StyledButton onClick={exportCSV}>
-            Exportar CSV
+        <StyledButton onClick={exportData}>
+            {props.name}
         </StyledButton>
     )
 }

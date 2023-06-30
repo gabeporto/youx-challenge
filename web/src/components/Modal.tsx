@@ -48,7 +48,7 @@ const ModalContent = styled.div`
     max-height: 700px;
     animation: ${props => (props.itemScope ? fadeOut : fadeIn)} 0.4s ease;
 
-    @media only screen and (max-width: 425px) {
+    @media only screen and (max-width: 490px) {
         overflow: auto;
     }
 `;

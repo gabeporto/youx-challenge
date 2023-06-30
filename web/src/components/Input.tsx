@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const InputContainer = styled.div`
   position: relative;
   display: inline-block;
-  width: 93%;
+  width: 100%;
 `;
 
 const StyledInput = styled(TextField)`
@@ -18,25 +18,37 @@ const StyledInput = styled(TextField)`
   border-radius: 3px;
   opacity: 1;
   margin-right: 50px;
-  padding: 15px;
   padding: 10px;
   outline: none;
-
-  .MuiCircularProgress-root {
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  }
 `;
 
-interface SearchProps {
+const StyledBarInput = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  height: 100%;
+  width: 55px;
+  transform: translateY(-50%);
+  padding-right: 10px;
+  padding-left: 16px;
+  background-color: #023E8A;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`
+
+interface InputProps {
     placeholder: string;
+    type: string
 }
 
-const SearchInput = (props : SearchProps) => {
-
+const Input = (props : InputProps) => {
     return (
       <InputContainer>
         <StyledInput
@@ -44,25 +56,9 @@ const SearchInput = (props : SearchProps) => {
           variant="outlined"
           InputProps={{
             endAdornment: (
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  right: '0',
-                  top: '50%',
-                  height: '100%',
-                  width: '55px',
-                  transform: 'translateY(-50%)',
-                  paddingRight: '10px',
-                  paddingLeft: '16px',
-                  background: '#023E8A',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                }}
-              >
-                <SearchIcon htmlColor='#ffffff'/>
-              </div>
+              <StyledBarInput>
+                {props.type === 'search' && ( <SearchIcon htmlColor='#ffffff'/> )}
+              </StyledBarInput>
             ),
           }}
         />
@@ -70,4 +66,4 @@ const SearchInput = (props : SearchProps) => {
     );
   };
   
-  export default SearchInput;
+  export default Input;

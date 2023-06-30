@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import Map from "../Map";
 import InvoicingChart from '../chart/InvoicingChart';
 import InvoicingTable from './InvoicingTable';
-import CSVButton from '../CSVButton';
+import SecondaryButton from '../SecondaryButton';
 
 const Container = styled.div`
     padding-left: 6%;
-    margin-top: 50px;
 `
 
 const TabContainer = styled.div`
@@ -219,7 +218,7 @@ const ReportTabbed: React.FC = () => {
                             </InvoicingTableDiv>
 
                             <ExportButtonDiv>
-                                <CSVButton columns={tableColumns} data={dataTable} /> 
+                                <SecondaryButton name="Exportar CSV" columns={tableColumns} data={dataTable} /> 
                             </ExportButtonDiv>
                         </InvoicingContainer>
                     </ContentDiv>

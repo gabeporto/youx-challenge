@@ -55,8 +55,6 @@ const DropdownDiv = styled.div`
     height: 100%;
 `
 
-
-
 export default function Header() {
 
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
