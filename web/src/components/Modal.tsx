@@ -1,9 +1,30 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Map from "./Map";
 import { SetStateAction, useEffect, useState } from "react";
 import InputMask from 'react-input-mask'; 
 import { NumericFormat } from 'react-number-format';
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+`;
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -25,6 +46,7 @@ const ModalContent = styled.div`
     width: 70%;
     max-width: 900px;
     max-height: 700px;
+    animation: ${props => (props.itemScope ? fadeOut : fadeIn)} 0.4s ease;
 
     @media only screen and (max-width: 425px) {
         overflow: auto;

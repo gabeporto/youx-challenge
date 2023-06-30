@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ChevronDownIcon from '../assets/icons/ChevronDownIcon';
 import EditIcon from '../assets/icons/EditIcon';
@@ -192,6 +192,7 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
   // Actions (Edit and Delete)
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [removeModalOpen, setRemoveModalOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(true);
 
   const renderActionsDropdown = (itemId: number) => {
     setOpenDropdownId(itemId === openDropdownId ? null : itemId);
@@ -199,18 +200,22 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
 
   const openEditModal = () => {
     setEditModalOpen(true);
+    setDropdownOpen(false);
   };
 
   const closeEditModal = () => {
     setEditModalOpen(false);
+    setOpenDropdownId(null);
   };
 
   const openRemoveModal = () => {
     setRemoveModalOpen(true);
+    setDropdownOpen(false);
   };
 
   const closeRemoveModal = () => {
     setRemoveModalOpen(false);
+    setOpenDropdownId(null);
   };
 
   return (
