@@ -1,7 +1,86 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
+
+const StyledInput = styled.input`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    color: #686868;
+    font-size: 16px;
+`
+
+const StyledLabel = styled.p`
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-align: left;
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #707070;
+    opacity: 1;
+
+    @media only screen and (max-width: 490px) {
+        margin-top: 5px;
+    }
+`
+
+const SaveButton = styled.button`
+    width: 150px;
+    font-size: 15px;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #407BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    @media only screen and (max-width: 425px) {
+        width: 100px;
+    }
+`
+
+const CancelButton = styled.button`
+    width: 150px;
+    font-size: 15px;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #CCCCCC;
+    color: #263238;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    @media only screen and (max-width: 425px) {
+        width: 100px;
+    }
+`
+
+const ButtonsDiv = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+`
+
+const FlexDiv = styled.div`
+    width: 100%;
+    display: flex;
+    gap: 20px;
+
+    @media only screen and (max-width: 490px) {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0px;
+    }
+`
+
+const LabelContainer = styled.div`
+    width: 100%;
+`
 
 interface ClientFormProps {
-  onSubmit: (date: ClientFormData) => void;
+  onSubmit: (data: ClientFormData) => void;
 }
 
 interface ClientFormData {
@@ -35,32 +114,47 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Nome:
-        <input type="text" name="name" value={formData.name} onChange={handleChange} />
-      </label>
+      <StyledLabel>
+        Nome *
+      </StyledLabel>
+      <StyledInput type="text" name="name" value={formData.name} onChange={handleChange} />
 
-      <label>
-        CNPJ:
-        <input type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} />
-      </label>
+      <FlexDiv>
+        <LabelContainer>
+            <StyledLabel>
+                CNPJ *
+            </StyledLabel>
+            <StyledInput type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} />
+        </LabelContainer>
 
-      <label>
-        Telefone:
-        <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
-      </label>
+        <LabelContainer>
+            <StyledLabel>
+                Telefone *
+            </StyledLabel>
+            <StyledInput type="text" name="phone" value={formData.phone} onChange={handleChange} />
+        </LabelContainer>
+      </FlexDiv>  
 
-      <label>
-        UF:
-        <input type="text" name="uf" value={formData.uf} onChange={handleChange} />
-      </label>
+      <FlexDiv>
+        <LabelContainer>
+            <StyledLabel>
+                UF *
+            </StyledLabel>
+            <StyledInput type="text" name="uf" value={formData.uf} onChange={handleChange} />
+        </LabelContainer>
 
-      <label>
-        Email:
-        <input type="text" name="email" value={formData.email} onChange={handleChange} />
-      </label>
+        <LabelContainer>
+            <StyledLabel>
+                Email *
+            </StyledLabel>
+            <StyledInput type="text" name="email" value={formData.email} onChange={handleChange} />
+        </LabelContainer>
+      </FlexDiv>
 
-      <button type="submit">Submit</button>
+      <ButtonsDiv>
+        <CancelButton>Cancelar</CancelButton>
+        <SaveButton type="submit">Salvar</SaveButton>
+      </ButtonsDiv>
     </form>
   );
 };
@@ -88,40 +182,55 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
   
     return (
       <form onSubmit={handleSubmit}>
-        <label>
-          Nome:
-          <input type="text" name="name" value={formData.name} onChange={handleChange} />
-        </label>
+        <StyledLabel>
+            Nome *
+        </StyledLabel>
+        <StyledInput type="text" name="name" value={formData.name} onChange={handleChange} />
+
+        <FlexDiv>
+            <LabelContainer>
+                <StyledLabel>
+                    CNPJ *
+                </StyledLabel>
+                <StyledInput type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} />
+            </LabelContainer>
+
+            <LabelContainer>
+                <StyledLabel>
+                    Telefone *
+                </StyledLabel>
+                <StyledInput type="text" name="phone" value={formData.phone} onChange={handleChange} />
+            </LabelContainer>
+        </FlexDiv>  
+
+        <FlexDiv>
+            <LabelContainer>
+                <StyledLabel>
+                    UF *
+                </StyledLabel>
+                <StyledInput type="text" name="uf" value={formData.uf} onChange={handleChange} />
+            </LabelContainer>
+
+            <LabelContainer>
+                <StyledLabel>
+                    Email *
+                </StyledLabel>
+                <StyledInput type="text" name="email" value={formData.email} onChange={handleChange} />
+            </LabelContainer>
+        </FlexDiv>
   
-        <label>
-          CNPJ:
-          <input type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} />
-        </label>
-  
-        <label>
-          Telefone:
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
-        </label>
-  
-        <label>
-          UF:
-          <input type="text" name="uf" value={formData.uf} onChange={handleChange} />
-        </label>
-  
-        <label>
-          Email:
-          <input type="text" name="email" value={formData.email} onChange={handleChange} />
-        </label>
-  
-        <input type="number" name="id" value={formData.id} hidden></input>
-        <button type="submit">Submit</button>
+        <StyledInput type="number" name="id" value={formData.id} hidden></StyledInput>
+        <ButtonsDiv>
+            <CancelButton>Cancelar</CancelButton>
+            <SaveButton type="submit">Salvar</SaveButton>
+        </ButtonsDiv>
       </form>
     );
   };
 
 
 interface SaleFormProps {
-    onSubmit: (date: SaleFormData) => void;
+    onSubmit: (data: SaleFormData) => void;
   }
   
 interface SaleFormData {
@@ -129,7 +238,7 @@ interface SaleFormData {
     client: string;
     date: string;
     status: string;
-    value: number;
+    value: number | string;
 }
   
 export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
@@ -138,7 +247,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
         client: '',
         date: '',
         status: '',
-        value: 0,
+        value: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,27 +262,36 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-        <label>
-            Cliente:
-            <input type="text" name="client" value={formData.client} onChange={handleChange} />
-        </label>
+        <StyledLabel>
+            Cliente *
+        </StyledLabel>
+        <StyledInput type="text" name="client" value={formData.client} onChange={handleChange} />
 
-        <label>
-            Data:
-            <input type="text" name="date" value={formData.date} onChange={handleChange} />
-        </label>
+        <FlexDiv>
+            <LabelContainer>
+                <StyledLabel>
+                    Data *
+                </StyledLabel>
+                <StyledInput type="text" name="date" value={formData.date} onChange={handleChange} />
+            </LabelContainer>
 
-        <label>
-            Situação:
-            <input type="text" name="status" value={formData.status} onChange={handleChange} />
-        </label>
+            <LabelContainer>
+                <StyledLabel>
+                    Situação *
+                </StyledLabel>
+                <StyledInput type="text" name="status" value={formData.status} onChange={handleChange} />
+            </LabelContainer>
+        </FlexDiv>
 
-        <label>
-            Valor:
-            <input type="number" name="value" value={formData.value} onChange={handleChange} />
-        </label>
+        <StyledLabel>
+            Valor *
+            <StyledInput type="number" name="value" value={formData.value} onChange={handleChange} />
+        </StyledLabel>
 
-        <button type="submit">Submit</button>
+        <ButtonsDiv>
+            <CancelButton>Cancelar</CancelButton>
+            <SaveButton type="submit">Salvar</SaveButton>
+        </ButtonsDiv>
         </form>
     );
 };
@@ -200,28 +318,37 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-        <label>
-            Cliente:
-            <input type="text" name="client" value={formData.client} onChange={handleChange} />
-        </label>
+        <StyledLabel>
+            Cliente *
+            <StyledInput type="text" name="client" value={formData.client} onChange={handleChange} />
+        </StyledLabel>
 
-        <label>
-            Data:
-            <input type="text" name="date" value={formData.date} onChange={handleChange} />
-        </label>
+        <FlexDiv>
+            <LabelContainer>
+                <StyledLabel>
+                    Data *
+                </StyledLabel>
+                <StyledInput type="text" name="date" value={formData.date} onChange={handleChange} />
+            </LabelContainer>
 
-        <label>
-            Situação:
-            <input type="text" name="status" value={formData.status} onChange={handleChange} />
-        </label>
+            <LabelContainer>
+                <StyledLabel>
+                    Situação *
+                </StyledLabel>
+                <StyledInput type="text" name="status" value={formData.status} onChange={handleChange} />
+            </LabelContainer>
+        </FlexDiv>
 
-        <label>
-            Valor:
-            <input type="number" name="value" value={formData.value} onChange={handleChange} />
-        </label>
+        <StyledLabel>
+            Valor *
+            <StyledInput type="number" name="value" value={formData.value} onChange={handleChange} />
+        </StyledLabel>
 
-        <input type="number" name="id" value={formData.id} hidden></input>
-        <button type="submit">Submit</button>
+        <StyledInput type="number" name="id" value={formData.id} hidden />
+        <ButtonsDiv>
+            <CancelButton>Cancelar</CancelButton>
+            <SaveButton type="submit">Salvar</SaveButton>
+        </ButtonsDiv>
         </form>
     );
 };
