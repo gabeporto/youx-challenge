@@ -3,11 +3,12 @@ import Container from "../../components/Container";
 import Header from "../../components/Header";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
-import Modal from "../../components/Modal";
+import { AddSaleModal } from "../../components/Modal";
 import Input from "../../components/Input";
 import Subtitle from "../../components/Subtitle";
 import Table from "../../components/Table";
 import { useState } from "react";
+import { SaleFormData } from "../../components/Form";
 
 const FlexDiv = styled.div`
   display: flex;
@@ -186,6 +187,24 @@ export default function SaleListPage() {
         },
     ];
 
+    const [formData, setFormData] = useState<SaleFormData | null>(null);
+
+    const handleAdd = (data: SaleFormData) => {
+        setFormData(data);
+        // Lógica para lidar com a ação de adição
+        console.log(data);
+      }
+    
+      const handleEdit = (data: SaleFormData) => {
+        // Lógica para lidar com a ação de edição
+        console.log('Editar:', data);
+      };
+      
+      const handleDelete = (data: SaleFormData) => {
+        // Lógica para lidar com a ação de exclusão
+        console.log('Excluir:', data);
+      };
+
     return (
         <>
             <Header />
@@ -196,12 +215,12 @@ export default function SaleListPage() {
                 <FlexDiv>
                     <Input placeholder="Digite o nome ou CNPJ do cliente que deseja pesquisar" type="search"/>
                     <Button title="Cadastrar venda" type="add" onClick={openModal}/>
-                    <Modal isOpen={modalOpen} onClose={closeModal} type="addSale"/>
+                    <AddSaleModal isOpen={modalOpen} onClose={closeModal} onSubmit={handleAdd}/>
                 </FlexDiv>
 
                 <TableDiv>
                     <Subtitle subtitle="Vendas cadastradas"/>
-                    <Table columns={columns} data={data} type="sale"/>
+                    <Table columns={columns} data={data} type="sale" onEdit={handleEdit} onDelete={handleDelete}/>
                 </TableDiv>
             </Container>
         </>

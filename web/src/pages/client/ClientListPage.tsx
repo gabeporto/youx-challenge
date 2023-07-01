@@ -4,10 +4,11 @@ import Container from "../../components/Container";
 import Header from "../../components/Header";
 import Input from "../../components/Input";
 import Title from "../../components/Title";
-import Modal from "../../components/Modal";
+import { AddClientModal } from "../../components/Modal";
 import styled from "styled-components";
 import Subtitle from "../../components/Subtitle";
 import Table from "../../components/Table";
+import { ClientFormData } from "../../components/Form";
 
 const FlexDiv = styled.div`
   display: flex;
@@ -39,152 +40,190 @@ export default function ClientListPage() {
     { name: "Nome", dataKey: "nome" },
     { name: "CNPJ", dataKey: "cnpj" },
     { name: "E-mail", dataKey: "email" },
-    { name: "Telefone", dataKey: "telefone" },
+    { name: "phone", dataKey: "phone" },
   ];
 
   // Examples
   const data = [
     {
       id: 1,
-      nome: 'Comércio de Livros LTDA',
+      name: 'Comércio de Livros LTDA',
       cnpj: '85.681.832/0001-73',
       email: 'comerciodelivros@email.com',
-      telefone: '(35) 92854-1548',
+      uf: 'MG',
+      phone: '(35) 92854-1548',
     },
     {
       id: 2,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 3,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 4,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 5,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 6,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 7,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 8,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 9,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 10,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 11,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 12,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 13,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 14,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 15,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 16,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 17,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 18,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
     {
       id: 19,
-      nome: 'Cliente 1',
+      name: 'Cliente 1',
       cnpj: '123456789',
       email: 'cliente1@example.com',
-      telefone: '1234567890',
+      uf: 'MG',
+      phone: '1234567890',
     },
     {
       id: 20,
-      nome: 'Cliente 2',
+      name: 'Cliente 2',
       cnpj: '987654321',
       email: 'cliente2@example.com',
-      telefone: '9876543210',
+      uf: 'MG',
+      phone: '9876543210',
     },
   ];
+
+  const [formData, setFormData] = useState<ClientFormData | null>(null);
+
+  const handleAdd = (data: ClientFormData) => {
+    setFormData(data);
+    // Lógica para lidar com a ação de adição
+    console.log(data);
+  }
+
+  const handleEdit = (data: ClientFormData) => {
+    // Lógica para lidar com a ação de edição
+    console.log('Editar:', data);
+  };
+  
+  const handleDelete = (data: ClientFormData) => {
+    // Lógica para lidar com a ação de exclusão
+    console.log('Excluir:', data);
+  };
 
   return (
       <>
@@ -196,12 +235,12 @@ export default function ClientListPage() {
           <FlexDiv>
             <Input placeholder="Digite o nome ou CNPJ do cliente que deseja pesquisar" type="search"/>
             <Button title="Cadastrar cliente" type="add" onClick={openModal}/>
-            <Modal isOpen={modalOpen} onClose={closeModal} type="addClient"/>
+            <AddClientModal isOpen={modalOpen} onClose={closeModal} onSubmit={handleAdd}/>
           </FlexDiv>
 
           <TableDiv>
             <Subtitle subtitle="Clientes cadastrados"/>
-            <Table columns={columns} data={data} type="client"/>
+            <Table columns={columns} data={data} type="client" onEdit={handleEdit} onDelete={handleDelete}/>
           </TableDiv>
         </Container>
       </>

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Map from "./Map";
 
 const StyledInput = styled.input`
     width: 100%;
@@ -79,20 +80,48 @@ const LabelContainer = styled.div`
     width: 100%;
 `
 
+const MapContainer = styled.div`
+    margin-top: 15px;
+    margin-bottom: 10px;
+    width: 100%;
+    height: 100%;
+`
+
+const StyledSubtitle = styled.p`
+    text-align: left;
+    font-size: 22px;
+    letter-spacing: 0px;
+    color: #707070;
+    opacity: 1;
+    margin-top: 20px;
+`
+
 interface ClientFormProps {
   onSubmit: (data: ClientFormData) => void;
+  onClose: () => void;
 }
 
-interface ClientFormData {
-  id?: number;
-  name: string;
-  cnpj: string;
-  phone: string;
-  uf: string;
-  email: string;
+export interface ClientFormData {
+    id?: number;
+    name: string;
+    cnpj: string;
+    phone: string;
+    uf: string;
+    email: string;
 }
 
-export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
+interface UFsProps {
+    id: number,
+    sigla: string,
+    nome: string,
+    regiao : {
+        id: number,
+        sigla: string,
+        nome: string,
+    }
+}
+
+export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
 
   const [formData, setFormData] = useState<ClientFormData>({
     name: '',
@@ -111,6 +140,23 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
     e.preventDefault();
     onSubmit(formData);
   };
+
+  // API to get Brazil UFs
+  const [ufsApi, setUfsApi] = useState<UFsProps[]>([]);
+
+  useEffect(() => {
+      const fecthStates = async () => {
+        try {
+          const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+          const data = await response.json();
+          setUfsApi(data);
+        } catch (error) {
+          console.error('Erro ao buscar os estados:', error);
+        }
+      };
+  
+      fecthStates();
+    }, []);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -143,6 +189,10 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
             <StyledInput type="text" name="uf" value={formData.uf} onChange={handleChange} />
         </LabelContainer>
 
+        {/* {ufsApi.map((uf) => (
+            <option key={uf.id} value={uf.sigla}>{uf.sigla}</option>
+        ))} */}
+
         <LabelContainer>
             <StyledLabel>
                 Email *
@@ -151,15 +201,19 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
         </LabelContainer>
       </FlexDiv>
 
+        <MapContainer>
+            <Map height={250} />
+        </MapContainer>
+
       <ButtonsDiv>
-        <CancelButton>Cancelar</CancelButton>
+        <CancelButton onClick={onClose}>Cancelar</CancelButton>
         <SaveButton type="submit">Salvar</SaveButton>
       </ButtonsDiv>
     </form>
   );
 };
 
-export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
+export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<ClientFormData>({
       id: 0,
@@ -218,32 +272,74 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit }) => {
                 <StyledInput type="text" name="email" value={formData.email} onChange={handleChange} />
             </LabelContainer>
         </FlexDiv>
+
+        <MapContainer>
+            <Map height={250} />
+        </MapContainer>
   
         <StyledInput type="number" name="id" value={formData.id} hidden></StyledInput>
         <ButtonsDiv>
-            <CancelButton>Cancelar</CancelButton>
+            <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>
         </ButtonsDiv>
       </form>
     );
   };
 
+export const DeleteClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
+
+    const [formData, setFormData] = useState<ClientFormData>({
+        id: 0,
+        name: '',
+        cnpj: '',
+        phone: '',
+        uf: '',
+        email: '',
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSubmit(formData);
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+
+        <LabelContainer>
+            <StyledLabel>Deseja excluir este cliente? Esta ação é irreversível e todas as vendas vinculadas ao cliente serão excluídas.</StyledLabel>
+        </LabelContainer>
+
+        <StyledInput type="number" name="id" value={formData.id} hidden></StyledInput>
+        <ButtonsDiv>
+            <CancelButton onClick={onClose}>Cancelar</CancelButton>
+            <SaveButton type="submit">Salvar</SaveButton>
+        </ButtonsDiv>
+        </form>
+    );
+};
 
 interface SaleFormProps {
     onSubmit: (data: SaleFormData) => void;
+    onClose: () => void;
   }
   
-interface SaleFormData {
-    id?: number;
+export interface SaleFormData {
+    id: number;
     client: string;
     date: string;
     status: string;
     value: number | string;
 }
   
-export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
+export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({
+        id: 0,
         client: '',
         date: '',
         status: '',
@@ -270,7 +366,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
         <FlexDiv>
             <LabelContainer>
                 <StyledLabel>
-                    Data *
+                    Data da venda *
                 </StyledLabel>
                 <StyledInput type="text" name="date" value={formData.date} onChange={handleChange} />
             </LabelContainer>
@@ -284,19 +380,19 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
         </FlexDiv>
 
         <StyledLabel>
-            Valor *
-            <StyledInput type="number" name="value" value={formData.value} onChange={handleChange} />
+            Valor da venda *
         </StyledLabel>
+        <StyledInput type="number" name="value" value={formData.value} onChange={handleChange} />
 
         <ButtonsDiv>
-            <CancelButton>Cancelar</CancelButton>
+            <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>
         </ButtonsDiv>
         </form>
     );
 };
 
-export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
+export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({
         id: 0,
@@ -318,38 +414,79 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-        <StyledLabel>
-            Cliente *
+            <LabelContainer>
+                {/* Example */}
+                <StyledSubtitle>Venda #15 - Comércio de Livros LTDA - 16/10/2022</StyledSubtitle>
+            </LabelContainer>
+
+            <StyledLabel>
+                Cliente * 
+            </StyledLabel>
             <StyledInput type="text" name="client" value={formData.client} onChange={handleChange} />
-        </StyledLabel>
 
-        <FlexDiv>
-            <LabelContainer>
-                <StyledLabel>
-                    Data *
-                </StyledLabel>
-                <StyledInput type="text" name="date" value={formData.date} onChange={handleChange} />
-            </LabelContainer>
+            <FlexDiv>
+                <LabelContainer>
+                    <StyledLabel>
+                        Data da venda *
+                    </StyledLabel>
+                    <StyledInput type="text" name="date" value={formData.date} onChange={handleChange} />
+                </LabelContainer>
 
-            <LabelContainer>
-                <StyledLabel>
-                    Situação *
-                </StyledLabel>
-                <StyledInput type="text" name="status" value={formData.status} onChange={handleChange} />
-            </LabelContainer>
-        </FlexDiv>
+                <LabelContainer>
+                    <StyledLabel>
+                        Situação *
+                    </StyledLabel>
+                    <StyledInput type="text" name="status" value={formData.status} onChange={handleChange} />
+                </LabelContainer>
+            </FlexDiv>
 
-        <StyledLabel>
-            Valor *
+            <StyledLabel>
+                Valor da venda *
+            </StyledLabel>
             <StyledInput type="number" name="value" value={formData.value} onChange={handleChange} />
-        </StyledLabel>
 
-        <StyledInput type="number" name="id" value={formData.id} hidden />
+            <StyledInput type="number" name="id" value={formData.id} hidden />
+            <ButtonsDiv>
+                <CancelButton onClick={onClose}>Cancelar</CancelButton>
+                <SaveButton type="submit">Salvar</SaveButton>
+            </ButtonsDiv>
+        </form>
+    );
+};
+
+export const DeleteSaleForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
+
+    const [formData, setFormData] = useState<ClientFormData>({
+        id: 0,
+        name: '',
+        cnpj: '',
+        phone: '',
+        uf: '',
+        email: '',
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSubmit(formData);
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+
+        <LabelContainer>
+            <StyledLabel>Deseja excluir esta venda? Esta ação é irreversível e não poderá ser desfeita.</StyledLabel>
+        </LabelContainer>
+
+        <StyledInput type="number" name="id" value={formData.id} hidden></StyledInput>
         <ButtonsDiv>
-            <CancelButton>Cancelar</CancelButton>
+            <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>
         </ButtonsDiv>
         </form>
     );
 };
-

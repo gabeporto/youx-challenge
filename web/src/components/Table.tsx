@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Modal from './Modal';
+import { EditClientModal, EditSaleModal, DeleteClientModal, DeleteSaleModal } from './Modal';
 import EditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { ClientFormData , SaleFormData } from "./Form";
 
 const TableContainer = styled.div`
   width: 100%;
@@ -136,6 +137,7 @@ const ButtonNextPage = styled.button`
 
 const ButtonName = styled.label`
   margin-left: 6px;
+  cursor: pointer;
 `
 
 interface Column {
@@ -143,29 +145,15 @@ interface Column {
   dataKey: string;
 }
 
-interface ClientData {
-  id: number;
-  nome: string;
-  cnpj: string;
-  email: string;
-  telefone: string;
-}
-
-interface SaleData {
-  id: number;
-  client: string;
-  date: string;
-  status: string;
-  value: string;
-}
-
 interface TableProps {
   columns: Column[];
-  data: (ClientData | SaleData)[];
+  data: (ClientFormData | SaleFormData)[];
   type: string;
+  onEdit: any;
+  onDelete: any;
 }
   
-const Table: React.FC<TableProps> = ({ columns, data, type }) => {
+const Table: React.FC<TableProps> = ({ columns, data, type, onEdit, onDelete }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openDropdownId, setOpenDropdownId] = useState<number | null>(null);
   const itemsPerPage = 10;
@@ -209,6 +197,14 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
     setOpenDropdownId(null);
   };
 
+  const handleEditClick = (data: ClientFormData | SaleFormData) => {
+    onEdit(data);
+  };
+
+  const handleDeleteClick = (data: ClientFormData | SaleFormData) => {
+    onDelete(data);
+  };
+
   return (
     <TableContainer>
       <StyledTable>
@@ -229,8 +225,8 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
             <TableRow key={item.id}>
             {type === 'client' ? (
               <>
-                {('nome' in item) && (
-                  <TableCell>{item.nome}</TableCell>
+                {('name' in item) && (
+                  <TableCell>{item.name}</TableCell>
                 )}
                 {('cnpj' in item) && (
                   <TableCell>{item.cnpj}</TableCell>
@@ -238,8 +234,8 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
                 {('email' in item) && (
                   <TableCell>{item.email}</TableCell>
                 )}
-                {('telefone' in item) && (
-                  <TableCell>{item.telefone}</TableCell>
+                {('phone' in item) && (
+                  <TableCell>{item.phone}</TableCell>
                 )}
               </>
             ) : null}
@@ -261,7 +257,10 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
             ) : null}
             <TableCell>
               <DropdownContainer>
-                <DropdownButton onClick={() => renderActionsDropdown(item.id)}>
+                <DropdownButton onClick={() => {
+                  if (typeof item.id === 'number') {
+                    renderActionsDropdown(item.id);
+                  }}}>
                   <ButtonName>Ações</ButtonName>
                   <ArrowDownIcon  fontSize='small'/>
                 </DropdownButton>
@@ -272,15 +271,15 @@ const Table: React.FC<TableProps> = ({ columns, data, type }) => {
                     <EditIcon />
                     Editar
                   </DropdownItem>
-                  {type === 'client' && <Modal isOpen={editModalOpen} onClose={closeEditModal} type="editClient"/>}
-                  {type === 'sale' && <Modal isOpen={editModalOpen} onClose={closeEditModal} type="editSale"/>}
+                  {type === 'client' && <EditClientModal onSubmit={handleEditClick} isOpen={editModalOpen} onClose={closeEditModal} />}
+                  {type === 'sale' && <EditSaleModal onSubmit={handleEditClick} isOpen={editModalOpen} onClose={closeEditModal} />}
 
                   <DropdownItem onClick={openRemoveModal}>
                     <DeleteIcon />
                     Deletar
                   </DropdownItem>
-                  {type === 'client' && <Modal isOpen={removeModalOpen} onClose={closeRemoveModal} type="removeClient"/>}
-                  {type === 'sale' && <Modal isOpen={removeModalOpen} onClose={closeRemoveModal} type="removeSale"/>}
+                  {type === 'client' && <DeleteClientModal onSubmit={handleDeleteClick} isOpen={removeModalOpen} onClose={closeRemoveModal} />}
+                  {type === 'sale' && <DeleteSaleModal onSubmit={handleDeleteClick} isOpen={removeModalOpen} onClose={closeRemoveModal} />}
 
                 </DropdownList>
 

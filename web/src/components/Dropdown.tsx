@@ -2,7 +2,8 @@ import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import Logo from '../assets/youx-logo.png'
 import { Link } from 'react-router-dom';
-import Modal from './Modal';
+import { AddClientModal, AddSaleModal } from './Modal';
+import { ClientFormData, SaleFormData } from './Form';
 
 const LogoImage = styled.img`
     position: relative;
@@ -120,18 +121,31 @@ export default function Dropdown() {
   const [clientModalOpen, setClientModalOpen] = useState(false);
   const [saleModalOpen, setSaleModalOpen] = useState(false);
 
-    const openClientModal = () => {
-      setClientModalOpen(true);
-    };
+  const openClientModal = () => {
+    setClientModalOpen(true);
+  };
 
-    const openSaleModal = () => {
-      setSaleModalOpen(true);
-    };
+  const openSaleModal = () => {
+    setSaleModalOpen(true);
+  };
 
-    const closeModal = () => {
-      setClientModalOpen(false);
-      setSaleModalOpen(false);
-    };
+  const closeModal = () => {
+    setClientModalOpen(false);
+    setSaleModalOpen(false);
+  };
+
+  const [clientFormData, setClientFormData] = useState<ClientFormData | null>(null);
+  const [saleFormData, setSaleFormData] = useState<SaleFormData | null>(null);
+
+  const addClient = (data: ClientFormData) => {
+    setClientFormData(data);
+    console.log(data);
+  }
+
+  const addSale = (data: SaleFormData) => {
+    setSaleFormData(data);
+    console.log(data);
+  }
 
   return (
       <DropdownContainer>
@@ -140,12 +154,12 @@ export default function Dropdown() {
               <DropdownItem to="/client">Gestão de Clientes</DropdownItem>
               <DropdownSubItem to="/client">Lista de clientes</DropdownSubItem>
               <DropdownModal onClick={openClientModal}>Cadastrar cliente</DropdownModal>
-              <Modal isOpen={clientModalOpen} onClose={closeModal} type="addClient"/>
+              <AddClientModal isOpen={clientModalOpen} onClose={closeModal} onSubmit={addClient}/>
 
               <DropdownItem to="/sale">Gestão de Vendas</DropdownItem>
               <DropdownSubItem to="/sale">Lista de vendas</DropdownSubItem>
               <DropdownModal onClick={openSaleModal}>Cadastrar venda</DropdownModal>
-              <Modal isOpen={saleModalOpen} onClose={closeModal} type="addSale"/>
+              <AddSaleModal isOpen={saleModalOpen} onClose={closeModal} onSubmit={addSale}/>
 
               <DropdownItem to="/report">Relatórios</DropdownItem>
               <DropdownSubItem to="/report">Relatórios</DropdownSubItem>
