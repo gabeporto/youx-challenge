@@ -19,10 +19,14 @@ const TabButtonContainer = styled.div`
     border-radius: 5px 5px 0 0;
 `;
 
-const TabButton = styled.button<{ active: boolean }>`
+interface ButtonProp {
+    active: string;
+}
+
+const TabButton = styled.button<ButtonProp>`
     width: 335px; 
     height: 70px;
-    background-color: ${({ active }) => (active ? '#ffffff' : '#e0e0e0')};
+    background-color: ${({ active }) => (active === 'true' ? '#ffffff' : '#e0e0e0')};
     border: none;
     border-radius: 3px 3px 0 0;
     color: #333;
@@ -80,20 +84,26 @@ export default function Tabbed(props : TabbedProps) {
 
                 <TabButtonContainer>
                     {props.tabs.map((tab) => (
-                        <TabButton key={tab.id} active={activeTab === tab.id} onClick={() => handleTabClick(tab.id)}>
+                        <TabButton key={tab.id} active={(activeTab === tab.id).toString()} onClick={() => handleTabClick(tab.id)}>
                             <TabTitle>{tab.title}</TabTitle>
                         </TabButton>
                     )) }
                 </TabButtonContainer>
 
                 <TabContent>
-                    <ContentDiv>
-                        {props.tabs.map((tab) => 
-                            activeTab === tab.id && tab.children.map((children) => (
-                                children
-                            ))) 
-                        }
-                    </ContentDiv>
+                <ContentDiv>
+                    {props.tabs.map((tab) =>
+                        activeTab === tab.id && (
+                        <React.Fragment key={`tab-${tab.id}-content`}>
+                            {tab.children.map((children, index) => (
+                            <React.Fragment key={`tab-${tab.id}-child-${index}`}>
+                                {children}
+                            </React.Fragment>
+                            ))}
+                        </React.Fragment>
+                        )
+                    )}
+                </ContentDiv>
                 </TabContent>
             </TabContainer>
         </Container>

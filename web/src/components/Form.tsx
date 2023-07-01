@@ -163,21 +163,21 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       <StyledLabel>
         Nome *
       </StyledLabel>
-      <StyledInput type="text" name="name" value={formData.name} onChange={handleChange} />
+      <StyledInput type="text" name="name" defaultValue={formData.name} onChange={handleChange} />
 
       <FlexDiv>
         <LabelContainer>
             <StyledLabel>
                 CNPJ *
             </StyledLabel>
-            <StyledInput type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} />
+            <StyledInput type="text" name="cnpj" defaultValue={formData.cnpj} onChange={handleChange} />
         </LabelContainer>
 
         <LabelContainer>
             <StyledLabel>
                 Telefone *
             </StyledLabel>
-            <StyledInput type="text" name="phone" value={formData.phone} onChange={handleChange} />
+            <StyledInput type="text" name="phone" defaultValue={formData.phone} onChange={handleChange} />
         </LabelContainer>
       </FlexDiv>  
 
@@ -186,7 +186,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledLabel>
                 UF *
             </StyledLabel>
-            <StyledInput type="text" name="uf" value={formData.uf} onChange={handleChange} />
+            <StyledInput type="text" name="uf" defaultValue={formData.uf} onChange={handleChange} />
         </LabelContainer>
 
         {/* {ufsApi.map((uf) => (
@@ -197,7 +197,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledLabel>
                 Email *
             </StyledLabel>
-            <StyledInput type="text" name="email" value={formData.email} onChange={handleChange} />
+            <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} />
         </LabelContainer>
       </FlexDiv>
 
@@ -239,21 +239,21 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         <StyledLabel>
             Nome *
         </StyledLabel>
-        <StyledInput type="text" name="name" value={formData.name} onChange={handleChange} />
+        <StyledInput type="text" name="name" defaultValue={formData.name} onChange={handleChange} />
 
         <FlexDiv>
             <LabelContainer>
                 <StyledLabel>
                     CNPJ *
                 </StyledLabel>
-                <StyledInput type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} />
+                <StyledInput type="text" name="cnpj" defaultValue={formData.cnpj} onChange={handleChange} />
             </LabelContainer>
 
             <LabelContainer>
                 <StyledLabel>
                     Telefone *
                 </StyledLabel>
-                <StyledInput type="text" name="phone" value={formData.phone} onChange={handleChange} />
+                <StyledInput type="text" name="phone" defaultValue={formData.phone} onChange={handleChange} />
             </LabelContainer>
         </FlexDiv>  
 
@@ -262,14 +262,14 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
                 <StyledLabel>
                     UF *
                 </StyledLabel>
-                <StyledInput type="text" name="uf" value={formData.uf} onChange={handleChange} />
+                <StyledInput type="text" name="uf" defaultValue={formData.uf} onChange={handleChange} />
             </LabelContainer>
 
             <LabelContainer>
                 <StyledLabel>
                     Email *
                 </StyledLabel>
-                <StyledInput type="text" name="email" value={formData.email} onChange={handleChange} />
+                <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} />
             </LabelContainer>
         </FlexDiv>
 
@@ -277,7 +277,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
             <Map height={250} />
         </MapContainer>
   
-        <StyledInput type="number" name="id" value={formData.id} hidden></StyledInput>
+        <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>
@@ -314,7 +314,7 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose 
             <StyledLabel>Deseja excluir este cliente? Esta ação é irreversível e todas as vendas vinculadas ao cliente serão excluídas.</StyledLabel>
         </LabelContainer>
 
-        <StyledInput type="number" name="id" value={formData.id} hidden></StyledInput>
+        <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>
@@ -361,28 +361,28 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         <StyledLabel>
             Cliente *
         </StyledLabel>
-        <StyledInput type="text" name="client" value={formData.client} onChange={handleChange} />
+        <StyledInput type="text" name="client" defaultValue={formData.client} onChange={handleChange} />
 
         <FlexDiv>
             <LabelContainer>
                 <StyledLabel>
                     Data da venda *
                 </StyledLabel>
-                <StyledInput type="text" name="date" value={formData.date} onChange={handleChange} />
+                <StyledInput type="text" name="date" defaultValue={formData.date} onChange={handleChange} />
             </LabelContainer>
 
             <LabelContainer>
                 <StyledLabel>
                     Situação *
                 </StyledLabel>
-                <StyledInput type="text" name="status" value={formData.status} onChange={handleChange} />
+                <StyledInput type="text" name="status" defaultValue={formData.status} onChange={handleChange} />
             </LabelContainer>
         </FlexDiv>
 
         <StyledLabel>
             Valor da venda *
         </StyledLabel>
-        <StyledInput type="number" name="value" value={formData.value} onChange={handleChange} />
+        <StyledInput type="number" name="value" defaultValue={formData.value} onChange={handleChange} />
 
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
@@ -422,30 +422,30 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
             <StyledLabel>
                 Cliente * 
             </StyledLabel>
-            <StyledInput type="text" name="client" value={formData.client} onChange={handleChange} />
+            <StyledInput type="text" name="client" defaultValue={formData.client} onChange={handleChange} />
 
             <FlexDiv>
                 <LabelContainer>
                     <StyledLabel>
                         Data da venda *
                     </StyledLabel>
-                    <StyledInput type="text" name="date" value={formData.date} onChange={handleChange} />
+                    <StyledInput type="text" name="date" defaultValue={formData.date} onChange={handleChange} />
                 </LabelContainer>
 
                 <LabelContainer>
                     <StyledLabel>
                         Situação *
                     </StyledLabel>
-                    <StyledInput type="text" name="status" value={formData.status} onChange={handleChange} />
+                    <StyledInput type="text" name="status" defaultValue={formData.status} onChange={handleChange} />
                 </LabelContainer>
             </FlexDiv>
 
             <StyledLabel>
                 Valor da venda *
             </StyledLabel>
-            <StyledInput type="number" name="value" value={formData.value} onChange={handleChange} />
+            <StyledInput type="number" name="value" defaultValue={formData.value} onChange={handleChange} />
 
-            <StyledInput type="number" name="id" value={formData.id} hidden />
+            <StyledInput type="number" name="id" defaultValue={formData.id} hidden />
             <ButtonsDiv>
                 <CancelButton onClick={onClose}>Cancelar</CancelButton>
                 <SaveButton type="submit">Salvar</SaveButton>
@@ -482,7 +482,7 @@ export const DeleteSaleForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
             <StyledLabel>Deseja excluir esta venda? Esta ação é irreversível e não poderá ser desfeita.</StyledLabel>
         </LabelContainer>
 
-        <StyledInput type="number" name="id" value={formData.id} hidden></StyledInput>
+        <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>

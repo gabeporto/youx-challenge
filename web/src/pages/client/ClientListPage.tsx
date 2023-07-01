@@ -40,7 +40,7 @@ export default function ClientListPage() {
     { name: "Nome", dataKey: "nome" },
     { name: "CNPJ", dataKey: "cnpj" },
     { name: "E-mail", dataKey: "email" },
-    { name: "phone", dataKey: "phone" },
+    { name: "Telefone", dataKey: "phone" },
   ];
 
   // Examples
