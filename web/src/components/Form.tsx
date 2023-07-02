@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Map from "./Map";
+import { SelectOption, Select } from './Select';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -142,14 +143,18 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
   };
 
   // API to get Brazil UFs
-  const [ufsApi, setUfsApi] = useState<UFsProps[]>([]);
+  const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
 
   useEffect(() => {
       const fecthStates = async () => {
         try {
           const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
           const data = await response.json();
-          setUfsApi(data);
+          const formattedOptions = data.map((state: any) => ({
+            value: state.sigla,
+            label: state.sigla,
+          }));
+          setUfsApi(formattedOptions);
         } catch (error) {
           console.error('Erro ao buscar os estados:', error);
         }
@@ -159,6 +164,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     }, []);
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <StyledLabel>
         Nome *
@@ -180,19 +186,15 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledInput type="text" name="phone" defaultValue={formData.phone} onChange={handleChange} />
         </LabelContainer>
       </FlexDiv>  
-
+    
       <FlexDiv>
         <LabelContainer>
             <StyledLabel>
                 UF *
             </StyledLabel>
-            <StyledInput type="text" name="uf" defaultValue={formData.uf} onChange={handleChange} />
+            <Select options={ufsApi}/>
         </LabelContainer>
-
-        {/* {ufsApi.map((uf) => (
-            <option key={uf.id} value={uf.sigla}>{uf.sigla}</option>
-        ))} */}
-
+        
         <LabelContainer>
             <StyledLabel>
                 Email *
@@ -210,6 +212,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
         <SaveButton type="submit">Salvar</SaveButton>
       </ButtonsDiv>
     </form>
+  </>
   );
 };
 
@@ -223,6 +226,27 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
       uf: '',
       email: '',
     });
+
+    // API to get Brazil UFs
+    const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
+
+    useEffect(() => {
+        const fecthStates = async () => {
+            try {
+            const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+            const data = await response.json();
+            const formattedOptions = data.map((state: any) => ({
+                value: state.sigla,
+                label: state.sigla,
+            }));
+            setUfsApi(formattedOptions);
+            } catch (error) {
+            console.error('Erro ao buscar os estados:', error);
+            }
+        };
+    
+        fecthStates();
+        }, []);
   
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, value } = e.target;
@@ -262,7 +286,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
                 <StyledLabel>
                     UF *
                 </StyledLabel>
-                <StyledInput type="text" name="uf" defaultValue={formData.uf} onChange={handleChange} />
+                <Select options={ufsApi}/>
             </LabelContainer>
 
             <LabelContainer>
