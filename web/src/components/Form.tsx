@@ -111,17 +111,6 @@ export interface ClientFormData {
     email: string;
 }
 
-interface UFsProps {
-    id: number,
-    sigla: string,
-    nome: string,
-    regiao : {
-        id: number,
-        sigla: string,
-        nome: string,
-    }
-}
-
 export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
 
   const [formData, setFormData] = useState<ClientFormData>({
@@ -132,7 +121,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     email: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -192,7 +181,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledLabel>
                 UF *
             </StyledLabel>
-            <Select options={ufsApi}/>
+            <Select name="status" defaultValue={formData.uf} options={ufsApi} onChange={handleChange}/>
         </LabelContainer>
         
         <LabelContainer>
@@ -248,7 +237,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         fecthStates();
         }, []);
   
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
       const { name, value } = e.target;
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
@@ -286,7 +275,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
                 <StyledLabel>
                     UF *
                 </StyledLabel>
-                <Select options={ufsApi}/>
+                <Select name="uf" defaultValue={formData.uf} options={ufsApi} onChange={handleChange}/>
             </LabelContainer>
 
             <LabelContainer>
@@ -321,7 +310,7 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose 
         email: '',
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
@@ -370,7 +359,39 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         value: '',
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const clientsOptions = [{
+        value: "Cliente X",
+        label: "Madeireira Arm",
+    },
+    {
+        value: "Cliente Y",
+        label: "Trusce Company",
+    }
+    ];
+
+    const statusOptions = [{
+        value: "Aguardando pagamento",
+        label: "Aguardando pagamento",
+    },
+    {
+        value: "Pagamento aprovado",
+        label: "Pagamento aprovado",
+    },
+    {
+        value: "Aguardando envio",
+        label: "Aguardando envio",
+    },
+    {
+        value: "À caminho",
+        label: "À caminho",
+    },
+    {
+        value: "Finalizado",
+        label: "Finalizado",
+    },
+    ];
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
@@ -385,7 +406,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         <StyledLabel>
             Cliente *
         </StyledLabel>
-        <StyledInput type="text" name="client" defaultValue={formData.client} onChange={handleChange} />
+        <Select name="client" defaultValue={formData.client} options={clientsOptions} onChange={handleChange}/>
 
         <FlexDiv>
             <LabelContainer>
@@ -399,14 +420,14 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
                 <StyledLabel>
                     Situação *
                 </StyledLabel>
-                <StyledInput type="text" name="status" defaultValue={formData.status} onChange={handleChange} />
+                <Select name="status" defaultValue={formData.status} options={statusOptions} onChange={handleChange}/>
             </LabelContainer>
         </FlexDiv>
 
         <StyledLabel>
             Valor da venda *
         </StyledLabel>
-        <StyledInput type="number" name="value" defaultValue={formData.value} onChange={handleChange} />
+        <StyledInput name="value" defaultValue={formData.value} onChange={handleChange} />
 
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
@@ -426,7 +447,39 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
         value: 0,
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const clientsOptions = [{
+        value: "Cliente X",
+        label: "Madeireira Arm",
+    },
+    {
+        value: "Cliente Y",
+        label: "Trusce Company",
+    }
+    ];
+    
+    const statusOptions = [{
+        value: "Aguardando pagamento",
+        label: "Aguardando pagamento",
+    },
+    {
+        value: "Pagamento aprovado",
+        label: "Pagamento aprovado",
+    },
+    {
+        value: "Aguardando envio",
+        label: "Aguardando envio",
+    },
+    {
+        value: "À caminho",
+        label: "À caminho",
+    },
+    {
+        value: "Finalizado",
+        label: "Finalizado",
+    },
+    ];
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
@@ -446,7 +499,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
             <StyledLabel>
                 Cliente * 
             </StyledLabel>
-            <StyledInput type="text" name="client" defaultValue={formData.client} onChange={handleChange} />
+            <Select name="client" defaultValue={formData.client} options={clientsOptions} onChange={handleChange}/>
 
             <FlexDiv>
                 <LabelContainer>
@@ -460,7 +513,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
                     <StyledLabel>
                         Situação *
                     </StyledLabel>
-                    <StyledInput type="text" name="status" defaultValue={formData.status} onChange={handleChange} />
+                    <Select name="status" defaultValue={formData.status} options={statusOptions} onChange={handleChange}/>
                 </LabelContainer>
             </FlexDiv>
 
@@ -489,7 +542,7 @@ export const DeleteSaleForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         email: '',
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };

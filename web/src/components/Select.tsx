@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 
@@ -8,7 +8,10 @@ export interface SelectOption {
 }
 
 interface SelectProps {
+    name: string;
+    defaultValue: string;
     options: SelectOption[];
+    onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   }
   
 const SelectContainer = styled.div`
@@ -43,15 +46,10 @@ const SelectIcon = styled(RiArrowDropDownLine)`
 `;
 
 export function Select(props : SelectProps) {
-  const [selectedOption, setSelectedOption] = useState<string>('');
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-  };
 
   return (
    <SelectContainer>
-      <SelectStyled value={selectedOption} onChange={handleChange}>
+      <SelectStyled name={props.name} value={props.defaultValue} onChange={props.onChange}>
         {props.options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
