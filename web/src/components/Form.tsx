@@ -278,7 +278,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
 
     const handleMapPositionChange = (lat: number, lng: number ) => {
         setFormData((prevData) => ({ ...prevData, lat, lng }));
-      };
+    };
       
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -401,6 +401,10 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     });
 
     const clientsOptions = [{
+        value: "Selecione um cliente",
+        label: "Selecione um cliente",
+    },
+    {
         value: "Cliente X",
         label: "Madeireira Arm",
     },
@@ -411,6 +415,10 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     ];
 
     const statusOptions = [{
+        value: "Selecione uma opção",
+        label: "Selecione uma opção",
+    },
+    {
         value: "Aguardando pagamento",
         label: "Aguardando pagamento",
     },
@@ -439,6 +447,10 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
             const { name, value } = e.target;
             setFormData((prevData) => ({ ...prevData, [name]: value }));
           }
+    };
+
+    const handleChangeValue = (value : number) => {
+        setFormData((prevData) => ({ ...prevData, value}));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -473,9 +485,10 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
             Valor da venda *
         </StyledLabel>
         <StyledMoneyMask 
-            thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true}
+            thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
             name="value" onValueChange={(values: { floatValue: any; }) => {
                 const { floatValue } = values;
+                handleChangeValue(floatValue);
         }}/>
 
         <ButtonsDiv>
@@ -497,6 +510,10 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
     });
 
     const clientsOptions = [{
+        value: "Selecione um cliente",
+        label: "Selecione um cliente",
+    },
+    {
         value: "Cliente X",
         label: "Madeireira Arm",
     },
@@ -505,8 +522,12 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
         label: "Trusce Company",
     }
     ];
-    
+
     const statusOptions = [{
+        value: "Selecione uma opção",
+        label: "Selecione uma opção",
+    },
+    {
         value: "Aguardando pagamento",
         label: "Aguardando pagamento",
     },
@@ -535,6 +556,10 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
             const { name, value } = e.target;
             setFormData((prevData) => ({ ...prevData, [name]: value }));
           }
+    };
+
+    const handleChangeValue = (value : number) => {
+        setFormData((prevData) => ({ ...prevData, value}));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -574,9 +599,10 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
                 Valor da venda *
             </StyledLabel>
             <StyledMoneyMask 
-                thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true}
+                thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
                 name="value" onValueChange={(values: { floatValue: any; }) => {
                     const { floatValue } = values;
+                    handleChangeValue(floatValue);
             }}/>
 
             <StyledInput type="number" name="id" defaultValue={formData.id} hidden />
