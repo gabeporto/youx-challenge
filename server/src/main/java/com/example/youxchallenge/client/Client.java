@@ -47,4 +47,13 @@ public class Client {
         this.person = data.person();
     }
 
+    public void updateFromDTO(ClientUpdateDTO dto) {
+        this.name = dto.name();
+        this.cnpj = dto.cnpj();
+        this.uf = dto.uf();
+        this.phone = dto.phone();
+        this.email = dto.email();
+        this.latitude = dto.latitude();
+        this.longitude = dto.longitude();
+    }
 }
