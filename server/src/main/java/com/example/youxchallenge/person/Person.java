@@ -1,14 +1,23 @@
 package com.example.youxchallenge.person;
 
 import com.example.youxchallenge.client.Client;
+import com.example.youxchallenge.client.ClientUpdateDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Table(name = "person")
 @Entity(name = "person")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,52 +35,18 @@ public class Person {
     @OneToMany(mappedBy = "person")
     private List<Client> clients;
 
-    public Long getId() {
-        return id;
+    public Person(PersonRequestDTO data) {
+        this.name = data.name();
+        this.email = data.email();
+        this.role = data.role();
+        this.password = data.password();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<Client> getClients() {
-        return clients;
-    }
-
-    public void setClients(List<Client> clients) {
-        this.clients = clients;
+    public void updateFromDTO(PersonUpdateDTO dto) {
+        this.name = dto.name();
+        this.email = dto.email();
+        this.role = dto.role();
+        this.password = dto.password();
     }
 }
 
