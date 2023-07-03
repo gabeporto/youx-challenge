@@ -5,11 +5,12 @@ import { Icon } from 'leaflet';
 import { styled } from 'styled-components';
 import { useState } from 'react';
 
-interface MapProp  {
+interface MapProps  {
     height: number;
+    onPositionChange: (lat: number, lng: number) => void;
 }
 
-const StyledMapContainer = styled.div<MapProp>`
+const StyledMapContainer = styled.div<MapProps>`
     height: ${props => props.height}px;
     width: 100%;
 `
@@ -29,7 +30,7 @@ function MapEvents({ onMapClick }: MapEventsProps) {
     return null;
 }
 
-export default function Map(props : MapProp) {
+export default function Map(props : MapProps) {
 
     const [marker, setMarker] = useState<{ lat: number; lng: number } | null>(null);
 
@@ -43,10 +44,11 @@ export default function Map(props : MapProp) {
             lat: lat,
             lng: lng,
         })
+        props.onPositionChange(lat, lng);
       };
       
     return (
-        <StyledMapContainer height={props.height}>
+        <StyledMapContainer height={props.height} onPositionChange={handleMapClick}>
             <MapContainer center={[-22.252252, -45.703597]} zoom={13}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -60,11 +62,11 @@ export default function Map(props : MapProp) {
                     transparent={true}
                 />
 
-                 <MapEvents onMapClick={handleMapClick} />
+                 <MapEvents onMapClick={handleMapClick}/>
                 {marker && (
                     <Marker position={[marker.lat, marker.lng]} icon={customIcon} key={marker.lat}>
                         <Popup>
-                        Se leu é gay
+                            Localização selecionada
                         </Popup>
                     </Marker>
                 )}

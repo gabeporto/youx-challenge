@@ -52,6 +52,8 @@ export default function ClientListPage() {
       email: 'comerciodelivros@email.com',
       uf: 'MG',
       phone: '(35) 92854-1548',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 2,
@@ -60,6 +62,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 3,
@@ -68,6 +72,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 4,
@@ -76,6 +82,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 5,
@@ -84,6 +92,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 6,
@@ -92,6 +102,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 7,
@@ -100,6 +112,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 8,
@@ -108,6 +122,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 9,
@@ -116,6 +132,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 10,
@@ -124,6 +142,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 11,
@@ -132,6 +152,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 12,
@@ -140,6 +162,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 13,
@@ -148,6 +172,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 14,
@@ -156,6 +182,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 15,
@@ -164,6 +192,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 16,
@@ -172,6 +202,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 17,
@@ -180,6 +212,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 18,
@@ -188,6 +222,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 19,
@@ -196,6 +232,8 @@ export default function ClientListPage() {
       email: 'cliente1@example.com',
       uf: 'MG',
       phone: '1234567890',
+      lat: 0,
+      lng: 0,
     },
     {
       id: 20,
@@ -204,6 +242,8 @@ export default function ClientListPage() {
       email: 'cliente2@example.com',
       uf: 'MG',
       phone: '9876543210',
+      lat: 0,
+      lng: 0,
     },
   ];
 

@@ -132,6 +132,8 @@ export interface ClientFormData {
     phone: string;
     uf: string;
     email: string;
+    lat: number;
+    lng: number;
 }
 
 export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
@@ -142,12 +144,19 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     phone: '',
     uf: '',
     email: '',
+    lat: 0,
+    lng: 0,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
+
+  const handleMapPositionChange = (lat: number, lng: number ) => {
+    setFormData((prevData) => ({ ...prevData, lat, lng }));
+  };
+  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -204,7 +213,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledLabel>
                 UF *
             </StyledLabel>
-            <Select name="status" defaultValue={formData.uf} options={ufsApi} onChange={handleChange}/>
+            <Select name="uf" defaultValue={formData.uf} options={ufsApi} onChange={handleChange}/>
         </LabelContainer>
         
         <LabelContainer>
@@ -216,7 +225,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       </FlexDiv>
 
         <MapContainer>
-            <Map height={250} />
+            <Map height={250} onPositionChange={(lat : number, lng : number) => handleMapPositionChange(lat, lng)} />
         </MapContainer>
 
       <ButtonsDiv>
@@ -237,6 +246,8 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
       phone: '',
       uf: '',
       email: '',
+      lat: 0,
+      lng: 0,
     });
 
     // API to get Brazil UFs
@@ -264,11 +275,16 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
       const { name, value } = e.target;
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
-  
+
+    const handleMapPositionChange = (lat: number, lng: number ) => {
+        setFormData((prevData) => ({ ...prevData, lat, lng }));
+      };
+      
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       onSubmit(formData);
     };
+
   
     return (
       <form onSubmit={handleSubmit}>
@@ -310,7 +326,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         </FlexDiv>
 
         <MapContainer>
-            <Map height={250} />
+        <Map height={250} onPositionChange={(lat : number, lng : number) => handleMapPositionChange(lat, lng)} />
         </MapContainer>
   
         <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
@@ -331,6 +347,8 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose 
         phone: '',
         uf: '',
         email: '',
+        lat: 0,
+        lng: 0,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
@@ -579,6 +597,8 @@ export const DeleteSaleForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         phone: '',
         uf: '',
         email: '',
+        lat: 0,
+        lng: 0,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
