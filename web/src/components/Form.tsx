@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Map from "./Map";
 import { SelectOption, Select } from './Select';
 import { DateInput } from './DatePicker';
+import InputMask from 'react-input-mask'; 
+import { NumericFormat } from 'react-number-format';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -98,6 +100,26 @@ const StyledSubtitle = styled.p`
     margin-top: 20px;
 `
 
+const StyledInputMask = styled(InputMask)`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    color: #686868;
+    font-size: 16px;
+`
+
+const StyledMoneyMask = styled(NumericFormat)`
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 3px;
+    color: #686868;
+    font-size: 16px;
+`
+
 interface ClientFormProps {
   onSubmit: (data: ClientFormData) => void;
   onClose: () => void;
@@ -166,14 +188,14 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledLabel>
                 CNPJ *
             </StyledLabel>
-            <StyledInput type="text" name="cnpj" defaultValue={formData.cnpj} onChange={handleChange} />
+            <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" onChange={handleChange} />
         </LabelContainer>
 
         <LabelContainer>
             <StyledLabel>
                 Telefone *
             </StyledLabel>
-            <StyledInput type="text" name="phone" defaultValue={formData.phone} onChange={handleChange} />
+            <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" onChange={handleChange} />
         </LabelContainer>
       </FlexDiv>  
     
@@ -260,14 +282,14 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
                 <StyledLabel>
                     CNPJ *
                 </StyledLabel>
-                <StyledInput type="text" name="cnpj" defaultValue={formData.cnpj} onChange={handleChange} />
+                <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" onChange={handleChange} />
             </LabelContainer>
 
             <LabelContainer>
                 <StyledLabel>
                     Telefone *
                 </StyledLabel>
-                <StyledInput type="text" name="phone" defaultValue={formData.phone} onChange={handleChange} />
+                <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" onChange={handleChange} />
             </LabelContainer>
         </FlexDiv>  
 
@@ -432,7 +454,11 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         <StyledLabel>
             Valor da venda *
         </StyledLabel>
-        <StyledInput name="value" defaultValue={formData.value} onChange={handleChange} />
+        <StyledMoneyMask 
+            thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true}
+            name="value" onValueChange={(values: { floatValue: any; }) => {
+                const { floatValue } = values;
+        }}/>
 
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
@@ -449,7 +475,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
         client: '',
         date: new Date(),
         status: '',
-        value: 0,
+        value: '',
     });
 
     const clientsOptions = [{
@@ -529,7 +555,11 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
             <StyledLabel>
                 Valor da venda *
             </StyledLabel>
-            <StyledInput type="number" name="value" defaultValue={formData.value} onChange={handleChange} />
+            <StyledMoneyMask 
+                thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true}
+                name="value" onValueChange={(values: { floatValue: any; }) => {
+                    const { floatValue } = values;
+            }}/>
 
             <StyledInput type="number" name="id" defaultValue={formData.id} hidden />
             <ButtonsDiv>
