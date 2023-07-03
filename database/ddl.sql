@@ -33,12 +33,10 @@ CREATE TABLE client (
 CREATE TABLE sale (
   id SERIAL PRIMARY KEY,
   client_id INT NOT NULL,
-  data DATE NOT NULL,
+  date DATE NOT NULL,
   status VARCHAR(100) NOT NULL CHECK (status IN ('Aguardando pagamento', 'Pagamento aprovado', 'Aguardando envio', 'À caminho', 'Finalizado')),
-  valor DECIMAL(10, 2) NOT NULL,
-  person_id INT NOT NULL,
-  FOREIGN KEY (client_id) REFERENCES client(id),
-  FOREIGN KEY (person_id) REFERENCES person(id)
+  value DECIMAL(10, 2) NOT NULL,
+  FOREIGN KEY (client_id) REFERENCES client(id)
 );
 
 COMMIT;
