@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Map from "./Map";
 import { SelectOption, Select } from './Select';
+import { DateInput } from './DatePicker';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -344,7 +345,7 @@ interface SaleFormProps {
 export interface SaleFormData {
     id: number;
     client: string;
-    date: string;
+    date: Date;
     status: string;
     value: number | string;
 }
@@ -354,7 +355,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     const [formData, setFormData] = useState<SaleFormData>({
         id: 0,
         client: '',
-        date: '',
+        date: new Date(),
         status: '',
         value: '',
     });
@@ -391,9 +392,13 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     },
     ];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
+        if (e instanceof Date) {
+            setFormData((prevData) => ({ ...prevData, date: e }));
+          } else {
+            const { name, value } = e.target;
+            setFormData((prevData) => ({ ...prevData, [name]: value }));
+          }
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -413,7 +418,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
                 <StyledLabel>
                     Data da venda *
                 </StyledLabel>
-                <StyledInput type="text" name="date" defaultValue={formData.date} onChange={handleChange} />
+                <DateInput selectedDate={formData.date} onChange={handleChange}/>
             </LabelContainer>
 
             <LabelContainer>
@@ -442,7 +447,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
     const [formData, setFormData] = useState<SaleFormData>({
         id: 0,
         client: '',
-        date: '',
+        date: new Date(),
         status: '',
         value: 0,
     });
@@ -479,9 +484,13 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
     },
     ];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
+        if (e instanceof Date) {
+            setFormData((prevData) => ({ ...prevData, date: e }));
+          } else {
+            const { name, value } = e.target;
+            setFormData((prevData) => ({ ...prevData, [name]: value }));
+          }
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -506,7 +515,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
                     <StyledLabel>
                         Data da venda *
                     </StyledLabel>
-                    <StyledInput type="text" name="date" defaultValue={formData.date} onChange={handleChange} />
+                    <DateInput selectedDate={formData.date} onChange={handleChange}/>
                 </LabelContainer>
 
                 <LabelContainer>
