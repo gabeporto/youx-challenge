@@ -3,6 +3,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { BiSolidCalendar } from 'react-icons/bi';
+import ptBR from 'date-fns/locale/pt-BR';
+
 
 const DateInputContainer = styled.div`
   display: flex;
@@ -39,12 +41,14 @@ interface DateInputProps {
   }
   
   export const DateInput: React.FC<DateInputProps> = ({ selectedDate, onChange }) => {
+
     return (
       <DateInputContainer>
         <DateInputStyled
           selected={selectedDate}
           onChange={onChange}
           dateFormat="dd/MM/yyyy"
+          locale={ptBR}
         />
         <DateInputIcon />
       </DateInputContainer>

@@ -1,5 +1,7 @@
+/* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import "../styles/styles.css"
 import Map from "./Map";
 import { SelectOption, Select } from './Select';
 import { DateInput } from './DatePicker';
@@ -134,7 +136,14 @@ export interface ClientFormData {
     email: string;
     lat: number;
     lng: number;
+    isNameValid?: boolean,
+    isCnpjValid?: boolean,
+    isPhoneValid?: boolean,
+    isUfValid?: boolean,
+    isEmailValid?: boolean,
+    isMarkValid?: boolean
 }
+
 
 export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
 
@@ -146,27 +155,81 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     email: '',
     lat: 0,
     lng: 0,
+    isNameValid: false,
+    isCnpjValid: false,
+    isPhoneValid: false,
+    isUfValid: false,
+    isEmailValid: false,
+    isMarkValid: false,
   });
+
+  const [touchedFields, setTouchedFields] = useState({
+        name: false,
+        cnpj: false,
+        phone: false,
+        uf: false,
+        email: false,
+  });
+
+  const handleFieldBlur = (fieldName: string) => {
+    setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    const isNameValid = formData.name.length > 3;
+    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+    const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
+    const isUfValid = formData.uf !== '';
+
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
+
+    setFormData((prevData) => ({
+        ...prevData,
+        isNameValid,
+        isCnpjValid,
+        isUfValid,
+        isPhoneValid,
+        isEmailValid,
+      }));
   };
 
   const handleMapPositionChange = (lat: number, lng: number ) => {
-    setFormData((prevData) => ({ ...prevData, lat, lng }));
+    const isMarkValid = true;
+    setFormData((prevData) => ({ ...prevData, lat, lng, isMarkValid}));
   };
-  
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onSubmit(formData);
+
+    const isNameValid = formData.name.length > 3;
+    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+    const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
+    const isUfValid = formData.uf !== '0';
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
+    const isMarkValid = formData.lat != 0 && formData.lng != 0;
+
+    setFormData((prevData) => ({
+        ...prevData,
+        isNameValid,
+        isCnpjValid,
+        isPhoneValid,
+        isUfValid,
+        isEmailValid,
+      }));
+
+      if (isNameValid && isCnpjValid && isPhoneValid && isUfValid && isEmailValid && isMarkValid) {
+        onSubmit(formData);
+      }
+
   };
 
-  // API to get Brazil UFs
-  const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
+    // API to get Brazil UFs
+    const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
 
-  useEffect(() => {
+    useEffect(() => {
       const fecthStates = async () => {
         try {
           const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
@@ -184,43 +247,48 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       fecthStates();
     }, []);
 
+
   return (
     <>
     <form onSubmit={handleSubmit}>
-      <StyledLabel>
+      <StyledLabel className={touchedFields.name && !formData.isNameValid ? 'invalid-label' : ''}>
         Nome *
       </StyledLabel>
-      <StyledInput type="text" name="name" defaultValue={formData.name} onChange={handleChange} />
+      <StyledInput type="text" name="name" defaultValue={formData.name} onChange={handleChange} onBlur={() => handleFieldBlur('name')} 
+      className={touchedFields.name && !formData.isNameValid ? 'invalid-input' : ''}/>
 
       <FlexDiv>
         <LabelContainer>
-            <StyledLabel>
+            <StyledLabel className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-label' : ''}>
                 CNPJ *
             </StyledLabel>
-            <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" onChange={handleChange} />
+            <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" onChange={handleChange} onBlur={() => handleFieldBlur('cnpj')} 
+            className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-input' : ''}/>
         </LabelContainer>
 
         <LabelContainer>
-            <StyledLabel>
+            <StyledLabel className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-label' : ''}>
                 Telefone *
             </StyledLabel>
-            <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" onChange={handleChange} />
+            <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" onChange={handleChange} onBlur={() => handleFieldBlur('phone')} 
+            className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-input' : ''}/>
         </LabelContainer>
       </FlexDiv>  
     
       <FlexDiv>
         <LabelContainer>
-            <StyledLabel>
+            <StyledLabel className={touchedFields.uf && !formData.isUfValid ? 'invalid-label' : ''}>
                 UF *
             </StyledLabel>
-            <Select name="uf" defaultValue={formData.uf} options={ufsApi} onChange={handleChange}/>
+            <Select name="uf" defaultValue={formData.uf} options={[{ value: '0', label: 'Selecione' }, ...ufsApi]} onChange={handleChange} />
         </LabelContainer>
         
         <LabelContainer>
-            <StyledLabel>
+            <StyledLabel className={touchedFields.email && !formData.isEmailValid ? 'invalid-label' : ''}>
                 Email *
             </StyledLabel>
-            <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} />
+            <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} onBlur={() => handleFieldBlur('email')} 
+            className={touchedFields.email && !formData.isEmailValid ? 'invalid-input' : ''}/>
         </LabelContainer>
       </FlexDiv>
 
@@ -240,15 +308,82 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
 export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<ClientFormData>({
-      id: 0,
-      name: '',
-      cnpj: '',
-      phone: '',
-      uf: '',
-      email: '',
-      lat: 0,
-      lng: 0,
+        id: 0,
+        name: '',
+        cnpj: '',
+        phone: '',
+        uf: '',
+        email: '',
+        lat: 0,
+        lng: 0,
+        isNameValid: false,
+        isCnpjValid: false,
+        isPhoneValid: false,
+        isUfValid: false,
+        isEmailValid: false,
+        isMarkValid: false,
     });
+
+    const [touchedFields, setTouchedFields] = useState({
+        name: false,
+        cnpj: false,
+        phone: false,
+        email: false,
+    });
+
+    const handleFieldBlur = (fieldName: string) => {
+        setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+        const isNameValid = formData.name.length > 3;
+        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+        const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
+        const isUfValid = formData.uf != "";
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isNameValid,
+            isCnpjValid,
+            isUfValid,
+            isPhoneValid,
+            isEmailValid,
+        }));
+    };
+
+    const handleMapPositionChange = (lat: number, lng: number ) => {
+        const isMarkValid = true;
+        setFormData((prevData) => ({ ...prevData, lat, lng, isMarkValid}));
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const isNameValid = formData.name.length > 3;
+            const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+            const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
+            const isUfValid = formData.uf != "";
+            const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
+            const isMarkValid = formData.lat != 0 && formData.lng != 0;
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isNameValid,
+            isCnpjValid,
+            isPhoneValid,
+            isUfValid,
+            isEmailValid,
+            }));
+
+        if (isNameValid && isCnpjValid && isPhoneValid && isUfValid && isEmailValid && isMarkValid) {
+            onSubmit(formData);
+        }
+
+    };
 
     // API to get Brazil UFs
     const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
@@ -270,63 +405,52 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
     
         fecthStates();
         }, []);
-  
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
 
-    const handleMapPositionChange = (lat: number, lng: number ) => {
-        setFormData((prevData) => ({ ...prevData, lat, lng }));
-    };
-      
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      onSubmit(formData);
-    };
-
-  
     return (
       <form onSubmit={handleSubmit}>
-        <StyledLabel>
+        <StyledLabel className={touchedFields.name && !formData.isNameValid ? 'invalid-label' : ''}>
             Nome *
         </StyledLabel>
-        <StyledInput type="text" name="name" defaultValue={formData.name} onChange={handleChange} />
+        <StyledInput type="text" name="name" defaultValue={formData.name} onChange={handleChange} onBlur={() => handleFieldBlur('name')} 
+        className={touchedFields.name && !formData.isNameValid ? 'invalid-input' : ''}/>
 
         <FlexDiv>
             <LabelContainer>
-                <StyledLabel>
+                <StyledLabel className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-label' : ''}>
                     CNPJ *
                 </StyledLabel>
-                <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" onChange={handleChange} />
+                <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" onChange={handleChange} onBlur={() => handleFieldBlur('cnpj')} 
+                className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-input' : ''}/>
             </LabelContainer>
 
             <LabelContainer>
-                <StyledLabel>
+                <StyledLabel className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-label' : ''}>
                     Telefone *
                 </StyledLabel>
-                <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" onChange={handleChange} />
+                <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" onChange={handleChange} onBlur={() => handleFieldBlur('phone')} 
+                className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>  
-
+        
         <FlexDiv>
             <LabelContainer>
                 <StyledLabel>
                     UF *
                 </StyledLabel>
-                <Select name="uf" defaultValue={formData.uf} options={ufsApi} onChange={handleChange}/>
+                <Select name="uf" defaultValue={formData.uf} options={[{ value: '', label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
             </LabelContainer>
-
+            
             <LabelContainer>
-                <StyledLabel>
+                <StyledLabel className={touchedFields.email && !formData.isEmailValid ? 'invalid-label' : ''}>
                     Email *
                 </StyledLabel>
-                <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} />
+                <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} onBlur={() => handleFieldBlur('email')} 
+                className={touchedFields.email && !formData.isEmailValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>
 
         <MapContainer>
-        <Map height={250} onPositionChange={(lat : number, lng : number) => handleMapPositionChange(lat, lng)} />
+            <Map height={250} onPositionChange={(lat : number, lng : number) => handleMapPositionChange(lat, lng)} />
         </MapContainer>
   
         <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
@@ -383,27 +507,39 @@ interface SaleFormProps {
   }
   
 export interface SaleFormData {
-    id: number;
+    id?: number;
     client: string;
     date: Date;
     status: string;
     value: number | string;
+    isClientValid?: boolean,
+    isStatusValid?: boolean,
+    isValueValid?: boolean,
 }
   
 export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({
-        id: 0,
         client: '',
         date: new Date(),
         status: '',
         value: '',
+        isClientValid: false,
+        isStatusValid: false,
+        isValueValid: false,
+    });
+    
+    const [touchedFields, setTouchedFields] = useState({
+        client: false,
+        status: false,
+        value: false,
     });
 
-    const clientsOptions = [{
-        value: "Selecione um cliente",
-        label: "Selecione um cliente",
-    },
+    const handleFieldBlur = (fieldName: string) => {
+        setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
+    };
+
+    const clientsOptions = [
     {
         value: "Cliente X",
         label: "Madeireira Arm",
@@ -414,10 +550,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     }
     ];
 
-    const statusOptions = [{
-        value: "Selecione uma opção",
-        label: "Selecione uma opção",
-    },
+    const statusOptions = [
     {
         value: "Aguardando pagamento",
         label: "Aguardando pagamento",
@@ -441,29 +574,60 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     ];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
-        if (e instanceof Date) {
+        if (e !== null && e instanceof Date) {
             setFormData((prevData) => ({ ...prevData, date: e }));
-          } else {
+          } else if (e && e.target) {
             const { name, value } = e.target;
             setFormData((prevData) => ({ ...prevData, [name]: value }));
           }
+
+        const isClientValid = formData.client != "";
+        const isStatusValid = formData.status != "";
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isClientValid,
+            isStatusValid,
+        }));
     };
 
     const handleChangeValue = (value : number) => {
         setFormData((prevData) => ({ ...prevData, value}));
+
+        const isValueValid = typeof formData.value === 'number';
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isValueValid,
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSubmit(formData);
+        
+        const isClientValid = formData.client != "";
+        const isStatusValid = formData.status != "";
+        const isValueValid = typeof formData.value === 'number';
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isClientValid,
+            isStatusValid,
+            isValueValid,
+        }));
+
+        if (isClientValid && isStatusValid && isValueValid) {
+            onSubmit(formData);
+        }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-        <StyledLabel>
+        <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
             Cliente *
         </StyledLabel>
-        <Select name="client" defaultValue={formData.client} options={clientsOptions} onChange={handleChange}/>
+        <Select name="client" defaultValue={formData.client} options={[{value: '', label: 'Selecione um cliente'}, ...clientsOptions]} onChange={handleChange}
+        className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
 
         <FlexDiv>
             <LabelContainer>
@@ -473,19 +637,21 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
                 <DateInput selectedDate={formData.date} onChange={handleChange}/>
             </LabelContainer>
 
-            <LabelContainer>
+            <LabelContainer className={touchedFields.status && !formData.isStatusValid ? 'invalid-label' : ''}>
                 <StyledLabel>
                     Situação *
                 </StyledLabel>
-                <Select name="status" defaultValue={formData.status} options={statusOptions} onChange={handleChange}/>
+                <Select name="status" defaultValue={formData.status}  options={[{ value: '', label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
+                className={touchedFields.status && !formData.isStatusValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>
 
-        <StyledLabel>
+        <StyledLabel className={touchedFields.value && !formData.isValueValid ? 'invalid-label' : ''}>
             Valor da venda *
         </StyledLabel>
         <StyledMoneyMask 
             thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
+            className={touchedFields.value && !formData.isValueValid ? 'invalid-input' : ''}
             name="value" onValueChange={(values: { floatValue: any; }) => {
                 const { floatValue } = values;
                 handleChangeValue(floatValue);
@@ -507,7 +673,20 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
         date: new Date(),
         status: '',
         value: '',
+        isClientValid: false,
+        isStatusValid: false,
+        isValueValid: false,
     });
+
+    const [touchedFields, setTouchedFields] = useState({
+        client: false,
+        status: false,
+        value: false,
+    });
+
+    const handleFieldBlur = (fieldName: string) => {
+        setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
+    };
 
     const clientsOptions = [{
         value: "Selecione um cliente",
@@ -550,21 +729,51 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
     ];
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
-        if (e instanceof Date) {
+        if (e !== null && e instanceof Date) {
             setFormData((prevData) => ({ ...prevData, date: e }));
-          } else {
+          } else if (e && e.target) {
             const { name, value } = e.target;
             setFormData((prevData) => ({ ...prevData, [name]: value }));
           }
+
+        const isClientValid = formData.client != "";
+        const isStatusValid = formData.status != "";
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isClientValid,
+            isStatusValid,
+        }));
     };
 
     const handleChangeValue = (value : number) => {
         setFormData((prevData) => ({ ...prevData, value}));
+
+        const isValueValid = typeof formData.value === 'number';
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isValueValid,
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSubmit(formData);
+        
+        const isClientValid = formData.client != "";
+        const isStatusValid = formData.status != "";
+        const isValueValid = typeof formData.value === 'number';
+
+        setFormData((prevData) => ({
+            ...prevData,
+            isClientValid,
+            isStatusValid,
+            isValueValid,
+        }));
+
+        if (isClientValid && isStatusValid && isValueValid) {
+            onSubmit(formData);
+        }
     };
 
     return (
@@ -574,12 +783,13 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
                 <StyledSubtitle>Venda #15 - Comércio de Livros LTDA - 16/10/2022</StyledSubtitle>
             </LabelContainer>
 
-            <StyledLabel>
-                Cliente * 
+            <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
+                Cliente *
             </StyledLabel>
-            <Select name="client" defaultValue={formData.client} options={clientsOptions} onChange={handleChange}/>
+            <Select name="client" defaultValue={formData.client} options={[{value: '', label: 'Selecione um cliente'}, ...clientsOptions]} onChange={handleChange}
+            className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
 
-            <FlexDiv>
+                <FlexDiv>
                 <LabelContainer>
                     <StyledLabel>
                         Data da venda *
@@ -587,19 +797,21 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
                     <DateInput selectedDate={formData.date} onChange={handleChange}/>
                 </LabelContainer>
 
-                <LabelContainer>
+                <LabelContainer className={touchedFields.status && !formData.isStatusValid ? 'invalid-label' : ''}>
                     <StyledLabel>
                         Situação *
                     </StyledLabel>
-                    <Select name="status" defaultValue={formData.status} options={statusOptions} onChange={handleChange}/>
+                    <Select name="status" defaultValue={formData.status}  options={[{ value: '', label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
+                    className={touchedFields.status && !formData.isStatusValid ? 'invalid-input' : ''}/>
                 </LabelContainer>
             </FlexDiv>
 
-            <StyledLabel>
+            <StyledLabel className={touchedFields.value && !formData.isValueValid ? 'invalid-label' : ''}>
                 Valor da venda *
             </StyledLabel>
             <StyledMoneyMask 
                 thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
+                className={touchedFields.value && !formData.isValueValid ? 'invalid-input' : ''}
                 name="value" onValueChange={(values: { floatValue: any; }) => {
                     const { floatValue } = values;
                     handleChangeValue(floatValue);
@@ -614,17 +826,14 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
     );
 };
 
-export const DeleteSaleForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
+export const DeleteSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
-    const [formData, setFormData] = useState<ClientFormData>({
+    const [formData, setFormData] = useState<SaleFormData>({
         id: 0,
-        name: '',
-        cnpj: '',
-        phone: '',
-        uf: '',
-        email: '',
-        lat: 0,
-        lng: 0,
+        client: '',
+        date: new Date(),
+        status: '',
+        value: '',
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {

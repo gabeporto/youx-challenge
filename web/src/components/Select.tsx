@@ -12,6 +12,7 @@ interface SelectProps {
     defaultValue: string;
     options: SelectOption[];
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    className?: string;
   }
   
 const SelectContainer = styled.div`
@@ -49,7 +50,7 @@ export function Select(props : SelectProps) {
 
   return (
    <SelectContainer>
-      <SelectStyled name={props.name} value={props.defaultValue} onChange={props.onChange}>
+      <SelectStyled name={props.name} value={props.defaultValue} onChange={props.onChange} className={props.className}>
         {props.options.map((option) => (
           <option key={option.value} value={option.value}>
             {option.label}
