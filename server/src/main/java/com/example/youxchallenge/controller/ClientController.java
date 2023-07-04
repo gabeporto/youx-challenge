@@ -1,6 +1,8 @@
 package com.example.youxchallenge.controller;
 
 import com.example.youxchallenge.client.*;
+import com.example.youxchallenge.person.Person;
+import com.example.youxchallenge.person.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +17,16 @@ public class ClientController {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private PersonRepository personRepository;
+
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping
     public void addClient(@RequestBody ClientRequestDTO data) {
-        Client client = new Client(data);
+        Long personId = data.personId();
+        Person person = personRepository.findById(personId).orElseThrow(() -> new IllegalArgumentException("Person not found"));
+
+        Client client = new Client(data, person);
         clientRepository.save(client);
     }
 
@@ -46,9 +54,11 @@ public class ClientController {
     @PutMapping("/{id}")
     public void updateClient(@PathVariable Long id, @RequestBody ClientUpdateDTO data) {
         Optional<Client> optionalClient = clientRepository.findById(id);
+        Person person = personRepository.findById(data.personId())
+                .orElseThrow(() -> new IllegalArgumentException("Person not found"));
         if (optionalClient.isPresent()) {
             Client client = optionalClient.get();
-            client.updateFromDTO(data);
+            client.updateFromDTO(data, person);
             clientRepository.save(client);
         }
     }

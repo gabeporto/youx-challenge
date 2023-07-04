@@ -1,6 +1,5 @@
 package com.example.youxchallenge.client;
 
-import com.example.youxchallenge.person.Person;
 
 public record ClientRequestDTO(
         String name,
@@ -10,5 +9,6 @@ public record ClientRequestDTO(
         String uf,
         double latitude,
         double longitude,
-        Person person) {
+        Long personId
+) {
 };

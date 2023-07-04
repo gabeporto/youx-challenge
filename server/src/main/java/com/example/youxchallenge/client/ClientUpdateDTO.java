@@ -1,5 +1,6 @@
 package com.example.youxchallenge.client;
 
+
 public record ClientUpdateDTO(
         String name,
         String cnpj,
@@ -7,6 +8,8 @@ public record ClientUpdateDTO(
         String phone,
         String email,
         double latitude,
-        double longitude
+        double longitude,
+
+        Long personId
 ) {};
 

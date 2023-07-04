@@ -2,8 +2,6 @@ package com.example.youxchallenge.controller;
 
 import com.example.youxchallenge.client.Client;
 import com.example.youxchallenge.client.ClientRepository;
-import com.example.youxchallenge.client.ClientResponseDTO;
-import com.example.youxchallenge.client.ClientUpdateDTO;
 import com.example.youxchallenge.sale.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

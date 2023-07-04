@@ -36,7 +36,7 @@ public class Client {
     @JoinColumn(name = "person_id")
     private Person person;
 
-    public Client(ClientRequestDTO data) {
+    public Client(ClientRequestDTO data, Person person) {
         this.name = data.name();
         this.cnpj = data.cnpj();
         this.uf = data.uf();
@@ -44,10 +44,10 @@ public class Client {
         this.email = data.email();
         this.latitude = data.latitude();
         this.longitude = data.longitude();
-        this.person = data.person();
+        this.person = person;
     }
 
-    public void updateFromDTO(ClientUpdateDTO dto) {
+    public void updateFromDTO(ClientUpdateDTO dto, Person person) {
         this.name = dto.name();
         this.cnpj = dto.cnpj();
         this.uf = dto.uf();
@@ -55,5 +55,6 @@ public class Client {
         this.email = dto.email();
         this.latitude = dto.latitude();
         this.longitude = dto.longitude();
+        this.person = person;
     }
 }

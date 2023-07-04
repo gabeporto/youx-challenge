@@ -1,9 +1,6 @@
 package com.example.youxchallenge.sale;
 
 import com.example.youxchallenge.client.Client;
-import com.example.youxchallenge.client.ClientRepository;
-import com.example.youxchallenge.client.ClientRequestDTO;
-import com.example.youxchallenge.client.ClientUpdateDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
