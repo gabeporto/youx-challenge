@@ -1,8 +1,8 @@
-package com.example.youxchallenge.client;
+package com.example.youxchallenge.sale;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ClientRepository extends JpaRepository<Client, Long> {
+public interface SaleRepository extends JpaRepository<Sale, Long> {
 }

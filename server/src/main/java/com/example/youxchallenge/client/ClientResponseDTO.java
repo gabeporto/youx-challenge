@@ -11,10 +11,10 @@ public record ClientResponseDTO(
         String email,
         double latitude,
         double longitude,
-        Person person) {
+        Long personId) {
 
     public ClientResponseDTO(Client client) {
         this(client.getId(), client.getName(), client.getCnpj(), client.getUf(), client.getPhone(), client.getEmail(),
-                client.getLatitude(), client.getLongitude(), client.getPerson());
+                client.getLatitude(), client.getLongitude(), client.getPerson().getId());
     }
 }
