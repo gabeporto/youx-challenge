@@ -7,8 +7,9 @@ import { AddSaleModal } from "../../components/Modal";
 import Input from "../../components/Input";
 import Subtitle from "../../components/Subtitle";
 import Table from "../../components/Table";
-import { useState } from "react";
-import { SaleFormData } from "../../components/Form";
+import { useEffect, useState } from "react";
+import { SaleFormData } from "../../interface/SaleFormData";
+import { SaleData } from "../../interface/SaleData";
 
 const FlexDiv = styled.div`
   display: flex;
@@ -44,7 +45,7 @@ export default function SaleListPage() {
     ];
 
     // Examples
-    const data = [
+    const dataExample = [
         {
             id: 1,
             client: 'Comércio de Livros LTDA',
@@ -188,21 +189,71 @@ export default function SaleListPage() {
     ];
 
     const [formData, setFormData] = useState<SaleFormData | null>(null);
+    const [data, setData] = useState<SaleData[]>([]);
+    const [filteredData, setFilteredData] = useState<SaleData[]>([]);
+    const [searchValue, setSearchValue] = useState('');
 
     const handleAdd = (data: SaleFormData) => {
         setFormData(data);
         // Lógica para lidar com a ação de adição
         console.log(data);
-      }
+    }
     
-      const handleEdit = (data: SaleFormData) => {
+    const handleEdit = (data: SaleFormData) => {
         // Lógica para lidar com a ação de edição
         console.log('Editar:', data);
-      };
+    };
       
-      const handleDelete = (data: SaleFormData) => {
+    const handleDelete = (data: SaleFormData) => {
         // Lógica para lidar com a ação de exclusão
         console.log('Excluir:', data);
+    };
+
+    const fetchData = () => {
+        fetch('http://localhost:8080/sale')
+          .then(response => response.json())
+          .then(data => {
+            const formattedData = data.map((item: { date: string | number | Date; value: { toLocaleString: (arg0: string, arg1: { style: string; currency: string; }) => any; }; }) => {
+                const date = new Date(item.date);
+                const formattedDate = date.toLocaleDateString('pt-BR', {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric'
+                });
+          
+                const formattedValue = item.value.toLocaleString('pt-BR', {
+                  style: 'currency',
+                  currency: 'BRL'
+                });
+          
+                return {
+                  ...item,
+                  date: formattedDate,
+                  value: formattedValue
+                };
+            });
+            setData(formattedData)
+            setFilteredData(formattedData);
+            console.log(formattedData);
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      };
+    
+      useEffect(() => {
+        fetchData();
+      }, []);
+    
+      const handleSearch = (value: string) => {
+        setSearchValue(value);
+        const filteredData = data.filter((item) => {
+          const searchValueLower = typeof value === 'string' ? value.toLowerCase() : '';
+          return Object.values(item).some((prop: string) =>
+            typeof prop === 'string' ? prop.toLowerCase().includes(searchValueLower) : false
+          );
+      });
+        setFilteredData(filteredData);
       };
 
     return (
@@ -213,14 +264,14 @@ export default function SaleListPage() {
                 <Title title="Lista de Vendas"/>
                 
                 <FlexDiv>
-                    <Input placeholder="Digite o nome ou CNPJ do cliente que deseja pesquisar" type="search"/>
+                    <Input onChange={handleSearch} placeholder="Digite o nome ou CNPJ do cliente que deseja pesquisar" type="search"/>
                     <Button title="Cadastrar venda" type="add" onClick={openModal}/>
                     <AddSaleModal isOpen={modalOpen} onClose={closeModal} onSubmit={handleAdd}/>
                 </FlexDiv>
 
                 <TableDiv>
                     <Subtitle subtitle="Vendas cadastradas"/>
-                    <Table columns={columns} data={data} type="sale" onEdit={handleEdit} onDelete={handleDelete}/>
+                    <Table columns={columns} data={filteredData} type="sale" onEdit={handleEdit} onDelete={handleDelete}/>
                 </TableDiv>
             </Container>
         </>

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
+import { ChangeEvent, useState } from 'react';
 
 const InputContainer = styled.div`
   position: relative;
@@ -45,14 +46,22 @@ const StyledBarInput = styled.div`
 
 interface InputProps {
     placeholder: string;
-    type: string
+    type: string;
+    onChange: (value: string) => void;
 }
 
 const Input = (props : InputProps) => {
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      props.onChange(value);
+    };
+
     return (
       <InputContainer>
         <StyledInput
           placeholder={props.placeholder}
+          onChange={handleChange}
           variant="outlined"
           InputProps={{
             endAdornment: (

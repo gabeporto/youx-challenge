@@ -45,6 +45,8 @@ export default function ClientListPage() {
   ];
 
   const [data, setData] = useState<ClientData[]>([]);
+  const [filteredData, setFilteredData] = useState<ClientData[]>([]);
+  const [searchValue, setSearchValue] = useState('');
 
   const handleAdd = (data: ClientFormData) => {
 
@@ -114,6 +116,7 @@ export default function ClientListPage() {
       .then(response => response.json())
       .then(data => {
         setData(data);
+        setFilteredData(data);
       })
       .catch(error => {
         console.error(error);
@@ -124,6 +127,17 @@ export default function ClientListPage() {
     fetchData();
   }, []);
 
+  const handleSearch = (value: string) => {
+    setSearchValue(value);
+    const filteredData = data.filter((item) => {
+      const searchValueLower = typeof value === 'string' ? value.toLowerCase() : '';
+      return Object.values(item).some((prop: string) =>
+        typeof prop === 'string' ? prop.toLowerCase().includes(searchValueLower) : false
+      );
+  });
+    setFilteredData(filteredData);
+  };
+
   return (
       <>
         <Header />
@@ -132,14 +146,14 @@ export default function ClientListPage() {
           <Title title="Lista de Clientes"/>
           
           <FlexDiv>
-            <Input placeholder="Digite o nome ou CNPJ do cliente que deseja pesquisar" type="search"/>
+            <Input onChange={handleSearch} placeholder="Digite o nome ou CNPJ do cliente que deseja pesquisar" type="search"/>
             <Button title="Cadastrar cliente" type="add" onClick={openModal}/>
             <AddClientModal isOpen={modalOpen} onClose={closeModal} onSubmit={handleAdd}/>
           </FlexDiv>
 
           <TableDiv>
             <Subtitle subtitle="Clientes cadastrados"/>
-            <Table columns={columns} data={data} type="client" onEdit={handleEdit} onDelete={handleDelete}/>
+            <Table columns={columns} data={filteredData} type="client" onEdit={handleEdit} onDelete={handleDelete} />
           </TableDiv>
         </Container>
       </>

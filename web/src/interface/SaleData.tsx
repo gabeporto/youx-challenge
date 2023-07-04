@@ -1,7 +1,7 @@
 export interface SaleData {
     id: number;
     client: string;
-    date: Date;
+    date: string;
     status: string;
     value: number;
     clientId: number;
