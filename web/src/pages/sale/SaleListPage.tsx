@@ -194,9 +194,25 @@ export default function SaleListPage() {
     const [searchValue, setSearchValue] = useState('');
 
     const handleAdd = (data: SaleFormData) => {
-        setFormData(data);
-        // Lógica para lidar com a ação de adição
-        console.log(data);
+
+        fetch('http://localhost:8080/sale', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (response.ok) { 
+                fetchData();
+                } else {
+                console.log(response);
+                }
+                closeModal();
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
     
     const handleEdit = (data: SaleFormData) => {
@@ -234,7 +250,6 @@ export default function SaleListPage() {
             });
             setData(formattedData)
             setFilteredData(formattedData);
-            console.log(formattedData);
           })
           .catch(error => {
             console.error(error);

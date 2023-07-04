@@ -10,6 +10,8 @@ import { NumericFormat } from 'react-number-format';
 import { ClientData } from "../interface/ClientData";
 import { ClientFormData } from '../interface/ClientFormData';
 import { SaleFormData } from '../interface/SaleFormData';
+import { SaleData } from '../interface/SaleData';
+import formatMoneyValue from '../utils/formatMoneyValue';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -235,7 +237,6 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       fecthStates();
     }, []);
 
-
   return (
     <>
     <form onSubmit={handleSubmit}>
@@ -268,7 +269,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledLabel className={touchedFields.uf && !formData.isUfValid ? 'invalid-label' : ''}>
                 UF *
             </StyledLabel>
-            <Select name="uf" defaultValue={formData.uf} options={[{ value: '0', label: 'Selecione' }, ...ufsApi]} onChange={handleChange} />
+            <Select name="uf" defaultValue={formData.uf} options={[{ value: 0, label: 'Selecione' }, ...ufsApi]} onChange={handleChange} />
         </LabelContainer>
         
         <LabelContainer>
@@ -427,7 +428,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
                 <StyledLabel>
                     UF *
                 </StyledLabel>
-                <Select name="uf" defaultValue={data?.uf || ''} options={[{ value: '', label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
+                <Select name="uf" defaultValue={data!.uf || ''} options={[{ value: 0, label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
             </LabelContainer>
             
             <LabelContainer>
@@ -496,12 +497,13 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({data, onSubmit, onC
 interface SaleFormProps {
     onSubmit: (data: SaleFormData) => void;
     onClose: () => void;
+    data?: SaleData;
   }
     
 export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({
-        client: '',
+        clientId: 0,
         date: new Date(),
         status: '',
         value: '',
@@ -520,16 +522,26 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
     };
 
-    const clientsOptions = [
-    {
-        value: "Cliente X",
-        label: "Madeireira Arm",
-    },
-    {
-        value: "Cliente Y",
-        label: "Trusce Company",
-    }
-    ];
+    // Fetch to get clients
+    const [clients, setClients] = useState<{value: number, label: string}[]>([]);
+
+    useEffect(() => {
+      const fetchClients = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/client');
+          const data = await response.json();
+          const formattedOptions = data.map((client: any) => ({
+            value: client.id,
+            label: client.name,
+          }));
+          setClients(formattedOptions);
+        } catch (error) {
+          console.error('Erro ao buscar os clientes:', error);
+        }
+      };
+  
+      fetchClients();
+    }, []);
 
     const statusOptions = [
     {
@@ -607,7 +619,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
             Cliente *
         </StyledLabel>
-        <Select name="client" defaultValue={formData.client} options={[{value: '', label: 'Selecione um cliente'}, ...clientsOptions]} onChange={handleChange}
+        <Select name="clientId" defaultValue={formData?.clientId | 0} options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
         className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
 
         <FlexDiv>
@@ -646,14 +658,15 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     );
 };
 
-export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
+export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({
-        id: 0,
-        client: '',
-        date: new Date(),
-        status: '',
-        value: '',
+        id: data!.id,
+        client: data!.client,
+        clientId: data!.clientId,
+        date: data!.date,
+        status: data!.status,
+        value: data!.value,
         isClientValid: false,
         isStatusValid: false,
         isValueValid: false,
@@ -669,24 +682,28 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
         setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
     };
 
-    const clientsOptions = [{
-        value: "Selecione um cliente",
-        label: "Selecione um cliente",
-    },
-    {
-        value: "Cliente X",
-        label: "Madeireira Arm",
-    },
-    {
-        value: "Cliente Y",
-        label: "Trusce Company",
-    }
-    ];
+    // Fetch to get clients
+    const [clients, setClients] = useState<{value: number, label: string}[]>([]);
 
-    const statusOptions = [{
-        value: "Selecione uma opção",
-        label: "Selecione uma opção",
-    },
+    useEffect(() => {
+      const fetchClients = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/client');
+          const data = await response.json();
+          const formattedOptions = data.map((client: any) => ({
+            value: client.id,
+            label: client.name,
+          }));
+          setClients(formattedOptions);
+        } catch (error) {
+          console.error('Erro ao buscar os clientes:', error);
+        }
+      };
+  
+      fetchClients();
+    }, []);
+
+    const statusOptions = [
     {
         value: "Aguardando pagamento",
         label: "Aguardando pagamento",
@@ -708,6 +725,10 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
         label: "Finalizado",
     },
     ];
+
+    // Format Date
+    const currentDate = new Date(data.date);
+    const formattedDate = currentDate.toLocaleDateString("pt-BR");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
         if (e !== null && e instanceof Date) {
@@ -761,13 +782,13 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
         <form onSubmit={handleSubmit}>
             <LabelContainer>
                 {/* Example */}
-                <StyledSubtitle>Venda #15 - Comércio de Livros LTDA - 16/10/2022</StyledSubtitle>
+                <StyledSubtitle>Venda #{data.id} - {data.client} - {data.date}</StyledSubtitle>
             </LabelContainer>
 
             <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
                 Cliente *
             </StyledLabel>
-            <Select name="client" defaultValue={formData.client} options={[{value: '', label: 'Selecione um cliente'}, ...clientsOptions]} onChange={handleChange}
+            <Select name="clientId" defaultValue={data?.clientId} options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
             className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
 
                 <FlexDiv>
@@ -775,14 +796,14 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
                     <StyledLabel>
                         Data da venda *
                     </StyledLabel>
-                    <DateInput selectedDate={formData.date} onChange={handleChange}/>
+                    <DateInput selectedDate={new Date(formattedDate)} onChange={handleChange}/>
                 </LabelContainer>
 
                 <LabelContainer className={touchedFields.status && !formData.isStatusValid ? 'invalid-label' : ''}>
                     <StyledLabel>
                         Situação *
                     </StyledLabel>
-                    <Select name="status" defaultValue={formData.status}  options={[{ value: '', label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
+                    <Select name="status" defaultValue={data.status}  options={[{ value: 0, label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
                     className={touchedFields.status && !formData.isStatusValid ? 'invalid-input' : ''}/>
                 </LabelContainer>
             </FlexDiv>
@@ -792,13 +813,12 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => 
             </StyledLabel>
             <StyledMoneyMask 
                 thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
-                className={touchedFields.value && !formData.isValueValid ? 'invalid-input' : ''}
+                className={touchedFields.value && !formData.isValueValid ? 'invalid-input' : ''} defaultValue={formatMoneyValue(data.value)}
                 name="value" onValueChange={(values: { floatValue: any; }) => {
                     const { floatValue } = values;
                     handleChangeValue(floatValue);
             }}/>
-
-            <StyledInput type="number" name="id" defaultValue={formData.id} hidden />
+            <StyledInput type="number" name="id" defaultValue={data.id} hidden />
             <ButtonsDiv>
                 <CancelButton onClick={onClose}>Cancelar</CancelButton>
                 <SaveButton type="submit">Salvar</SaveButton>

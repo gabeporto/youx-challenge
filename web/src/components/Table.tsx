@@ -275,7 +275,7 @@ const Table: React.FC<TableProps> = ({ columns, data, type, onEdit, onDelete }) 
                     Editar
                   </DropdownItem>
                   {type === 'client' && <EditClientModal data={item as ClientData} onSubmit={handleEditClick} isOpen={editModalOpen} onClose={closeEditModal} />}
-                  {type === 'sale' && <EditSaleModal onSubmit={handleEditClick} isOpen={editModalOpen} onClose={closeEditModal} />}
+                  {type === 'sale' && <EditSaleModal data={item as SaleData} onSubmit={handleEditClick} isOpen={editModalOpen} onClose={closeEditModal} />}
 
                   <DropdownItem onClick={openRemoveModal}>
                     <DeleteIcon />

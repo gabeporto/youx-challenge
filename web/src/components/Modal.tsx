@@ -1,7 +1,8 @@
 import styled, { keyframes } from "styled-components";
-import { AddClientForm, EditClientForm, DeleteClientForm, AddSaleForm, EditSaleForm, DeleteSaleForm, SaleFormData } from "./Form";
+import { AddClientForm, EditClientForm, DeleteClientForm, AddSaleForm, EditSaleForm, DeleteSaleForm } from "./Form";
 import { ClientData } from "../interface/ClientData";
 import { ClientFormData } from "../interface/ClientFormData";
+import { SaleData } from "../interface/SaleData";
 
 const fadeIn = keyframes`
   from {
@@ -142,6 +143,7 @@ interface SaleModalProps {
     onSubmit: (data: SaleFormData) => void;
     isOpen: boolean;
     onClose: () => void;
+    data?: SaleData;
 }
 
 export const AddSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onSubmit}) => {
@@ -162,7 +164,7 @@ export const AddSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onSubm
     )
 }
 
-export const EditSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onSubmit}) => {
+export const EditSaleModal: React.FC<SaleModalProps> = ({ data, isOpen, onClose, onSubmit}) => {
 
     if (!isOpen) return null;
 
@@ -173,7 +175,7 @@ export const EditSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onSub
                     <ModalBar>
                     <ModalTitle>Editar Venda</ModalTitle>
                     </ModalBar>
-                    <EditSaleForm onSubmit={onSubmit} onClose={onClose}/>
+                    <EditSaleForm data={data} onSubmit={onSubmit} onClose={onClose}/>
                 </ModalContent>
             </ModalDiv>
         </ModalWrapper>

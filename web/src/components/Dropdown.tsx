@@ -3,7 +3,8 @@ import styled, { keyframes } from 'styled-components';
 import Logo from '../assets/youx-logo.png'
 import { Link } from 'react-router-dom';
 import { AddClientModal, AddSaleModal } from './Modal';
-import { ClientFormData, SaleFormData } from './Form';
+import { ClientFormData } from '../interface/ClientFormData';
+import { SaleFormData } from '../interface/SaleFormData';
 
 const LogoImage = styled.img`
     position: relative;
@@ -138,8 +139,26 @@ export default function Dropdown() {
   const [saleFormData, setSaleFormData] = useState<SaleFormData | null>(null);
 
   const addClient = (data: ClientFormData) => {
-    setClientFormData(data);
-    console.log(data);
+
+    fetch('http://localhost:8080/client', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => {
+        if (response.ok) { 
+          window.location.reload();
+        } else {
+          console.log(response);
+        }
+        closeModal();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
   }
 
   const addSale = (data: SaleFormData) => {

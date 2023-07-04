@@ -3,13 +3,13 @@ import styled from 'styled-components';
 import { RiArrowDropDownLine } from 'react-icons/ri';
 
 export interface SelectOption {
-    value: string;
+    value: number | string;
     label: string;
 }
 
 interface SelectProps {
     name: string;
-    defaultValue: string;
+    defaultValue: number | string;
     options: SelectOption[];
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     className?: string;
