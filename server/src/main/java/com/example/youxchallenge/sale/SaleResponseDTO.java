@@ -4,13 +4,13 @@ import java.util.Date;
 
 public record SaleResponseDTO(
         Long id,
-        Long clientId,
+        String client,
         Date date,
         String status,
         double value) {
 
     public SaleResponseDTO(Sale sale) {
-        this(sale.getId(), sale.getClient().getId(), sale.getDate(), sale.getStatus(), sale.getValue());
+        this(sale.getId(), sale.getClient().getName(), sale.getDate(), sale.getStatus(), sale.getValue());
     }
 }
 
