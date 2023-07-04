@@ -5,7 +5,7 @@ export interface ClientData {
     uf: string,
     phone: string,
     email: string,
-    latitude: string,
-    longitude: string,
+    latitude: number,
+    longitude: number,
     personId: number
 }

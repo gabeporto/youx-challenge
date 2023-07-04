@@ -45,36 +45,21 @@ export default function ClientListPage() {
   ];
 
   const [data, setData] = useState<ClientData[]>([]);
-  const [formData, setFormData] = useState<ClientFormData | null>(null);
 
   const handleAdd = (data: ClientFormData) => {
-    setFormData(data);
-
-    const newData = {
-      name: formData?.name,
-      cnpj: formData?.cnpj,
-      phone: formData?.phone,
-      email: formData?.email,
-      uf: formData?.uf,
-      latitude: formData?.latitude,
-      longitude: formData?.longitude,
-      //TODO
-      personId: 1
-    };
 
     fetch('http://localhost:8080/client', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newData),
+      body: JSON.stringify(data),
     })
       .then(response => {
         if (response.ok) { 
-          // Tratar a atualização
           fetchData();
         } else {
-          // Tratar o erro de acordo com a sua necessidade
+          console.log(response);
         }
         closeModal();
       })
@@ -82,40 +67,22 @@ export default function ClientListPage() {
         console.error(error);
       });
 
-    console.log(data);
   }
 
   const handleEdit = (data: ClientFormData) => {
-    setFormData(data);
-
-    const newData = {
-      id: formData?.id,
-      name: formData?.name,
-      cnpj: formData?.cnpj,
-      phone: formData?.phone,
-      email: formData?.email,
-      uf: formData?.uf,
-      latitude: formData?.latitude,
-      longitude: formData?.longitude,
-      // TODO
-      personId: 1
-    };
 
     fetch(`http://localhost:8080/client/${data.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(newData),
+    body: JSON.stringify(data),
   })
     .then(response => {
       if (response.ok) {
-        // Tratar a atualização
-        closeModal();
         fetchData();
       } else {
         console.log(response);
-        // Tratear o erro
       }
     })
     .catch(error => {
@@ -123,7 +90,6 @@ export default function ClientListPage() {
       console.error(error);
     });
 
-    console.log('Editar:', data);
   };
   
   const handleDelete = (data: ClientFormData) => {
@@ -132,19 +98,15 @@ export default function ClientListPage() {
     })
       .then((response) => {
         if (response.ok) {
-          // TO DO
           fetchData();
         } else {
-          // TO DO
           console.error('Erro ao excluir o item');
         }
-        closeModal();
       })
       .catch((error) => {
         console.error('Erro na requisição de exclusão', error);
       });
       
-    console.log('Excluir:', data);
   };
 
   const fetchData = () => {

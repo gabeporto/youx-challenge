@@ -302,15 +302,15 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         phone: data!.phone,
         uf: data!.uf,
         email: data!.email,
-        latitude: parseFloat(data!.latitude),
-        longitude: parseFloat(data!.longitude),
+        latitude: data!.latitude,
+        longitude: data!.longitude,
         isNameValid: true,
         isCnpjValid: true,
         isPhoneValid: true,
         isUfValid: true,
         isEmailValid: true,
         isMarkValid: true,
-        personId: 0
+        personId: 1
     });
 
     const [touchedFields, setTouchedFields] = useState({
@@ -370,6 +370,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
 
         if (isNameValid && isCnpjValid && isPhoneValid && isUfValid && isEmailValid && isMarkValid) {
             onSubmit(formData);
+            onClose();
         }
 
     };
@@ -439,7 +440,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         </FlexDiv>
 
         <MapContainer>
-            <Map height={250} currentPosition={{latitude: data?.latitude ? parseFloat(data.latitude) : 0, longitude: data?.longitude ? parseFloat(data.longitude) : 0}} 
+            <Map height={250} currentPosition={{latitude: data?.latitude ? data.latitude : 0, longitude: data?.longitude ? data.longitude : 0}} 
             onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} />
         </MapContainer>
   
@@ -473,6 +474,7 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({data, onSubmit, onC
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmit(formData);
+        onClose();
     };
 
     return (
