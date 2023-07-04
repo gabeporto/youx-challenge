@@ -120,7 +120,7 @@ export const EditClientModal: React.FC<ClientModalProps> = ({ data, isOpen, onCl
     )
 }
 
-export const DeleteClientModal: React.FC<ClientModalProps> = ({ isOpen, onClose, onSubmit}) => {
+export const DeleteClientModal: React.FC<ClientModalProps> = ({ data, isOpen, onClose, onSubmit}) => {
 
     if (!isOpen) return null;
 
@@ -131,7 +131,7 @@ export const DeleteClientModal: React.FC<ClientModalProps> = ({ isOpen, onClose,
                     <ModalBar>
                     <ModalTitle>Excluir Cliente</ModalTitle>
                     </ModalBar>
-                    <DeleteClientForm onSubmit={onSubmit} onClose={onClose}/>
+                    <DeleteClientForm data={data} onSubmit={onSubmit} onClose={onClose}/>
                 </ModalContent>
             </ModalDiv>
         </ModalWrapper>

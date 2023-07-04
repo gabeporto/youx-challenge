@@ -72,10 +72,11 @@ export default function ClientListPage() {
       .then(response => {
         if (response.ok) { 
           // Tratar a atualização
-          window.location.reload();
+          fetchData();
         } else {
           // Tratar o erro de acordo com a sua necessidade
         }
+        closeModal();
       })
       .catch(error => {
         console.error(error);
@@ -86,7 +87,7 @@ export default function ClientListPage() {
 
   const handleEdit = (data: ClientFormData) => {
     setFormData(data);
-    
+
     const newData = {
       id: formData?.id,
       name: formData?.name,
@@ -96,11 +97,9 @@ export default function ClientListPage() {
       uf: formData?.uf,
       latitude: formData?.latitude,
       longitude: formData?.longitude,
-      //TODO
+      // TODO
       personId: 1
     };
-
-    console.log(newData);
 
     fetch(`http://localhost:8080/client/${data.id}`, {
     method: 'PUT',
@@ -112,7 +111,8 @@ export default function ClientListPage() {
     .then(response => {
       if (response.ok) {
         // Tratar a atualização
-        window.location.reload();
+        closeModal();
+        fetchData();
       } else {
         console.log(response);
         // Tratear o erro
@@ -127,11 +127,27 @@ export default function ClientListPage() {
   };
   
   const handleDelete = (data: ClientFormData) => {
-    // Lógica para lidar com a ação de exclusão
+    fetch(`http://localhost:8080/client/${data.id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (response.ok) {
+          // TO DO
+          fetchData();
+        } else {
+          // TO DO
+          console.error('Erro ao excluir o item');
+        }
+        closeModal();
+      })
+      .catch((error) => {
+        console.error('Erro na requisição de exclusão', error);
+      });
+      
     console.log('Excluir:', data);
   };
 
-  useEffect(() => {
+  const fetchData = () => {
     fetch('http://localhost:8080/client')
       .then(response => response.json())
       .then(data => {
@@ -140,6 +156,10 @@ export default function ClientListPage() {
       .catch(error => {
         console.error(error);
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (

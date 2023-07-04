@@ -452,10 +452,10 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
     );
   };
 
-export const DeleteClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
+export const DeleteClientForm: React.FC<ClientFormProps> = ({data, onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<ClientFormData>({
-        id: 0,
+        id: data?.id,
         name: '',
         cnpj: '',
         phone: '',
@@ -482,7 +482,7 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose 
             <StyledLabel>Deseja excluir este cliente? Esta ação é irreversível e todas as vendas vinculadas ao cliente serão excluídas.</StyledLabel>
         </LabelContainer>
 
-        <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
+        <StyledInput type="number" name="id" defaultValue={data?.id} hidden></StyledInput>
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>
