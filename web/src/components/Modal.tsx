@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import { AddClientForm, EditClientForm, DeleteClientForm, AddSaleForm, EditSaleForm, DeleteSaleForm, ClientFormData, SaleFormData } from "./Form";
+import { ClientData } from "../interface/ClientData";
 
 const fadeIn = keyframes`
   from {
@@ -79,6 +80,7 @@ interface ClientModalProps {
     onSubmit: (data: ClientFormData) => void;
     isOpen: boolean;
     onClose: () => void;
+    data?: ClientData;
 }
 
 export const AddClientModal: React.FC<ClientModalProps> = ({ isOpen, onClose, onSubmit}) => {
@@ -177,7 +179,7 @@ export const EditSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onSub
     )
 }
 
-export const DeleteSaleModal: React.FC<ClientModalProps> = ({ isOpen, onClose, onSubmit}) => {
+export const DeleteSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onSubmit}) => {
 
     if (!isOpen) return null;
 

@@ -7,6 +7,7 @@ import { SelectOption, Select } from './Select';
 import { DateInput } from './DatePicker';
 import InputMask from 'react-input-mask'; 
 import { NumericFormat } from 'react-number-format';
+import { ClientData } from "../interface/ClientData";
 
 const StyledInput = styled.input`
     width: 100%;
@@ -125,6 +126,7 @@ const StyledMoneyMask = styled(NumericFormat)`
 interface ClientFormProps {
   onSubmit: (data: ClientFormData) => void;
   onClose: () => void;
+  data?: ClientData;
 }
 
 export interface ClientFormData {
@@ -134,8 +136,8 @@ export interface ClientFormData {
     phone: string;
     uf: string;
     email: string;
-    lat: number;
-    lng: number;
+    latitude: number;
+    longitude: number;
     isNameValid?: boolean,
     isCnpjValid?: boolean,
     isPhoneValid?: boolean,
@@ -153,8 +155,8 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     phone: '',
     uf: '',
     email: '',
-    lat: 0,
-    lng: 0,
+    latitude: 0,
+    longitude: 0,
     isNameValid: false,
     isCnpjValid: false,
     isPhoneValid: false,
@@ -196,9 +198,9 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       }));
   };
 
-  const handleMapPositionChange = (lat: number, lng: number ) => {
+  const handleMapPositionChange = (latitude: number, longitude: number ) => {
     const isMarkValid = true;
-    setFormData((prevData) => ({ ...prevData, lat, lng, isMarkValid}));
+    setFormData((prevData) => ({ ...prevData, latitude, longitude, isMarkValid}));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -209,7 +211,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
     const isUfValid = formData.uf !== '0';
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
-    const isMarkValid = formData.lat != 0 && formData.lng != 0;
+    const isMarkValid = formData.latitude != 0 && formData.longitude != 0;
 
     setFormData((prevData) => ({
         ...prevData,
@@ -293,7 +295,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       </FlexDiv>
 
         <MapContainer>
-            <Map height={250} onPositionChange={(lat : number, lng : number) => handleMapPositionChange(lat, lng)} />
+            <Map height={250} onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} />
         </MapContainer>
 
       <ButtonsDiv>
@@ -314,8 +316,8 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         phone: '',
         uf: '',
         email: '',
-        lat: 0,
-        lng: 0,
+        latitude: 0,
+        longitude: 0,
         isNameValid: false,
         isCnpjValid: false,
         isPhoneValid: false,
@@ -355,9 +357,9 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         }));
     };
 
-    const handleMapPositionChange = (lat: number, lng: number ) => {
+    const handleMapPositionChange = (latitude: number, longitude: number ) => {
         const isMarkValid = true;
-        setFormData((prevData) => ({ ...prevData, lat, lng, isMarkValid}));
+        setFormData((prevData) => ({ ...prevData, latitude, longitude, isMarkValid}));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -368,7 +370,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
             const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
             const isUfValid = formData.uf != "";
             const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
-            const isMarkValid = formData.lat != 0 && formData.lng != 0;
+            const isMarkValid = formData.latitude != 0 && formData.longitude != 0;
 
         setFormData((prevData) => ({
             ...prevData,
@@ -450,7 +452,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         </FlexDiv>
 
         <MapContainer>
-            <Map height={250} onPositionChange={(lat : number, lng : number) => handleMapPositionChange(lat, lng)} />
+            <Map height={250} onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} />
         </MapContainer>
   
         <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
@@ -471,8 +473,8 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose 
         phone: '',
         uf: '',
         email: '',
-        lat: 0,
-        lng: 0,
+        latitude: 0,
+        longitude: 0,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {

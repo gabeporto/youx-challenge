@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
 import Header from "../../components/Header";
@@ -9,6 +9,8 @@ import styled from "styled-components";
 import Subtitle from "../../components/Subtitle";
 import Table from "../../components/Table";
 import { ClientFormData } from "../../components/Form";
+import { ClientData } from "../../interface/ClientData";
+import { Navigate } from "react-router-dom";
 
 const FlexDiv = styled.div`
   display: flex;
@@ -43,215 +45,42 @@ export default function ClientListPage() {
     { name: "Telefone", dataKey: "phone" },
   ];
 
-  // Examples
-  const data = [
-    {
-      id: 1,
-      name: 'Comércio de Livros LTDA',
-      cnpj: '85.681.832/0001-73',
-      email: 'comerciodelivros@email.com',
-      uf: 'MG',
-      phone: '(35) 92854-1548',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 2,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 3,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 4,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 5,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 6,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 7,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 8,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 9,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 10,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 11,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 12,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 13,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 14,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 15,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 16,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 17,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 18,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 19,
-      name: 'Cliente 1',
-      cnpj: '123456789',
-      email: 'cliente1@example.com',
-      uf: 'MG',
-      phone: '1234567890',
-      lat: 0,
-      lng: 0,
-    },
-    {
-      id: 20,
-      name: 'Cliente 2',
-      cnpj: '987654321',
-      email: 'cliente2@example.com',
-      uf: 'MG',
-      phone: '9876543210',
-      lat: 0,
-      lng: 0,
-    },
-  ];
-
+  const [data, setData] = useState<ClientData[]>([]);
   const [formData, setFormData] = useState<ClientFormData | null>(null);
 
   const handleAdd = (data: ClientFormData) => {
     setFormData(data);
-    // Lógica para lidar com a ação de adição
+
+    const newData = {
+      name: formData?.name,
+      cnpj: formData?.cnpj,
+      phone: formData?.phone,
+      email: formData?.email,
+      uf: formData?.uf,
+      latitude: formData?.latitude,
+      longitude: formData?.longitude,
+      //TODO
+      personId: 1
+    };
+
+    fetch('http://localhost:8080/client', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newData),
+    })
+      .then(response => {
+        if (response.ok) { 
+          window.location.reload();
+        } else {
+          // Tratar o erro de acordo com a sua necessidade
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
     console.log(data);
   }
 
@@ -264,6 +93,17 @@ export default function ClientListPage() {
     // Lógica para lidar com a ação de exclusão
     console.log('Excluir:', data);
   };
+
+  useEffect(() => {
+    fetch('http://localhost:8080/client')
+      .then(response => response.json())
+      .then(data => {
+        setData(data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
 
   return (
       <>

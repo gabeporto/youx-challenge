@@ -4,7 +4,8 @@ import { EditClientModal, EditSaleModal, DeleteClientModal, DeleteSaleModal } fr
 import EditIcon from '@mui/icons-material/ModeEdit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { ClientFormData , SaleFormData } from "./Form";
+import { ClientData } from "../interface/ClientData"
+import { SaleData } from "../interface/SaleData"
 
 const TableContainer = styled.div`
   width: 100%;
@@ -147,7 +148,7 @@ interface Column {
 
 interface TableProps {
   columns: Column[];
-  data: (ClientFormData | SaleFormData)[];
+  data: (ClientData | SaleData)[];
   type: string;
   onEdit: any;
   onDelete: any;
@@ -197,11 +198,11 @@ const Table: React.FC<TableProps> = ({ columns, data, type, onEdit, onDelete }) 
     setOpenDropdownId(null);
   };
 
-  const handleEditClick = (data: ClientFormData | SaleFormData) => {
+  const handleEditClick = (data: ClientData | SaleData) => {
     onEdit(data);
   };
 
-  const handleDeleteClick = (data: ClientFormData | SaleFormData) => {
+  const handleDeleteClick = (data: ClientData | SaleData) => {
     onDelete(data);
   };
 

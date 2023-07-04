@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 interface MapProps  {
     height: number;
-    onPositionChange: (lat: number, lng: number) => void;
+    onPositionChange: (latitude: number, longitude: number) => void;
 }
 
 const StyledMapContainer = styled.div<MapProps>`
@@ -16,7 +16,7 @@ const StyledMapContainer = styled.div<MapProps>`
 `
 
 interface MapEventsProps {
-    onMapClick: (lat: number, lng: number) => void;
+    onMapClick: (latitude: number, longitude: number) => void;
   }
 
 function MapEvents({ onMapClick }: MapEventsProps) {
@@ -32,19 +32,19 @@ function MapEvents({ onMapClick }: MapEventsProps) {
 
 export default function Map(props : MapProps) {
 
-    const [marker, setMarker] = useState<{ lat: number; lng: number } | null>(null);
+    const [marker, setMarker] = useState<{ latitude: number; longitude: number } | null>(null);
 
     const customIcon = new Icon({
         iconUrl: require("../assets/icons/marker-icon.png"),
         iconSize: [38, 38]
     }); 
     
-    const handleMapClick = (lat: number, lng: number) => {
+    const handleMapClick = (latitude: number, longitude: number) => {
         setMarker({
-            lat: lat,
-            lng: lng,
+            latitude: latitude,
+            longitude: longitude,
         })
-        props.onPositionChange(lat, lng);
+        props.onPositionChange(latitude, longitude);
       };
       
     return (
@@ -64,7 +64,7 @@ export default function Map(props : MapProps) {
 
                  <MapEvents onMapClick={handleMapClick}/>
                 {marker && (
-                    <Marker position={[marker.lat, marker.lng]} icon={customIcon} key={marker.lat}>
+                    <Marker position={[marker.latitude, marker.longitude]} icon={customIcon} key={marker.latitude}>
                         <Popup>
                             Localização selecionada
                         </Popup>
