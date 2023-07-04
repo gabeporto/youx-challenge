@@ -8,6 +8,7 @@ import { useState } from 'react';
 interface MapProps  {
     height: number;
     onPositionChange: (latitude: number, longitude: number) => void;
+    currentPosition: {latitude : number, longitude : number};
 }
 
 const StyledMapContainer = styled.div<MapProps>`
@@ -17,7 +18,7 @@ const StyledMapContainer = styled.div<MapProps>`
 
 interface MapEventsProps {
     onMapClick: (latitude: number, longitude: number) => void;
-  }
+}
 
 function MapEvents({ onMapClick }: MapEventsProps) {
     useMapEvents({
@@ -32,7 +33,10 @@ function MapEvents({ onMapClick }: MapEventsProps) {
 
 export default function Map(props : MapProps) {
 
-    const [marker, setMarker] = useState<{ latitude: number; longitude: number } | null>(null);
+    const [marker, setMarker] = useState({
+        latitude: props.currentPosition?.latitude || 0,
+        longitude: props.currentPosition?.longitude || 0
+    });
 
     const customIcon = new Icon({
         iconUrl: require("../assets/icons/marker-icon.png"),
@@ -46,9 +50,9 @@ export default function Map(props : MapProps) {
         })
         props.onPositionChange(latitude, longitude);
       };
-      
+
     return (
-        <StyledMapContainer height={props.height} onPositionChange={handleMapClick}>
+        <StyledMapContainer height={props.height} onPositionChange={handleMapClick} currentPosition={props.currentPosition}>
             <MapContainer center={[-22.252252, -45.703597]} zoom={13}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

@@ -8,6 +8,7 @@ import { DateInput } from './DatePicker';
 import InputMask from 'react-input-mask'; 
 import { NumericFormat } from 'react-number-format';
 import { ClientData } from "../interface/ClientData";
+import { ClientFormData } from '../interface/ClientFormData';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -129,23 +130,6 @@ interface ClientFormProps {
   data?: ClientData;
 }
 
-export interface ClientFormData {
-    id?: number;
-    name: string;
-    cnpj: string;
-    phone: string;
-    uf: string;
-    email: string;
-    latitude: number;
-    longitude: number;
-    isNameValid?: boolean,
-    isCnpjValid?: boolean,
-    isPhoneValid?: boolean,
-    isUfValid?: boolean,
-    isEmailValid?: boolean,
-    isMarkValid?: boolean
-}
-
 
 export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
 
@@ -163,6 +147,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     isUfValid: false,
     isEmailValid: false,
     isMarkValid: false,
+    personId: 1
   });
 
   const [touchedFields, setTouchedFields] = useState({
@@ -307,23 +292,24 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
   );
 };
 
-export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
+export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<ClientFormData>({
-        id: 0,
-        name: '',
-        cnpj: '',
-        phone: '',
-        uf: '',
-        email: '',
-        latitude: 0,
-        longitude: 0,
-        isNameValid: false,
-        isCnpjValid: false,
-        isPhoneValid: false,
-        isUfValid: false,
-        isEmailValid: false,
-        isMarkValid: false,
+        id: data!.id,
+        name: data!.name,
+        cnpj: data!.cnpj,
+        phone: data!.phone,
+        uf: data!.uf,
+        email: data!.email,
+        latitude: data!.latitude,
+        longitude: data!.longitude,
+        isNameValid: true,
+        isCnpjValid: true,
+        isPhoneValid: true,
+        isUfValid: true,
+        isEmailValid: true,
+        isMarkValid: true,
+        personId: 0
     });
 
     const [touchedFields, setTouchedFields] = useState({
@@ -413,7 +399,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
         <StyledLabel className={touchedFields.name && !formData.isNameValid ? 'invalid-label' : ''}>
             Nome *
         </StyledLabel>
-        <StyledInput type="text" name="name" defaultValue={formData.name} onChange={handleChange} onBlur={() => handleFieldBlur('name')} 
+        <StyledInput type="text" name="name" defaultValue={data?.name} onChange={handleChange} onBlur={() => handleFieldBlur('name')} 
         className={touchedFields.name && !formData.isNameValid ? 'invalid-input' : ''}/>
 
         <FlexDiv>
@@ -421,7 +407,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
                 <StyledLabel className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-label' : ''}>
                     CNPJ *
                 </StyledLabel>
-                <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" onChange={handleChange} onBlur={() => handleFieldBlur('cnpj')} 
+                <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" defaultValue={data?.cnpj} onChange={handleChange} onBlur={() => handleFieldBlur('cnpj')} 
                 className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-input' : ''}/>
             </LabelContainer>
 
@@ -429,7 +415,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
                 <StyledLabel className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-label' : ''}>
                     Telefone *
                 </StyledLabel>
-                <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" onChange={handleChange} onBlur={() => handleFieldBlur('phone')} 
+                <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" defaultValue={data?.phone} onChange={handleChange} onBlur={() => handleFieldBlur('phone')} 
                 className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>  
@@ -439,23 +425,24 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose })
                 <StyledLabel>
                     UF *
                 </StyledLabel>
-                <Select name="uf" defaultValue={formData.uf} options={[{ value: '', label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
+                <Select name="uf" defaultValue={data?.uf || ''} options={[{ value: '', label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
             </LabelContainer>
             
             <LabelContainer>
                 <StyledLabel className={touchedFields.email && !formData.isEmailValid ? 'invalid-label' : ''}>
                     Email *
                 </StyledLabel>
-                <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} onBlur={() => handleFieldBlur('email')} 
+                <StyledInput type="text" name="email" defaultValue={data?.email} onChange={handleChange} onBlur={() => handleFieldBlur('email')} 
                 className={touchedFields.email && !formData.isEmailValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>
 
         <MapContainer>
-            <Map height={250} onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} />
+            <Map height={250} currentPosition={{latitude: data?.latitude ? parseFloat(data.latitude) : 0, longitude: data?.longitude ? parseFloat(data.longitude) : 0}} 
+            onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} />
         </MapContainer>
   
-        <StyledInput type="number" name="id" defaultValue={formData.id} hidden></StyledInput>
+        <StyledInput type="number" name="id" defaultValue={data?.id} hidden></StyledInput>
         <ButtonsDiv>
             <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <SaveButton type="submit">Salvar</SaveButton>
@@ -517,6 +504,7 @@ export interface SaleFormData {
     isClientValid?: boolean,
     isStatusValid?: boolean,
     isValueValid?: boolean,
+    clientId?: number
 }
   
 export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {

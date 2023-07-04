@@ -8,9 +8,8 @@ import { AddClientModal } from "../../components/Modal";
 import styled from "styled-components";
 import Subtitle from "../../components/Subtitle";
 import Table from "../../components/Table";
-import { ClientFormData } from "../../components/Form";
+import { ClientFormData } from "../../interface/ClientFormData"
 import { ClientData } from "../../interface/ClientData";
-import { Navigate } from "react-router-dom";
 
 const FlexDiv = styled.div`
   display: flex;
@@ -27,7 +26,7 @@ const TableDiv = styled.div`
 `
 
 export default function ClientListPage() {
-
+  
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -72,6 +71,7 @@ export default function ClientListPage() {
     })
       .then(response => {
         if (response.ok) { 
+          // Tratar a atualização
           window.location.reload();
         } else {
           // Tratar o erro de acordo com a sua necessidade
@@ -85,7 +85,44 @@ export default function ClientListPage() {
   }
 
   const handleEdit = (data: ClientFormData) => {
-    // Lógica para lidar com a ação de edição
+    setFormData(data);
+    
+    const newData = {
+      id: formData?.id,
+      name: formData?.name,
+      cnpj: formData?.cnpj,
+      phone: formData?.phone,
+      email: formData?.email,
+      uf: formData?.uf,
+      latitude: formData?.latitude,
+      longitude: formData?.longitude,
+      //TODO
+      personId: 1
+    };
+
+    console.log(newData);
+
+    fetch(`http://localhost:8080/client/${data.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newData),
+  })
+    .then(response => {
+      if (response.ok) {
+        // Tratar a atualização
+        window.location.reload();
+      } else {
+        console.log(response);
+        // Tratear o erro
+      }
+    })
+    .catch(error => {
+      // Tratar o erro de requisição
+      console.error(error);
+    });
+
     console.log('Editar:', data);
   };
   
