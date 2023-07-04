@@ -9,6 +9,7 @@ import InputMask from 'react-input-mask';
 import { NumericFormat } from 'react-number-format';
 import { ClientData } from "../interface/ClientData";
 import { ClientFormData } from '../interface/ClientFormData';
+import { SaleFormData } from '../interface/SaleFormData';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -301,8 +302,8 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         phone: data!.phone,
         uf: data!.uf,
         email: data!.email,
-        latitude: data!.latitude,
-        longitude: data!.longitude,
+        latitude: parseFloat(data!.latitude),
+        longitude: parseFloat(data!.longitude),
         isNameValid: true,
         isCnpjValid: true,
         isPhoneValid: true,
@@ -494,19 +495,7 @@ interface SaleFormProps {
     onSubmit: (data: SaleFormData) => void;
     onClose: () => void;
   }
-  
-export interface SaleFormData {
-    id?: number;
-    client: string;
-    date: Date;
-    status: string;
-    value: number | string;
-    isClientValid?: boolean,
-    isStatusValid?: boolean,
-    isValueValid?: boolean,
-    clientId?: number
-}
-  
+    
 export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({

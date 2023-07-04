@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { ClientData } from "../interface/ClientData"
 import { SaleData } from "../interface/SaleData"
+import { SaleFormData } from '../interface/SaleFormData';
+import { ClientFormData } from '../interface/ClientFormData';
 
 const TableContainer = styled.div`
   width: 100%;
@@ -198,11 +200,11 @@ const Table: React.FC<TableProps> = ({ columns, data, type, onEdit, onDelete }) 
     setOpenDropdownId(null);
   };
 
-  const handleEditClick = (data: ClientData | SaleData) => {
+  const handleEditClick = (data: ClientFormData | SaleFormData) => {
     onEdit(data);
   };
 
-  const handleDeleteClick = (data: ClientData | SaleData) => {
+  const handleDeleteClick = (data: ClientFormData | SaleFormData) => {
     onDelete(data);
   };
 
