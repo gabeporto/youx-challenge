@@ -183,7 +183,7 @@ export const EditSaleModal: React.FC<SaleModalProps> = ({ data, isOpen, onClose,
     )
 }
 
-export const DeleteSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onSubmit}) => {
+export const DeleteSaleModal: React.FC<SaleModalProps> = ({ data, isOpen, onClose, onSubmit}) => {
 
     if (!isOpen) return null;
 
@@ -194,7 +194,7 @@ export const DeleteSaleModal: React.FC<SaleModalProps> = ({ isOpen, onClose, onS
                     <ModalBar>
                     <ModalTitle>Excluir Cliente</ModalTitle>
                     </ModalBar>
-                    <DeleteSaleForm onSubmit={onSubmit} onClose={onClose}/>
+                    <DeleteSaleForm data={data} onSubmit={onSubmit} onClose={onClose}/>
                 </ModalContent>
             </ModalDiv>
         </ModalWrapper>

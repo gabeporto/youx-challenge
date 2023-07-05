@@ -238,8 +238,20 @@ export default function SaleListPage() {
     };
       
     const handleDelete = (data: SaleFormData) => {
-        // Lógica para lidar com a ação de exclusão
-        console.log('Excluir:', data);
+        console.log(data);
+        fetch(`http://localhost:8080/sale/${data.id}`, {
+            method: 'DELETE',
+            })
+            .then((response) => {
+                if (response.ok) {
+                fetchData();
+                } else {
+                console.error('Erro ao excluir o item');
+                }
+            })
+            .catch((error) => {
+                console.error('Erro na requisição de exclusão', error);
+            });
     };
 
     const fetchData = () => {

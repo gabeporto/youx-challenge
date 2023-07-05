@@ -248,7 +248,7 @@ const Table: React.FC<TableProps> = ({ columns, data, type, onEdit, onDelete }) 
                   <TableCell>{item.client}</TableCell>
                 )}
                 {('date' in item) && (
-                  <TableCell>{item.date}</TableCell>
+                  <TableCell>{String(item.date)}</TableCell>
                 )}
                 {('status' in item) && (
                   <TableCell>{item.status}</TableCell>
@@ -282,7 +282,7 @@ const Table: React.FC<TableProps> = ({ columns, data, type, onEdit, onDelete }) 
                     Deletar
                   </DropdownItem>
                   {type === 'client' && <DeleteClientModal data={item as ClientData} onSubmit={handleDeleteClick} isOpen={removeModalOpen} onClose={closeRemoveModal} />}
-                  {type === 'sale' && <DeleteSaleModal onSubmit={handleDeleteClick} isOpen={removeModalOpen} onClose={closeRemoveModal} />}
+                  {type === 'sale' && <DeleteSaleModal data={item as SaleData} onSubmit={handleDeleteClick} isOpen={removeModalOpen} onClose={closeRemoveModal} />}
 
                 </DropdownList>
 

@@ -834,10 +834,10 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     );
 };
 
-export const DeleteSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
+export const DeleteSaleForm: React.FC<SaleFormProps> = ({ data, onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({
-        id: 0,
+        id: data?.id,
         client: '',
         date: new Date(),
         status: '',
