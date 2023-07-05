@@ -11,7 +11,7 @@ import { ClientData } from "../interface/ClientData";
 import { ClientFormData } from '../interface/ClientFormData';
 import { SaleFormData } from '../interface/SaleFormData';
 import { SaleData } from '../interface/SaleData';
-import formatMoneyValue from '../utils/formatMoneyValue';
+import { formatMoneyValue } from '../utils/formatMoneyValue';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -395,7 +395,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         };
     
         fecthStates();
-        }, []);
+    }, []);
 
     return (
       <form onSubmit={handleSubmit}>
@@ -664,7 +664,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
         id: data!.id,
         client: data!.client,
         clientId: data!.clientId,
-        date: data!.date,
+        date: new Date(new Date(data!.date).toLocaleDateString("pt-BR")),
         status: data!.status,
         value: data!.value,
         isClientValid: false,
@@ -727,11 +727,13 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     ];
 
     // Format Date
-    const currentDate = data?.date ? new Date(data.date) : null;
-    const formattedDate = currentDate?.toLocaleDateString("pt-BR");
+    const currentDate = data?.date ? new Date(data.date) : new Date();
+    const formattedSelectedDate = currentDate ? new Date(currentDate.toLocaleDateString("pt-BR")) : new Date();
+    const [selectedDate, setSelectedDate] = useState<Date>(formattedSelectedDate);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
         if (e !== null && e instanceof Date) {
+            setSelectedDate(e);
             setFormData((prevData) => ({ ...prevData, date: e }));
           } else if (e && e.target) {
             const { name, value } = e.target;
@@ -751,7 +753,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     const handleChangeValue = (value : number) => {
         setFormData((prevData) => ({ ...prevData, value}));
 
-        const isValueValid = typeof formData.value === 'number';
+        const isValueValid = formData.value != "";
 
         setFormData((prevData) => ({
             ...prevData,
@@ -761,20 +763,24 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
+        const formattedEditValue = parseFloat(formData.value.toString().replace(/[^\d,-]/g, ''));
+
         const isClientValid = formData.client != "";
         const isStatusValid = formData.status != "";
-        const isValueValid = typeof formData.value === 'number';
+        const isValueValid = formData.value != "";
 
-        setFormData((prevData) => ({
-            ...prevData,
+        const formattedFormData = {
+            ...formData,
+            value: formattedEditValue,
             isClientValid,
             isStatusValid,
             isValueValid,
-        }));
+        };
 
         if (isClientValid && isStatusValid && isValueValid) {
-            onSubmit(formData);
+            onSubmit(formattedFormData);
+            onClose();
         }
     };
 
@@ -782,7 +788,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
         <form onSubmit={handleSubmit}>
             <LabelContainer>
                 {/* Example */}
-                <StyledSubtitle>Venda #{data?.id} - {data?.client} - {data?.date ? new Date(data?.date).toLocaleDateString() : ''}</StyledSubtitle>
+                <StyledSubtitle>Venda #{data?.id} - {data?.client} - {data?.date ? data.date.toString() : ''}</StyledSubtitle>
             </LabelContainer>
 
             <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
@@ -797,7 +803,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
                     <StyledLabel>
                         Data da venda *
                     </StyledLabel>
-                    <DateInput selectedDate={formattedDate ? new Date(formattedDate) : new Date()} onChange={handleChange}/>
+                    <DateInput selectedDate={selectedDate} onChange={handleChange}/>
                 </LabelContainer>
 
                 <LabelContainer className={touchedFields.status && !formData.isStatusValid ? 'invalid-label' : ''}>
@@ -846,6 +852,7 @@ export const DeleteSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) =
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmit(formData);
+        onClose();
     };
 
     return (

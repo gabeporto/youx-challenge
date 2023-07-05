@@ -3,6 +3,7 @@ import { AddClientForm, EditClientForm, DeleteClientForm, AddSaleForm, EditSaleF
 import { ClientData } from "../interface/ClientData";
 import { ClientFormData } from "../interface/ClientFormData";
 import { SaleData } from "../interface/SaleData";
+import { SaleFormData } from "../interface/SaleFormData";
 
 const fadeIn = keyframes`
   from {

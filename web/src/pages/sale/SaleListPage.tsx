@@ -216,8 +216,25 @@ export default function SaleListPage() {
     }
     
     const handleEdit = (data: SaleFormData) => {
-        // Lógica para lidar com a ação de edição
-        console.log('Editar:', data);
+
+        fetch(`http://localhost:8080/sale/${data.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => {
+          if (response.ok) {
+            fetchData();
+          } else {
+            console.log(response);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    
     };
       
     const handleDelete = (data: SaleFormData) => {
