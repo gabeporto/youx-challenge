@@ -428,7 +428,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
                 <StyledLabel>
                     UF *
                 </StyledLabel>
-                <Select name="uf" defaultValue={data!.uf || ''} options={[{ value: 0, label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
+                <Select name="uf" defaultValue={formData.uf || ""} options={[{ value: '', label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
             </LabelContainer>
             
             <LabelContainer>
@@ -788,7 +788,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
             <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
                 Cliente *
             </StyledLabel>
-            <Select name="clientId" defaultValue={data?.clientId !== undefined ? data.clientId : ''} 
+            <Select name="clientId" defaultValue={formData?.clientId !== undefined ? formData.clientId : ''} 
             options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
             className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
 
@@ -804,7 +804,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
                     <StyledLabel>
                         Situação *
                     </StyledLabel>
-                    <Select name="status" defaultValue={data?.status !== undefined ? data?.status : 0}  options={[{ value: 0, label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
+                    <Select name="status" defaultValue={formData?.status !== undefined ? formData?.status : 0}  options={[{ value: 0, label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
                     className={touchedFields.status && !formData.isStatusValid ? 'invalid-input' : ''}/>
                 </LabelContainer>
             </FlexDiv>
