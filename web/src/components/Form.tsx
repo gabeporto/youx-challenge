@@ -619,7 +619,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
             Cliente *
         </StyledLabel>
-        <Select name="clientId" defaultValue={formData?.clientId | 0} options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
+        <Select name="clientId" defaultValue={formData.clientId !== undefined ? formData.clientId : ''} options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
         className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
 
         <FlexDiv>
@@ -627,7 +627,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
                 <StyledLabel>
                     Data da venda *
                 </StyledLabel>
-                <DateInput selectedDate={formData.date} onChange={handleChange}/>
+                <DateInput selectedDate={formData.date ? new Date(formData.date) : new Date()} onChange={handleChange}/>
             </LabelContainer>
 
             <LabelContainer className={touchedFields.status && !formData.isStatusValid ? 'invalid-label' : ''}>
@@ -727,8 +727,8 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     ];
 
     // Format Date
-    const currentDate = new Date(data.date);
-    const formattedDate = currentDate.toLocaleDateString("pt-BR");
+    const currentDate = data?.date ? new Date(data.date) : null;
+    const formattedDate = currentDate?.toLocaleDateString("pt-BR");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
         if (e !== null && e instanceof Date) {
@@ -782,13 +782,14 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
         <form onSubmit={handleSubmit}>
             <LabelContainer>
                 {/* Example */}
-                <StyledSubtitle>Venda #{data.id} - {data.client} - {data.date}</StyledSubtitle>
+                <StyledSubtitle>Venda #{data?.id} - {data?.client} - {data?.date ? new Date(data?.date).toLocaleDateString() : ''}</StyledSubtitle>
             </LabelContainer>
 
             <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
                 Cliente *
             </StyledLabel>
-            <Select name="clientId" defaultValue={data?.clientId} options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
+            <Select name="clientId" defaultValue={data?.clientId !== undefined ? data.clientId : ''} 
+            options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
             className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
 
                 <FlexDiv>
@@ -796,14 +797,14 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
                     <StyledLabel>
                         Data da venda *
                     </StyledLabel>
-                    <DateInput selectedDate={new Date(formattedDate)} onChange={handleChange}/>
+                    <DateInput selectedDate={formattedDate ? new Date(formattedDate) : new Date()} onChange={handleChange}/>
                 </LabelContainer>
 
                 <LabelContainer className={touchedFields.status && !formData.isStatusValid ? 'invalid-label' : ''}>
                     <StyledLabel>
                         Situação *
                     </StyledLabel>
-                    <Select name="status" defaultValue={data.status}  options={[{ value: 0, label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
+                    <Select name="status" defaultValue={data?.status !== undefined ? data?.status : 0}  options={[{ value: 0, label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
                     className={touchedFields.status && !formData.isStatusValid ? 'invalid-input' : ''}/>
                 </LabelContainer>
             </FlexDiv>
@@ -813,12 +814,12 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
             </StyledLabel>
             <StyledMoneyMask 
                 thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
-                className={touchedFields.value && !formData.isValueValid ? 'invalid-input' : ''} defaultValue={formatMoneyValue(data.value)}
+                className={touchedFields.value && !formData.isValueValid ? 'invalid-input' : ''} defaultValue={formatMoneyValue(data?.value)}
                 name="value" onValueChange={(values: { floatValue: any; }) => {
                     const { floatValue } = values;
                     handleChangeValue(floatValue);
             }}/>
-            <StyledInput type="number" name="id" defaultValue={data.id} hidden />
+            <StyledInput type="number" name="id" defaultValue={data?.id} hidden />
             <ButtonsDiv>
                 <CancelButton onClick={onClose}>Cancelar</CancelButton>
                 <SaveButton type="submit">Salvar</SaveButton>

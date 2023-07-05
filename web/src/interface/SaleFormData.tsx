@@ -1,7 +1,7 @@
 export interface SaleFormData {
     id?: number;
     client?: string;
-    date: Date;
+    date: Date | string;
     status: string;
     value: number | string;
     isClientValid?: boolean;
