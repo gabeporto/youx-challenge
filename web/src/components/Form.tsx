@@ -263,10 +263,10 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
 
   };
 
-    // API to get Brazil UFs
-    const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
-
-    useEffect(() => {
+  // API to get Brazil UFs
+  const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
+  
+  useEffect(() => {
       const fecthStates = async () => {
         try {
           const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
@@ -282,7 +282,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       };
   
       fecthStates();
-    }, []);
+  }, []);
 
   return (
     <>
@@ -363,52 +363,75 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         personId: 1
     });
 
-    const [touchedFields, setTouchedFields] = useState({
-        name: false,
-        cnpj: false,
-        phone: false,
-        email: false,
-    });
-
-    const handleFieldBlur = (fieldName: string) => {
-        setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
-    };
+    const [ nameValid, setNameValid ] = useState<boolean>(true);
+    const [ cnpjValid, setCnpjValid ] = useState<boolean>(true);
+    const [ phoneValid, setPhoneValid ] = useState<boolean>(true);
+    const [ ufValid, setUfValid ] = useState<boolean>(true);
+    const [ emailValid, setEmailValid ] = useState<boolean>(true);
+    const [ markValid, setMarkValid ] = useState<boolean>(true);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-
+    
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    
         const isNameValid = formData.name.length > 3;
         const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
         const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
-        const isUfValid = formData.uf != "";
+        const isUfValid = formData.uf !== "";
         const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
-
+    
+        if(e.target.name === "name") {
+            if(!isNameValid) { setNameValid(false) } else { setNameValid(true)};
+        }
+    
+        if(e.target.name === "cnpj") {
+            if(!isCnpjValid) { setCnpjValid(false) } else { setCnpjValid(true)};
+        }
+    
+        if(e.target.name === "phone") {
+            if(!isPhoneValid) { setPhoneValid(false) } else { setPhoneValid(true)};
+        }
+    
+        if(e.target.name === "uf") {
+            const isUfValid = e.target.value !== "";
+            if(!isUfValid) { setUfValid(false) } else { setUfValid(true)};
+        }
+    
+        if(e.target.name === "email") {
+            if(!isEmailValid) { setEmailValid(false) } else { setEmailValid(true)};
+        }
+     
         setFormData((prevData) => ({
             ...prevData,
+            [name]: value,
             isNameValid,
             isCnpjValid,
             isUfValid,
             isPhoneValid,
             isEmailValid,
-        }));
+          }));
     };
 
     const handleMapPositionChange = (latitude: number, longitude: number ) => {
         const isMarkValid = true;
+        setMarkValid(true);
         setFormData((prevData) => ({ ...prevData, latitude, longitude, isMarkValid}));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+    
         const isNameValid = formData.name.length > 3;
-            const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
-            const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
-            const isUfValid = formData.uf != "";
-            const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
-            const isMarkValid = formData.latitude != 0 && formData.longitude != 0;
-
+        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+        const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
+        const isUfValid = formData.uf !== "";
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
+        const isMarkValid = formData.latitude != 0 && formData.longitude != 0;
+    
         setFormData((prevData) => ({
             ...prevData,
             isNameValid,
@@ -416,83 +439,107 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
             isPhoneValid,
             isUfValid,
             isEmailValid,
-            }));
-
-        if (isNameValid && isCnpjValid && isPhoneValid && isUfValid && isEmailValid && isMarkValid) {
+          }));
+    
+          if(!isNameValid) {
+            setNameValid(false);
+          }
+    
+          if(!isCnpjValid) {
+            setCnpjValid(false);
+          }
+    
+          if(!isPhoneValid) {
+            setPhoneValid(false);
+          }
+    
+          if(!isUfValid) {
+            setUfValid(false);
+          }
+    
+          if(!isEmailValid) {
+            setEmailValid(false);
+          }
+    
+          if(!isMarkValid) {
+            setMarkValid(false);
+          }
+    
+          if (isNameValid && isCnpjValid && isPhoneValid && isUfValid && isEmailValid && isMarkValid) {
             onSubmit(formData);
             onClose();
-        } 
+          }
     
-
-    };
+      };
 
     // API to get Brazil UFs
     const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
-
+  
     useEffect(() => {
-        const fecthStates = async () => {
-            try {
-            const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
-            const data = await response.json();
-            const formattedOptions = data.map((state: any) => ({
-                value: state.sigla,
-                label: state.sigla,
-            }));
-            setUfsApi(formattedOptions);
-            } catch (error) {
-            console.error('Erro ao buscar os estados:', error);
-            }
-        };
-    
-        fecthStates();
+      const fecthStates = async () => {
+        try {
+          const response = await fetch('https://servicodados.ibge.gov.br/api/v1/localidades/estados');
+          const data = await response.json();
+          const formattedOptions = data.map((state: any) => ({
+            value: state.sigla,
+            label: state.sigla,
+          }));
+          setUfsApi(formattedOptions);
+        } catch (error) {
+          console.error('Erro ao buscar os estados:', error);
+        }
+      };
+  
+      fecthStates();
     }, []);
 
     return (
       <form onSubmit={handleSubmit}>
-        <StyledLabel className={touchedFields.name && !formData.isNameValid ? 'invalid-label' : ''}>
+        <StyledLabel className={!nameValid ? 'invalid-label' : ''}>
             Nome *
         </StyledLabel>
-        <StyledInput type="text" name="name" defaultValue={data?.name} onChange={handleChange} onBlur={() => handleFieldBlur('name')} 
-        className={touchedFields.name && !formData.isNameValid ? 'invalid-input' : ''}/>
+        <StyledInput type="text" name="name" defaultValue={data?.name} onChange={handleChange}
+        className={!nameValid ? 'invalid-input' : ''}/>
 
         <FlexDiv>
             <LabelContainer>
-                <StyledLabel className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-label' : ''}>
+                <StyledLabel className={!cnpjValid ? 'invalid-label' : ''}>
                     CNPJ *
                 </StyledLabel>
-                <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" defaultValue={data?.cnpj} onChange={handleChange} onBlur={() => handleFieldBlur('cnpj')} 
-                className={touchedFields.cnpj && !formData.isCnpjValid ? 'invalid-input' : ''}/>
+                <StyledInputMask type="text" name="cnpj" mask="99.999.999/9999-99" defaultValue={data?.cnpj} onChange={handleChange}
+                className={!cnpjValid ? 'invalid-input' : ''}/>
             </LabelContainer>
 
             <LabelContainer>
-                <StyledLabel className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-label' : ''}>
+                <StyledLabel className={!phoneValid ? 'invalid-label' : ''}>
                     Telefone *
                 </StyledLabel>
-                <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" defaultValue={data?.phone} onChange={handleChange} onBlur={() => handleFieldBlur('phone')} 
-                className={touchedFields.phone && !formData.isPhoneValid ? 'invalid-input' : ''}/>
+                <StyledInputMask type="text" name="phone" mask="(99) 99999-9999" defaultValue={data?.phone} onChange={handleChange}
+                className={!phoneValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>  
         
         <FlexDiv>
             <LabelContainer>
-                <StyledLabel>
+                <StyledLabel className={!ufValid ? 'invalid-label' : ''}>
                     UF *
                 </StyledLabel>
-                <Select name="uf" defaultValue={formData.uf || ""} options={[{ value: '', label: 'Selecione' }, ...ufsApi]} onChange={handleChange}/>
+                <Select name="uf" defaultValue={formData.uf || ""} options={[{ value: "", label: 'Selecione' }, ...ufsApi]} onChange={handleChange} 
+                className={!ufValid ? 'invalid-input' : ''}/>
             </LabelContainer>
             
             <LabelContainer>
-                <StyledLabel className={touchedFields.email && !formData.isEmailValid ? 'invalid-label' : ''}>
+                <StyledLabel className={!emailValid ? 'invalid-label' : ''}>
                     Email *
                 </StyledLabel>
-                <StyledInput type="text" name="email" defaultValue={data?.email} onChange={handleChange} onBlur={() => handleFieldBlur('email')} 
-                className={touchedFields.email && !formData.isEmailValid ? 'invalid-input' : ''}/>
+                <StyledInput type="text" name="email" defaultValue={data?.email} onChange={handleChange}
+                className={!emailValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>
 
         <MapContainer>
             <Map height={250} currentPosition={{latitude: data?.latitude ? data.latitude : 0, longitude: data?.longitude ? data.longitude : 0}} 
-            onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} />
+            onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} className={markValid ? "" : "invalid-map"}/>
         </MapContainer>
   
         <StyledInput type="number" name="id" defaultValue={data?.id} hidden></StyledInput>
