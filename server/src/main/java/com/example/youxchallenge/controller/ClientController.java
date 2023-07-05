@@ -4,6 +4,7 @@ import com.example.youxchallenge.client.*;
 import com.example.youxchallenge.person.Person;
 import com.example.youxchallenge.person.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class ClientController {
     @GetMapping
     public List<ClientResponseDTO> getAllClients() {
 
-        List<ClientResponseDTO> clientList = clientRepository.findAll().stream().map(ClientResponseDTO::new).toList();
+        List<ClientResponseDTO> clientList = clientRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(ClientResponseDTO::new).toList();
         return clientList;
     }
 
