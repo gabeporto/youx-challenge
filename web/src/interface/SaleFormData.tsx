@@ -7,5 +7,5 @@ export interface SaleFormData {
     isClientValid?: boolean;
     isStatusValid?: boolean;
     isValueValid?: boolean;
-    clientId?: number;
+    clientId?: number | string;
 }

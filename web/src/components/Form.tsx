@@ -135,7 +135,6 @@ interface ClientFormProps {
   data?: ClientData;
 }
 
-
 export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
 
   const [formData, setFormData] = useState<ClientFormData>({
@@ -470,7 +469,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
             onClose();
           }
     
-      };
+    };
 
     // API to get Brazil UFs
     const [ufsApi, setUfsApi] = useState<SelectOption[]>([]);
@@ -564,11 +563,6 @@ export const DeleteClientForm: React.FC<ClientFormProps> = ({data, onSubmit, onC
         longitude: 0,
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         onSubmit(formData);
@@ -600,7 +594,7 @@ interface SaleFormProps {
 export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
     const [formData, setFormData] = useState<SaleFormData>({
-        clientId: 0,
+        clientId: "",
         date: new Date(),
         status: '',
         value: '',
@@ -608,17 +602,11 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
         isStatusValid: false,
         isValueValid: false,
     });
+
+    const [ clientIdValid, setClientIdValid ] = useState<boolean>(true);
+    const [ statusValid, setStatusValid ] = useState<boolean>(true);
+    const [ valueValid, setValueValid ] = useState<boolean>(true);
     
-    const [touchedFields, setTouchedFields] = useState({
-        client: false,
-        status: false,
-        value: false,
-    });
-
-    const handleFieldBlur = (fieldName: string) => {
-        setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
-    };
-
     // Fetch to get clients
     const [clients, setClients] = useState<{value: number, label: string}[]>([]);
 
@@ -663,28 +651,42 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     },
     ];
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
-        if (e !== null && e instanceof Date) {
-            setFormData((prevData) => ({ ...prevData, date: e }));
-          } else if (e && e.target) {
-            const { name, value } = e.target;
-            setFormData((prevData) => ({ ...prevData, [name]: value }));
-          }
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
 
-        const isClientValid = formData.client != "";
+        const isClientValid = formData.clientId != "";
         const isStatusValid = formData.status != "";
+
+        if(e.target.name === "clientId") {
+            const isClientValid = e.target.value !== "";
+            if(!isClientValid) { setClientIdValid(false) } else { setClientIdValid(true)};
+        }
+    
+        if(e.target.name === "status") {
+            const isStatusValid = e.target.value !== "";
+            if(!isStatusValid) { setStatusValid(false) } else { setStatusValid(true)};
+        }
 
         setFormData((prevData) => ({
             ...prevData,
+            [name]: value,
             isClientValid,
             isStatusValid,
         }));
     };
 
+    const handleDateChange = (e: Date) => {
+        setFormData((prevData) => ({ ...prevData, date: e }));
+    };
+
     const handleChangeValue = (value : number) => {
+        console.log(value);
         setFormData((prevData) => ({ ...prevData, value}));
 
-        const isValueValid = typeof formData.value === 'number';
+        const isValueValid = formData.value !== undefined && formData.value !== "";
+
+        if(!isValueValid) { setValueValid(false) } else { setValueValid(true)};
 
         setFormData((prevData) => ({
             ...prevData,
@@ -695,9 +697,9 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        const isClientValid = formData.client != "";
+        const isClientValid = formData.clientId != "";
         const isStatusValid = formData.status != "";
-        const isValueValid = typeof formData.value === 'number';
+        const isValueValid = formData.value !== undefined && formData.value !== "";
 
         setFormData((prevData) => ({
             ...prevData,
@@ -706,42 +708,56 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
             isValueValid,
         }));
 
+
+        if(!isClientValid) {
+            setClientIdValid(false);
+        }
+
+        if(!isStatusValid) {
+            setStatusValid(false);
+        }
+
+        if(!isValueValid) {
+            setValueValid(false);
+        }
+
         if (isClientValid && isStatusValid && isValueValid) {
             onSubmit(formData);
+            onClose();
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
-        <StyledLabel className={touchedFields.client && !formData.isClientValid ? 'invalid-label' : ''}>
+        <StyledLabel className={!clientIdValid ? 'invalid-label' : ''}>
             Cliente *
         </StyledLabel>
-        <Select name="clientId" defaultValue={formData.clientId !== undefined ? formData.clientId : ''} options={[{value: 0, label: 'Selecione um cliente'}, ...clients]} onChange={handleChange}
-        className={touchedFields.client && !formData.isClientValid ? 'invalid-input' : ''}/>
+        <Select name="clientId" defaultValue={formData.clientId !== undefined ? formData.clientId : ""} options={[{value: "", label: 'Selecione um cliente'}, ...clients]} 
+        onChange={handleChange} className={!clientIdValid ? 'invalid-input' : ''}/>
 
         <FlexDiv>
             <LabelContainer>
                 <StyledLabel>
                     Data da venda *
                 </StyledLabel>
-                <DateInput selectedDate={formData.date ? new Date(formData.date) : new Date()} onChange={handleChange}/>
+                <DateInput selectedDate={formData.date ? new Date(formData.date) : new Date()} onChange={handleDateChange}/>
             </LabelContainer>
 
-            <LabelContainer className={touchedFields.status && !formData.isStatusValid ? 'invalid-label' : ''}>
-                <StyledLabel>
+            <LabelContainer>
+                <StyledLabel className={!statusValid ? 'invalid-label' : ''}>
                     Situação *
                 </StyledLabel>
-                <Select name="status" defaultValue={formData.status}  options={[{ value: '', label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
-                className={touchedFields.status && !formData.isStatusValid ? 'invalid-input' : ''}/>
+                <Select name="status" defaultValue={formData.status} options={[{ value: "", label: 'Selecione uma opção' }, ...statusOptions]} onChange={handleChange}
+                className={!statusValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>
 
-        <StyledLabel className={touchedFields.value && !formData.isValueValid ? 'invalid-label' : ''}>
+        <StyledLabel className={!valueValid ? 'invalid-label' : ''}>
             Valor da venda *
         </StyledLabel>
         <StyledMoneyMask 
             thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
-            className={touchedFields.value && !formData.isValueValid ? 'invalid-input' : ''}
+            className={!valueValid ? 'invalid-input' : ''}
             name="value" onValueChange={(values: { floatValue: any; }) => {
                 const { floatValue } = values;
                 handleChangeValue(floatValue);
