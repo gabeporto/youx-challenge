@@ -141,7 +141,6 @@ export default function LoginPage() {
         event.preventDefault();
         const currentEmail = email;
         const currentPassword = password;
-        console.log(currentEmail, currentPassword);
     };
 
     return (

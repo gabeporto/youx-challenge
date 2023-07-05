@@ -144,7 +144,6 @@ export default function RegisterPage() {
         const currentEmail = email;
         const currentRole = role;
         const currentPassword = password;
-        console.log(currentName, currentEmail, currentRole, currentPassword);
     };
 
     return (

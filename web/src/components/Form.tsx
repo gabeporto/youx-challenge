@@ -681,7 +681,6 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     };
 
     const handleChangeValue = (value : number) => {
-        console.log(value);
         setFormData((prevData) => ({ ...prevData, value}));
 
         const isValueValid = formData.value !== undefined && formData.value !== "";
@@ -868,7 +867,6 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     };
 
     const handleChangeValue = (value : number) => {
-        console.log(value);
         setFormData((prevData) => ({ ...prevData, value}));
 
         const isValueValid = formData.value !== undefined && formData.value !== "";
@@ -884,8 +882,6 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
-        console.log(formData);
-
         const isClientValid = formData.clientId != "";
         const isStatusValid = formData.status != "";
         const isValueValid = formData.value !== undefined && formData.value !== "";
@@ -981,11 +977,6 @@ export const DeleteSaleForm: React.FC<SaleFormProps> = ({ data, onSubmit, onClos
         status: '',
         value: '',
     });
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

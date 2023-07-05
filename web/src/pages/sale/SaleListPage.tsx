@@ -188,7 +188,6 @@ export default function SaleListPage() {
         },
     ];
 
-    const [formData, setFormData] = useState<SaleFormData | null>(null);
     const [data, setData] = useState<SaleData[]>([]);
     const [filteredData, setFilteredData] = useState<SaleData[]>([]);
     const [searchValue, setSearchValue] = useState('');
@@ -238,7 +237,6 @@ export default function SaleListPage() {
     };
       
     const handleDelete = (data: SaleFormData) => {
-        console.log(data);
         fetch(`http://localhost:8080/sale/${data.id}`, {
             method: 'DELETE',
             })
