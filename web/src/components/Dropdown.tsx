@@ -162,8 +162,25 @@ export default function Dropdown() {
   }
 
   const addSale = (data: SaleFormData) => {
-    setSaleFormData(data);
-    console.log(data);
+
+    fetch('http://localhost:8080/sale', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then(response => {
+        if (response.ok) { 
+          window.location.reload();
+        } else {
+          console.log(response);
+        }
+        closeModal();
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   return (
