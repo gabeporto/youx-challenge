@@ -12,6 +12,8 @@ import { ClientFormData } from '../interface/ClientFormData';
 import { SaleFormData } from '../interface/SaleFormData';
 import { SaleData } from '../interface/SaleData';
 import { formatMoneyValue } from '../utils/formatMoneyValue';
+import { parse, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const StyledInput = styled.input`
     width: 100%;
@@ -161,6 +163,8 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
         email: false,
   });
 
+  const [ markValid, setMarkValid ] = useState<boolean>(true);
+
   const handleFieldBlur = (fieldName: string) => {
     setTouchedFields((prevFields) => ({ ...prevFields, [fieldName]: true }));
   };
@@ -188,6 +192,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
 
   const handleMapPositionChange = (latitude: number, longitude: number ) => {
     const isMarkValid = true;
+    setMarkValid(true);
     setFormData((prevData) => ({ ...prevData, latitude, longitude, isMarkValid}));
   };
 
@@ -209,6 +214,10 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
         isUfValid,
         isEmailValid,
       }));
+
+      if(!isMarkValid) {
+        setMarkValid(false);
+      }
 
       if (isNameValid && isCnpjValid && isPhoneValid && isUfValid && isEmailValid && isMarkValid) {
         onSubmit(formData);
@@ -282,7 +291,8 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       </FlexDiv>
 
         <MapContainer>
-            <Map height={250} onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} />
+            <Map height={250} onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} 
+            className={markValid ? "" : "invalid-map"}/>
         </MapContainer>
 
       <ButtonsDiv>
@@ -372,7 +382,8 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         if (isNameValid && isCnpjValid && isPhoneValid && isUfValid && isEmailValid && isMarkValid) {
             onSubmit(formData);
             onClose();
-        }
+        } 
+    
 
     };
 
@@ -727,9 +738,8 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     ];
 
     // Format Date
-    const currentDate = data?.date ? new Date(data.date) : new Date();
-    const formattedSelectedDate = currentDate ? new Date(currentDate.toLocaleDateString("pt-BR")) : new Date();
-    const [selectedDate, setSelectedDate] = useState<Date>(formattedSelectedDate);
+    const formattedDate = parse(String(data!.date), 'dd/MM/yyyy', new Date(), { locale: ptBR });
+    const [selectedDate, setSelectedDate] = useState<Date>(formattedDate);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | Date ) => {
         if (e !== null && e instanceof Date) {
@@ -772,6 +782,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
 
         const formattedFormData = {
             ...formData,
+            date: selectedDate,
             value: formattedEditValue,
             isClientValid,
             isStatusValid,

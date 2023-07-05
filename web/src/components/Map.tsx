@@ -9,6 +9,7 @@ interface MapProps  {
     height: number;
     onPositionChange: (latitude: number, longitude: number) => void;
     currentPosition?: {latitude : number, longitude : number};
+    className?: string;
 }
 
 const StyledMapContainer = styled.div<MapProps>`
@@ -52,7 +53,7 @@ export default function Map(props : MapProps) {
       };
 
     return (
-        <StyledMapContainer height={props.height} onPositionChange={handleMapClick} currentPosition={props?.currentPosition}>
+        <StyledMapContainer height={props.height} onPositionChange={handleMapClick} currentPosition={props?.currentPosition} className={props?.className}>
             <MapContainer center={[-22.252252, -45.703597]} zoom={13}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
