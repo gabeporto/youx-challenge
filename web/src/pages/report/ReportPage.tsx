@@ -7,7 +7,7 @@ import Container from "../../components/Container";
 import Map from "../../components/Map";
 import InvoicingChart from '../../components/chart/InvoicingChart';
 import InvoicingTable from '../../components/report/InvoicingTable';
-import SecondaryButton from '../../components/SecondaryButton';
+import ExportButton from '../../components/ExportButton';
 import { useEffect, useState } from "react";
 
 const CardSection = styled.div`
@@ -44,6 +44,12 @@ const ExportButtonDiv = styled.div`
         height: 100%;
     }
 `
+
+interface InvoicingExportData {
+    period: string,
+    quantity: number,
+    value: string | number,
+};
 
 interface ReportData {
     cards: {
@@ -102,9 +108,11 @@ export default function ReportPage() {
     const [ data, setData ] = useState<ReportData | null>(null);
     const [ clientMarkers, setClientMarkers ] = useState<Mark[]>([]);
     const [ tableData, setTableData ] = useState<TableData[]>([]);
+    const [ invoicingExportData, setInvoicingExportData ] = useState<InvoicingExportData[]>([]);
     const [ periods, setPeriods ] = useState<string[]>([]);
     const [ values, setValues ] = useState<number[]>([]);
     const tableColumns = ["Mês", "Vendas", "Total"];
+    const nameColumnsToExport = ["period", "quantity", "value"];
 
     const fetchData = () => {
         fetch('http://localhost:8080/report')
@@ -125,6 +133,12 @@ export default function ReportPage() {
                     period: item.period,
                     quantity: item.quantity,
                     value: item.value,
+                })));
+
+                setInvoicingExportData(data?.invoicingData.months.map((item: TableData) => ({
+                    period: item.period,
+                    quantity: item.quantity,
+                    value: 'R$ ' + item.value.toLocaleString(),
                 })));
 
                 setPeriods(data?.invoicingData.months.map((item: TableData) => item.period));
@@ -157,7 +171,7 @@ export default function ReportPage() {
                     <InvoicingTable columns={tableColumns} data={tableData}/>
                 </InvoicingTableDiv>, 
                 <ExportButtonDiv>
-                    <SecondaryButton name="Exportar CSV" columns={tableColumns} data={tableData} />
+                    <ExportButton name="Exportar CSV" columns={nameColumnsToExport} data={invoicingExportData} />
                 </ExportButtonDiv> 
             ]
         }
