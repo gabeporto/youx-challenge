@@ -171,16 +171,16 @@ export default function ReportPage() {
                 <Title title="Relatórios" />
 
                 <CardSection>
-                    <Card key={0} title={data?.cards?.salesByYear?.name || 'Card 1'} 
+                    <Card key={0} title={data?.cards?.salesByYear?.name || 'VENDAS NO ANO'} 
                     value={data?.cards?.salesByYear.value ? 'R$ ' + data.cards.salesByYear.value.toLocaleString() : 'R$ 0.00'} iconType="money"/>
 
-                    <Card key={1} title={data?.cards?.clientWithMostQuantityByMonth?.name || 'Card 2'} 
-                    value={data?.cards?.clientWithMostQuantityByMonth.client ? data.cards.clientWithMostQuantityByMonth.client : 'R$ 0.00'} iconType="graph"/>
+                    <Card key={1} title={data?.cards?.clientWithMostQuantityByMonth?.name || 'CLIENTE COM MAIS VENDAS NO MÊS'} 
+                    value={data?.cards?.clientWithMostQuantityByMonth.client ? data.cards.clientWithMostQuantityByMonth.client : 'Cliente'} iconType="graph"/>
 
-                    <Card key={2} title={data?.cards?.clientWithMostValuesByMonth?.name || 'Card 3'} 
+                    <Card key={2} title={data?.cards?.clientWithMostValuesByMonth?.name || 'CLIENTE COM MAIOR FATURAMENTO (MÊS)'} 
                     value={data?.cards?.clientWithMostValuesByMonth.value ? data.cards.clientWithMostValuesByMonth.client + " (R$ " + data.cards.clientWithMostValuesByMonth.value.toLocaleString() + ")" : 'R$ 0.00'} iconType="money"/>
 
-                    <Card key={3} title={data?.cards?.clientWithMostValuesByYear?.name || 'Card 4'} value={data?.cards.clientWithMostValuesByYear.value ? data.cards.clientWithMostValuesByYear.client + " (R$ " + data.cards.clientWithMostValuesByYear.value.toLocaleString() + ")" : 'R$ 0.00'} iconType="money"/>
+                    <Card key={3} title={data?.cards?.clientWithMostValuesByYear?.name || 'CLIENTE COM MAIOR FATURAMENTO (ANO)'} value={data?.cards.clientWithMostValuesByYear.value ? data.cards.clientWithMostValuesByYear.client + " (R$ " + data.cards.clientWithMostValuesByYear.value.toLocaleString() + ")" : 'R$ 0.00'} iconType="money"/>
                 </CardSection>
             </Container>
             
