@@ -1,12 +1,16 @@
 package com.example.youxchallenge.client;
 
 import com.example.youxchallenge.person.Person;
+import com.example.youxchallenge.sale.Sale;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "client")
 @Entity(name = "client")
@@ -35,6 +39,8 @@ public class Client {
     @JsonManagedReference
     @JoinColumn(name = "person_id")
     private Person person;
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Sale> sales = new ArrayList<>();
 
     public Client(ClientRequestDTO data, Person person) {
         this.name = data.name();

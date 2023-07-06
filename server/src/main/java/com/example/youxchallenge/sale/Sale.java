@@ -20,7 +20,7 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JsonManagedReference
     @JoinColumn(name = "client_id")
     private Client client;
