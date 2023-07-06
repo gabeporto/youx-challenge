@@ -1,15 +1,22 @@
 import { MapContainer, TileLayer, Marker, WMSTileLayer, useMapEvents, Popup } from 'react-leaflet'; 
 import "../styles/styles.css"
 import "leaflet/dist/leaflet.css"
-import { Icon } from 'leaflet';
+import { Icon, LatLngExpression } from 'leaflet';
 import { styled } from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface MapProps  {
     height: number;
     onPositionChange?: (latitude: number, longitude: number) => void;
     currentPosition?: {latitude : number, longitude : number};
     className?: string;
+    markers?: Mark[],
+}
+
+interface Mark {
+    id: number;
+    popUp: string;
+    geocode: [number, number];
 }
 
 const StyledMapContainer = styled.div<MapProps>`
@@ -79,6 +86,15 @@ export default function Map(props : MapProps) {
                         </Popup>
                     </Marker>
                 )}
+
+                {props.markers?.map((marker) => (
+                <Marker position={[marker?.geocode[0], marker?.geocode[1]]} icon={customIcon} key={marker.id}>
+                    <Popup>
+                    {marker.popUp}
+                    </Popup>
+                </Marker>
+                ))}
+
             </MapContainer>
 
             
