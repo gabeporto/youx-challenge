@@ -2,10 +2,9 @@ import { styled } from "styled-components"
 
 interface InvoicingData {
     id: number,
-    month: string,
-    type: string,
-    salesQuantity: number,
-    total: string
+    period: string,
+    quantity: number,
+    value: string | number,
 };
 
 interface InvoicingTableProps {

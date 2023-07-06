@@ -90,116 +90,46 @@ interface Mark {
     geocode: [number, number];
 }
 
+interface TableData {
+    id: number;
+    period: string;
+    quantity: number;
+    value: number;
+  }
+
 export default function ReportPage() {
 
-    const [data, setData] = useState<ReportData | null>(null);
+    const [ data, setData ] = useState<ReportData | null>(null);
     const [ clientMarkers, setClientMarkers ] = useState<Mark[]>([]);
-
-    // Graph
-    const monthsChart = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"];
-    const monthValuesChart = [200, 300, 100, 500, 230, 400, 230, 300, 100, 200, 300, 250];
-
-    // Table
+    const [ tableData, setTableData ] = useState<TableData[]>([]);
+    const [ periods, setPeriods ] = useState<string[]>([]);
+    const [ values, setValues ] = useState<number[]>([]);
     const tableColumns = ["Mês", "Vendas", "Total"];
-    const dataTable = [
-        {
-            id: 1,
-            type: "report",
-            month: "Janeiro",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 2,
-            month: "Fevereiro",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 3,
-            month: "Março",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 4,
-            month: "Abril",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 5,
-            month: "Maio",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 6,
-            month: "Junho",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 7,
-            month: "Julho",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 8,
-            month: "Agosto",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 9,
-            month: "Setembro",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 10,
-            month: "Outubro",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 11,
-            month: "Novembro",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-        {
-            id: 12,
-            month: "Dezembro",
-            type: "report",
-            salesQuantity: 34,
-            total: "1.245,00",
-        },
-    ];
 
     const fetchData = () => {
         fetch('http://localhost:8080/report')
             .then(response => response.json())
             .then(data => {
+
                 setData(data);
+
                 setClientMarkers(
                     data?.clientsCoordinates.data.map((dataClient : ClientsCoordinates) => ({
                         id: dataClient.id,
                         geocode: [dataClient.latitude, dataClient.longitude],
                         popUp: dataClient.client,
-                })))
-            })
+                })));
+
+                setTableData(data?.invoicingData.months.map((item: TableData) => ({
+                    id: item.id,
+                    period: item.period,
+                    quantity: item.quantity,
+                    value: item.value,
+                })));
+
+                setPeriods(data?.invoicingData.months.map((item: TableData) => item.period));
+                setValues(data?.invoicingData.months.map((item: TableData) => item.value));
+            })    
             .catch(error => {
                 console.error(error);
         });
@@ -221,13 +151,13 @@ export default function ReportPage() {
             title: "Faturamento por Mês",
             children: [
                 <InvoicingChartDiv>
-                    <InvoicingChart columns={monthsChart} values={monthValuesChart} />
+                    <InvoicingChart columns={periods} values={values} />
                 </InvoicingChartDiv>, 
                 <InvoicingTableDiv>
-                    <InvoicingTable columns={tableColumns} data={dataTable}/>
+                    <InvoicingTable columns={tableColumns} data={tableData}/>
                 </InvoicingTableDiv>, 
                 <ExportButtonDiv>
-                    <SecondaryButton name="Exportar CSV" columns={tableColumns} data={dataTable} />
+                    <SecondaryButton name="Exportar CSV" columns={tableColumns} data={tableData} />
                 </ExportButtonDiv> 
             ]
         }

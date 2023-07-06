@@ -2,10 +2,9 @@ import { styled } from "styled-components"
 
 interface InvoicingData {
     id: number,
-    month: string,
-    type: string,
-    salesQuantity: number,
-    total: string
+    period: string,
+    quantity: number,
+    value: string | number,
 };
 
 interface InvoicingTableProps {
@@ -58,9 +57,9 @@ export default function InvoicingTable(props : InvoicingTableProps) {
             <tbody>
                 {props.data.map((item, index) => (
                 <TableRow key={index}>
-                    <TableCell>{item.month}</TableCell>
-                    <TableCell>{item.salesQuantity}</TableCell>
-                    <TableCell>R$ {item.total}</TableCell>
+                    <TableCell>{item.period}</TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                    <TableCell>R$ {item.value.toLocaleString()}</TableCell>
                 </TableRow>
                 ))}
             </tbody>
