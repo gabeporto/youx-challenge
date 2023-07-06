@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    @Query("SELECT c.name, c.latitude, c.longitude FROM client c")
+    @Query("SELECT c.id, c.name, c.latitude, c.longitude FROM client c")
     List<Object[]> getClientCoordinates();
 }

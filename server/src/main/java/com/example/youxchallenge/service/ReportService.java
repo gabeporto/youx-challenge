@@ -136,11 +136,13 @@ public class ReportService {
         List<JSONObject> clientDataList = new ArrayList<>();
 
         for (int i = 0; i < result.size(); i++) {
-            String name = (String) result.get(i)[0];
-            Double latitude = (Double) result.get(i)[1];
-            Double longitude = (Double) result.get(i)[2];
+            Long id = (Long) result.get(i)[0];
+            String name = (String) result.get(i)[1];
+            Double latitude = (Double) result.get(i)[2];
+            Double longitude = (Double) result.get(i)[3];
 
             JSONObject clientData = new JSONObject();
+            clientData.put("id", id);
             clientData.put("client", name);
             clientData.put("latitude", latitude);
             clientData.put("longitude", longitude);
