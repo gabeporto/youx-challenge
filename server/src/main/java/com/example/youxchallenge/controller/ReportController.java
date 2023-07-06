@@ -20,9 +20,9 @@ public class ReportController {
     @GetMapping
     public String getAllReports() {
 
-        JSONObject cards = reportService.buildCardsInformation();
+        JSONObject reportData = reportService.buildReportData();
 
-        return cards.toString();
+        return reportData.toString();
     }
 
 }

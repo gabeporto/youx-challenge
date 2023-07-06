@@ -24,7 +24,4 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Query("SELECT s.client.id, SUM(s.value) FROM sale s WHERE YEAR(s.date) = :year GROUP BY s.client.id ORDER BY SUM(s.value) DESC LIMIT 1")
     Object[] findClientWithHighestSalesByYear(@Param("year") int year);
 
-
-
-
 }

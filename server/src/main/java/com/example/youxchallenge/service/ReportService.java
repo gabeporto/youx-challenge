@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReportService {
@@ -20,19 +22,35 @@ public class ReportService {
     int CURRENT_YEAR = LocalDate.now().getYear();
     int CURRENT_MONTH = LocalDate.now().getMonthValue();
 
+    // Method to build all information of Report page (Cards, Client Coordinates, Invoicing).
+    public JSONObject buildReportData() {
+
+        JSONObject reportData = new JSONObject();
+
+        JSONObject cards = buildCardsInformation();
+        JSONObject clientsCoordinates = buildClientsCoordinates();
+
+        reportData.put("cards", cards);
+        reportData.put("clientsCoordinates", clientsCoordinates);
+
+        return reportData;
+    }
+
+    // Method to build all cards information of Report page.
     public JSONObject buildCardsInformation() {
 
         JSONObject cards = new JSONObject();
 
-        cards.put("salesByYear", buildSalesByYearCard());
-        cards.put("clientWithMostQuantityByMonth", buildClientWithMostSalesByMonthCard());
-        cards.put("clientWithMostValuesByMonth", buildClientWithMostValuesByMonthCard());
-        cards.put("clientWithMostValuesByYear", buildClientWithMostValuesByYearCard());
+        cards.put("salesByYear", getSalesByYearCard());
+        cards.put("clientWithMostQuantityByMonth", getClientWithMostSalesByMonthCard());
+        cards.put("clientWithMostValuesByMonth", getClientWithMostValuesByMonthCard());
+        cards.put("clientWithMostValuesByYear", getClientWithMostValuesByYearCard());
 
         return cards;
     }
 
-    public JSONObject buildSalesByYearCard() {
+    // Method to get the value sailed by year.
+    public JSONObject getSalesByYearCard() {
 
         Double value = saleRepository.sumSales(CURRENT_YEAR);
 
@@ -43,7 +61,8 @@ public class ReportService {
         return salesPerYearCard;
     }
 
-    public JSONObject buildClientWithMostSalesByMonthCard() {
+    // Method to get the client name and sale quantity with most sale by month.
+    public JSONObject getClientWithMostSalesByMonthCard() {
 
         Object[] result = saleRepository.findClientWithMostSalesByMonth(CURRENT_MONTH);
         Object client = result[0];
@@ -64,12 +83,13 @@ public class ReportService {
         return clientWithMostSalesByMonthCard;
     }
 
-    public JSONObject buildClientWithMostValuesByMonthCard() {
-
-        JSONObject clientWithMostValuesByMonthCard = new JSONObject();
+    // Method to get the client name and value with most sale by month.
+    public JSONObject getClientWithMostValuesByMonthCard() {
 
         Object[] result = saleRepository.findClientWithHighestSalesByMonth(CURRENT_MONTH);
         Object client = result[0];
+
+        JSONObject clientWithMostValuesByMonthCard = new JSONObject();
 
         if (result != null) {
             Long clientId = (Long) ((Object[]) client)[0];
@@ -85,12 +105,13 @@ public class ReportService {
         return clientWithMostValuesByMonthCard;
     }
 
-    public JSONObject buildClientWithMostValuesByYearCard() {
-
-        JSONObject clientWithMostValuesByYearCard = new JSONObject();
+    // Method to get the client name and value with most sale by year.
+    public JSONObject getClientWithMostValuesByYearCard() {
 
         Object[] result = saleRepository.findClientWithHighestSalesByYear(CURRENT_YEAR);
         Object client = result[0];
+
+        JSONObject clientWithMostValuesByYearCard = new JSONObject();
 
         if (result != null) {
             Long clientId = (Long) ((Object[]) client)[0];
@@ -104,5 +125,31 @@ public class ReportService {
         }
 
         return clientWithMostValuesByYearCard;
+    }
+
+    // Method to get All clients names and coordinates.
+    public JSONObject buildClientsCoordinates() {
+
+        List<Object[]> result = clientRepository.getClientCoordinates();
+
+        JSONObject clientsCoordinates = new JSONObject();
+        List<JSONObject> clientDataList = new ArrayList<>();
+
+        for (int i = 0; i < result.size(); i++) {
+            String name = (String) result.get(i)[0];
+            Double latitude = (Double) result.get(i)[1];
+            Double longitude = (Double) result.get(i)[2];
+
+            JSONObject clientData = new JSONObject();
+            clientData.put("client", name);
+            clientData.put("latitude", latitude);
+            clientData.put("longitude", longitude);
+
+            clientDataList.add(clientData);
+        }
+
+        clientsCoordinates.put("data", clientDataList);
+
+        return clientsCoordinates;
     }
 }
