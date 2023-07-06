@@ -39,7 +39,7 @@ const StyledLabel = styled.p`
     }
 `
 
-const SaveButton = styled.button`
+const SaveButton = styled.button`ç
     width: 150px;
     font-size: 15px;
     margin-top: 10px;
@@ -49,9 +49,14 @@ const SaveButton = styled.button`
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: opacity 0.3s ease;
 
     @media only screen and (max-width: 425px) {
         width: 100px;
+    }
+
+    &:hover {
+        opacity: 0.8;
     }
 `
 
@@ -65,9 +70,14 @@ const CancelButton = styled.button`
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    transition: opacity 0.3s ease;
 
     @media only screen and (max-width: 425px) {
         width: 100px;
+    }
+
+    &:hover {
+        opacity: 0.8;
     }
 `
 
