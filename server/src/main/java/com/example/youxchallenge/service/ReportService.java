@@ -180,11 +180,11 @@ public class ReportService {
                     "May",
                     "Jun",
                     "Jul",
-                    "Ago",
+                    "Aug",
                     "Sep",
                     "Oct",
                     "Nov",
-                    "Dez"
+                    "Dec"
             };
             int month = ((BigDecimal) data[0]).intValue();
             int year = ((BigDecimal) data[1]).intValue();
@@ -193,7 +193,7 @@ public class ReportService {
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", i);
-            jsonObject.put("period", monthNames[month] + " " +year);
+            jsonObject.put("period", monthNames[month] + "/" + year);
             jsonObject.put("quantity", quantity);
             jsonObject.put("value", totalValue);
 
