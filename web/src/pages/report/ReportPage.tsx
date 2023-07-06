@@ -8,6 +8,7 @@ import Map from "../../components/Map";
 import InvoicingChart from '../../components/chart/InvoicingChart';
 import InvoicingTable from '../../components/report/InvoicingTable';
 import SecondaryButton from '../../components/SecondaryButton';
+import { useEffect, useState } from "react";
 
 const CardSection = styled.div`
     margin-top: 40px;
@@ -44,7 +45,31 @@ const ExportButtonDiv = styled.div`
     }
 `
 
+interface ReportData {
+    salesByYear: {
+        name: string,
+        value: string | number,
+    },
+    clientWithMostQuantityByMonth: { 
+        name: string, 
+        client: string, 
+        value: string | number,
+    },
+    clientWithMostValuesByMonth: {
+        name: string,
+        client: string,
+        value: string | number,
+    },
+    clientWithMostValuesByYear: {
+        name: string,
+        client: string,
+        value: string | number,
+    },
+}
+
 export default function ReportPage() {
+
+    const [data, setData] = useState<ReportData | null>(null);
 
     // Graph
     const monthsChart = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dec"];
@@ -162,6 +187,21 @@ export default function ReportPage() {
         }
     ]
 
+    const fetchData = () => {
+        fetch('http://localhost:8080/report')
+            .then(response => response.json())
+            .then(data => {
+                setData(data);
+            })
+            .catch(error => {
+                console.error(error);
+        });
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
         <>
             <Header />
@@ -170,10 +210,16 @@ export default function ReportPage() {
                 <Title title="Relatórios" />
 
                 <CardSection>
-                    <Card key={0} title="Vendas no Ano" value="R$ 500.000,00" iconType="money"/>
-                    <Card key={1} title="Cliente com Mais Vendas no Mês" value="LIVRARIA SEU LIVRO" iconType="graph"/>
-                    <Card key={2} title="Cliente com Maior Faturamento (Mês)" value="SEU BAR (R$ 5.000,00)" iconType="money"/>
-                    <Card key={3} title="Cliente com Maior Faturamento (Ano)" value="SEU BAR (R$ 50.000,00)" iconType="money"/>
+                    <Card key={0} title={data?.salesByYear?.name || 'Card 1'} 
+                    value={data?.salesByYear.value ? 'R$ ' + data.salesByYear.value.toLocaleString() : 'R$ 0.00'} iconType="money"/>
+
+                    <Card key={1} title={data?.clientWithMostQuantityByMonth?.name || 'Card 2'} 
+                    value={data?.clientWithMostQuantityByMonth.client ? data.clientWithMostQuantityByMonth.client : 'R$ 0.00'} iconType="graph"/>
+
+                    <Card key={2} title={data?.clientWithMostValuesByMonth?.name || 'Card 3'} 
+                    value={data?.clientWithMostValuesByMonth.value ? data.clientWithMostValuesByMonth.client + " (R$ " + data.clientWithMostValuesByMonth.value.toLocaleString() + ")" : 'R$ 0.00'} iconType="money"/>
+
+                    <Card key={3} title={data?.clientWithMostValuesByYear?.name || 'Card 4'} value={data?.clientWithMostValuesByYear.value ? data.clientWithMostValuesByYear.client + " (R$ " + data.clientWithMostValuesByYear.value.toLocaleString() + ")" : 'R$ 0.00'} iconType="money"/>
                 </CardSection>
             </Container>
             

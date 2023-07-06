@@ -11,7 +11,10 @@ import { ClientFormData } from '../interface/ClientFormData';
 
 const TableContainer = styled.div`
   width: 100%;
-  overflow: auto;
+
+  @media only screen and (max-width: 567px) {
+    overflow: auto;
+}
 `;
 
 const StyledTable = styled.table`

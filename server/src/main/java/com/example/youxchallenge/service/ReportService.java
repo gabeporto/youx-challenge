@@ -25,7 +25,7 @@ public class ReportService {
         JSONObject cards = new JSONObject();
 
         cards.put("salesByYear", buildSalesByYearCard());
-        cards.put("bestSalesQuantityClientByMonth", buildClientWithMostSalesByMonthCard());
+        cards.put("clientWithMostQuantityByMonth", buildClientWithMostSalesByMonthCard());
         cards.put("clientWithMostValuesByMonth", buildClientWithMostValuesByMonthCard());
         cards.put("clientWithMostValuesByYear", buildClientWithMostValuesByYearCard());
 

@@ -55,7 +55,7 @@ const CardValue = styled.label`
 
 interface CardProps {
     title: string;
-    value: string;
+    value: string | number;
     iconType: string;
 }
 

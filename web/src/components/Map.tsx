@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 interface MapProps  {
     height: number;
-    onPositionChange: (latitude: number, longitude: number) => void;
+    onPositionChange?: (latitude: number, longitude: number) => void;
     currentPosition?: {latitude : number, longitude : number};
     className?: string;
 }
@@ -45,12 +45,16 @@ export default function Map(props : MapProps) {
     }); 
     
     const handleMapClick = (latitude: number, longitude: number) => {
-        setMarker({
-            latitude: latitude,
-            longitude: longitude,
-        })
-        props.onPositionChange(latitude, longitude);
-      };
+
+        if (props.onPositionChange) {
+            setMarker({
+                latitude: latitude,
+                longitude: longitude,
+            })
+
+            props.onPositionChange(latitude, longitude);
+        }
+    };
 
     return (
         <StyledMapContainer height={props.height} onPositionChange={handleMapClick} currentPosition={props?.currentPosition} className={props?.className}>
