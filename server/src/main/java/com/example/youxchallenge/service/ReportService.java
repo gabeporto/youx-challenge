@@ -167,22 +167,24 @@ public class ReportService {
         List<Object[]> salesData = saleRepository.getSalesByMonth();
         Map<String, JSONObject> salesByMonth = new LinkedHashMap<>();
 
+        int i = 1;
+
         for (Object[] data : salesData) {
 
             String[] monthNames = {
                     "",
-                    "Janeiro",
-                    "Fevereiro",
-                    "Março",
-                    "Abril",
-                    "Maio",
-                    "Junho",
-                    "Julho",
-                    "Agosto",
-                    "Setembro",
-                    "Outubro",
-                    "Novembro",
-                    "Dezembro"
+                    "Jan",
+                    "Feb",
+                    "Mar",
+                    "Apr",
+                    "May",
+                    "Jun",
+                    "Jul",
+                    "Ago",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dez"
             };
             int month = ((BigDecimal) data[0]).intValue();
             int year = ((BigDecimal) data[1]).intValue();
@@ -190,13 +192,15 @@ public class ReportService {
             BigDecimal totalValue = (BigDecimal) data[3];
 
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("month", monthNames[month]);
-            jsonObject.put("year", year);
+            jsonObject.put("id", i);
+            jsonObject.put("period", monthNames[month] + " " +year);
             jsonObject.put("quantity", quantity);
-            jsonObject.put("totalValue", totalValue);
+            jsonObject.put("value", totalValue);
 
             String key = monthNames[month] + String.valueOf(year);
             salesByMonth.put(key, jsonObject);
+
+            i++;
         }
 
         JSONArray jsonArray = new JSONArray(salesByMonth.values());
