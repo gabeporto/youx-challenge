@@ -2,13 +2,17 @@ package com.example.youxchallenge.service;
 
 import com.example.youxchallenge.client.ClientRepository;
 import com.example.youxchallenge.sale.SaleRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ReportService {
@@ -29,9 +33,11 @@ public class ReportService {
 
         JSONObject cards = buildCardsInformation();
         JSONObject clientsCoordinates = buildClientsCoordinates();
+        JSONObject invoicingData = getSalesByLastTwelveMonths();
 
         reportData.put("cards", cards);
         reportData.put("clientsCoordinates", clientsCoordinates);
+        reportData.put("invoicingData", invoicingData);
 
         return reportData;
     }
@@ -49,10 +55,10 @@ public class ReportService {
         return cards;
     }
 
-    // Method to get the value sailed by year.
+    // Method to get the value sold by year.
     public JSONObject getSalesByYearCard() {
 
-        Double value = saleRepository.sumSales(CURRENT_YEAR);
+        Double value = saleRepository.sumSalesByYear(CURRENT_YEAR);
 
         JSONObject salesPerYearCard = new JSONObject();
         salesPerYearCard.put("name", "Vendas no Ano");
@@ -154,4 +160,50 @@ public class ReportService {
 
         return clientsCoordinates;
     }
+
+    // Method to get the quantity and value sold on last 12 months.
+    public JSONObject getSalesByLastTwelveMonths() {
+
+        List<Object[]> salesData = saleRepository.getSalesByMonth();
+        Map<String, JSONObject> salesByMonth = new LinkedHashMap<>();
+
+        for (Object[] data : salesData) {
+
+            String[] monthNames = {
+                    "",
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+            };
+            int month = ((BigDecimal) data[0]).intValue();
+            int year = ((BigDecimal) data[1]).intValue();
+            BigDecimal quantity = new BigDecimal(((Long) data[2]).toString());
+            BigDecimal totalValue = (BigDecimal) data[3];
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("month", monthNames[month]);
+            jsonObject.put("year", year);
+            jsonObject.put("quantity", quantity);
+            jsonObject.put("totalValue", totalValue);
+
+            String key = monthNames[month] + String.valueOf(year);
+            salesByMonth.put(key, jsonObject);
+        }
+
+        JSONArray jsonArray = new JSONArray(salesByMonth.values());
+        JSONObject invoicing = new JSONObject();
+        invoicing.put("months", jsonArray);
+
+        return invoicing;
+    }
+
 }
