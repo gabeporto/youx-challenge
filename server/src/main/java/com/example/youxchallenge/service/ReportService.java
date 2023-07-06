@@ -17,48 +17,92 @@ public class ReportService {
     @Autowired
     private SaleRepository saleRepository;
 
+    int CURRENT_YEAR = LocalDate.now().getYear();
+    int CURRENT_MONTH = LocalDate.now().getMonthValue();
+
     public JSONObject buildCardsInformation() {
 
         JSONObject cards = new JSONObject();
 
-        cards.put("salesPerYear", buildSalesPerYearCard());
-        cards.put("bestClientPerYear", buildBestClientPerYearCard());
+        cards.put("salesByYear", buildSalesByYearCard());
+        cards.put("bestSalesQuantityClientByMonth", buildClientWithMostSalesByMonthCard());
+        cards.put("clientWithMostValuesByMonth", buildClientWithMostValuesByMonthCard());
+        cards.put("clientWithMostValuesByYear", buildClientWithMostValuesByYearCard());
 
         return cards;
     }
 
-    public JSONObject buildSalesPerYearCard() {
+    public JSONObject buildSalesByYearCard() {
 
-        Double value = saleRepository.sumSales();
+        Double value = saleRepository.sumSales(CURRENT_YEAR);
 
-        JSONObject salesPerYear = new JSONObject();
-        salesPerYear.put("name", "Vendas no Ano");
-        salesPerYear.put("value", value);
+        JSONObject salesPerYearCard = new JSONObject();
+        salesPerYearCard.put("name", "Vendas no Ano");
+        salesPerYearCard.put("value", value);
 
-        return salesPerYear;
+        return salesPerYearCard;
     }
 
-    public JSONObject buildBestClientPerYearCard() {
+    public JSONObject buildClientWithMostSalesByMonthCard() {
 
-        JSONObject bestClientPerYearCard = new JSONObject();
+        Object[] result = saleRepository.findClientWithMostSalesByMonth(CURRENT_MONTH);
+        Object client = result[0];
 
-        String currentYear = String.valueOf(LocalDate.now().getYear());
-        Object[] result = saleRepository.findClientWithHighestSales(currentYear);
+        JSONObject clientWithMostSalesByMonthCard = new JSONObject();
 
-        if (result != null && result.length >= 2) {
-            Long clientId = (Long) result[0];
-            Double totalSales = (Double) result[1];
+        if (client != null) {
+            Long clientId = (Long) ((Object[]) client)[0];
+            Long totalSales = (Long) ((Object[]) client)[1];
 
             String clientName = clientRepository.findById(clientId).get().getName();
 
-            bestClientPerYearCard.put("client", clientName);
-            bestClientPerYearCard.put("value", totalSales);
+            clientWithMostSalesByMonthCard.put("name", "Cliente com Mais Vendas no Mês");
+            clientWithMostSalesByMonthCard.put("client", clientName);
+            clientWithMostSalesByMonthCard.put("value", totalSales);
         }
 
-        return bestClientPerYearCard;
+        return clientWithMostSalesByMonthCard;
     }
 
+    public JSONObject buildClientWithMostValuesByMonthCard() {
 
+        JSONObject clientWithMostValuesByMonthCard = new JSONObject();
 
+        Object[] result = saleRepository.findClientWithHighestSalesByMonth(CURRENT_MONTH);
+        Object client = result[0];
 
+        if (result != null) {
+            Long clientId = (Long) ((Object[]) client)[0];
+            Double totalValue = (Double) ((Object[]) client)[1];
+
+            String clientName = clientRepository.findById(clientId).get().getName();
+
+            clientWithMostValuesByMonthCard.put("name", "Cliente com Maior Faturamento (Mês)");
+            clientWithMostValuesByMonthCard.put("client", clientName);
+            clientWithMostValuesByMonthCard.put("value", totalValue);
+        }
+
+        return clientWithMostValuesByMonthCard;
+    }
+
+    public JSONObject buildClientWithMostValuesByYearCard() {
+
+        JSONObject clientWithMostValuesByYearCard = new JSONObject();
+
+        Object[] result = saleRepository.findClientWithHighestSalesByYear(CURRENT_YEAR);
+        Object client = result[0];
+
+        if (result != null) {
+            Long clientId = (Long) ((Object[]) client)[0];
+            Double totalSales = (Double) ((Object[]) client)[1];
+
+            String clientName = clientRepository.findById(clientId).get().getName();
+
+            clientWithMostValuesByYearCard.put("name", "Cliente com Maior Faturamento (Ano)");
+            clientWithMostValuesByYearCard.put("client", clientName);
+            clientWithMostValuesByYearCard.put("value", totalSales);
+        }
+
+        return clientWithMostValuesByYearCard;
+    }
 }

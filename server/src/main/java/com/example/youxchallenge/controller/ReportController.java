@@ -22,7 +22,7 @@ public class ReportController {
 
         JSONObject cards = reportService.buildCardsInformation();
 
-        return "";
+        return cards.toString();
     }
 
 }

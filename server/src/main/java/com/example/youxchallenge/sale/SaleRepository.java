@@ -12,11 +12,19 @@ import java.util.List;
 public interface SaleRepository extends JpaRepository<Sale, Long> {
 
 
-    @Query("SELECT SUM(e.value) FROM sale e")
-    Double sumSales();
+    @Query("SELECT SUM(s.value) FROM sale s WHERE YEAR(s.date) = :year")
+    Double sumSales(@Param("year") int year);
 
-    @Query("SELECT s.client.id, SUM(s.value) FROM sale s WHERE CAST(s.date AS text) LIKE CONCAT(:year, '%') GROUP BY s.client.id ORDER BY SUM(s.value) DESC LIMIT 1")
-    Object[] findClientWithHighestSales(@Param("year") String year);
+    @Query("SELECT s.client.id, COUNT(s.id) FROM sale s WHERE MONTH(s.date) = :month GROUP BY s.client.id ORDER BY COUNT(s.id) DESC LIMIT 1")
+    Object[] findClientWithMostSalesByMonth(@Param("month") int month);
+
+    @Query("SELECT s.client.id, SUM(s.value) FROM sale s WHERE MONTH(s.date) = :month GROUP BY s.client.id ORDER BY SUM(s.value) DESC LIMIT 1")
+    Object[] findClientWithHighestSalesByMonth(@Param("month") int month);
+
+    @Query("SELECT s.client.id, SUM(s.value) FROM sale s WHERE YEAR(s.date) = :year GROUP BY s.client.id ORDER BY SUM(s.value) DESC LIMIT 1")
+    Object[] findClientWithHighestSalesByYear(@Param("year") int year);
+
+
 
 
 }
