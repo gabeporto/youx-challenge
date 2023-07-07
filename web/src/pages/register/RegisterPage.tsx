@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -140,10 +141,10 @@ export default function RegisterPage() {
 
     const submitForm = (event: React.FormEvent) => {
         event.preventDefault();
-        const currentName = name;
-        const currentEmail = email;
-        const currentRole = role;
-        const currentPassword = password;
+        // const currentName = name;
+        // const currentEmail = email;
+        // const currentRole = role;
+        // const currentPassword = password;
     };
 
     return (
@@ -172,7 +173,7 @@ export default function RegisterPage() {
 
                         <StyledLabel>
                         Senha:
-                        <StyledInput type="password" onChange={passwordInputChange}/>
+                        <StyledInput type="current-password" onChange={passwordInputChange}/>
                         </StyledLabel>
 
                         <FirstButton type="submit" onClick={submitForm}>Cadastrar</FirstButton>

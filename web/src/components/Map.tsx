@@ -1,14 +1,14 @@
 import { MapContainer, TileLayer, Marker, WMSTileLayer, useMapEvents, Popup } from 'react-leaflet'; 
 import "../styles/styles.css"
 import "leaflet/dist/leaflet.css"
-import { Icon, LatLngExpression } from 'leaflet';
+import { Icon } from 'leaflet';
 import { styled } from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 interface MapProps  {
     height: number;
     onPositionChange?: (latitude: number, longitude: number) => void;
-    currentPosition?: {latitude : number, longitude : number};
+    currentposition?: {latitude : number, longitude : number};
     className?: string;
     markers?: Mark[],
 }
@@ -42,8 +42,8 @@ function MapEvents({ onMapClick }: MapEventsProps) {
 export default function Map(props : MapProps) {
 
     const [marker, setMarker] = useState({
-        latitude: props.currentPosition?.latitude || 0,
-        longitude: props.currentPosition?.longitude || 0
+        latitude: props.currentposition?.latitude || 0,
+        longitude: props.currentposition?.longitude || 0
     });
 
     const customIcon = new Icon({
@@ -64,7 +64,7 @@ export default function Map(props : MapProps) {
     };
 
     return (
-        <StyledMapContainer height={props.height} onPositionChange={handleMapClick} currentPosition={props?.currentPosition} className={props?.className}>
+        <StyledMapContainer height={props.height} currentposition={props?.currentposition} className={props?.className}>
             <MapContainer center={[-22.252252, -45.703597]} zoom={13}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

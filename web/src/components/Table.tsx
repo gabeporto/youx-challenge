@@ -177,6 +177,9 @@ const Table: React.FC<TableProps> = ({ columns, data, type, onEdit, onDelete }) 
   // Actions (Edit and Delete)
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [removeModalOpen, setRemoveModalOpen] = useState(false);
+
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [dropdownOpen, setDropdownOpen] = useState(true);
 
   const renderActionsDropdown = (itemId: number) => {

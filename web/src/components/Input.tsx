@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
 import SearchIcon from '@mui/icons-material/Search';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 
 const InputContainer = styled.div`
   position: relative;

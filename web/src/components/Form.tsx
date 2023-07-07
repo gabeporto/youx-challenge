@@ -12,7 +12,7 @@ import { ClientFormData } from '../interface/ClientFormData';
 import { SaleFormData } from '../interface/SaleFormData';
 import { SaleData } from '../interface/SaleData';
 import { formatMoneyValue } from '../utils/formatMoneyValue';
-import { parse, format } from 'date-fns';
+import { parse  } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const StyledInput = styled.input`
@@ -180,7 +180,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     }));
 
     const isNameValid = formData.name.length > 3;
-    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formData.cnpj);
     const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
     const isUfValid = formData.uf !== "";
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
@@ -227,7 +227,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     e.preventDefault();
 
     const isNameValid = formData.name.length > 3;
-    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formData.cnpj);
     const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
     const isUfValid = formData.uf !== "";
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
@@ -339,7 +339,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
       </FlexDiv>
 
         <MapContainer>
-            <Map height={250} onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} 
+            <Map height={250} onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)}
             className={markValid ? "" : "invalid-map"}/>
         </MapContainer>
 
@@ -388,7 +388,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         }));
     
         const isNameValid = formData.name.length > 3;
-        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formData.cnpj);
         const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
         const isUfValid = formData.uf !== "";
         const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
@@ -435,7 +435,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         e.preventDefault();
     
         const isNameValid = formData.name.length > 3;
-        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(formData.cnpj);
+        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formData.cnpj);
         const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
         const isUfValid = formData.uf !== "";
         const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
@@ -547,7 +547,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         </FlexDiv>
 
         <MapContainer>
-            <Map height={250} currentPosition={{latitude: data?.latitude ? data.latitude : 0, longitude: data?.longitude ? data.longitude : 0}} 
+            <Map height={250} currentposition={{latitude: data?.latitude ? data.latitude : 0, longitude: data?.longitude ? data.longitude : 0}} 
             onPositionChange={(latitude : number, longitude : number) => handleMapPositionChange(latitude, longitude)} className={markValid ? "" : "invalid-map"}/>
         </MapContainer>
   
@@ -562,6 +562,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
 
 export const DeleteClientForm: React.FC<ClientFormProps> = ({data, onSubmit, onClose }) => {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [formData, setFormData] = useState<ClientFormData>({
         id: data?.id,
         name: '',
@@ -980,6 +981,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
 
 export const DeleteSaleForm: React.FC<SaleFormProps> = ({ data, onSubmit, onClose }) => {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [formData, setFormData] = useState<SaleFormData>({
         id: data?.id,
         client: '',

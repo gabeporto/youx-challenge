@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -139,8 +140,8 @@ export default function LoginPage() {
 
     const submitForm = (event: React.FormEvent) => {
         event.preventDefault();
-        const currentEmail = email;
-        const currentPassword = password;
+        // const currentEmail = email;
+        // const currentPassword = password;
     };
 
     return (
@@ -159,7 +160,7 @@ export default function LoginPage() {
 
                         <StyledLabel>
                         Senha:
-                        <StyledInput type="password" onChange={passwordInputChange}/>
+                        <StyledInput type="current-password" onChange={passwordInputChange}/>
                         </StyledLabel>
 
                         <FirstButton type="submit" to="/">Entrar</FirstButton>

@@ -46,6 +46,8 @@ export default function ClientListPage() {
 
   const [data, setData] = useState<ClientData[]>([]);
   const [filteredData, setFilteredData] = useState<ClientData[]>([]);
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [searchValue, setSearchValue] = useState('');
 
   const handleAdd = (data: ClientFormData) => {

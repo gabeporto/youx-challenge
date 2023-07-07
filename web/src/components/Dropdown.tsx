@@ -135,9 +135,6 @@ export default function Dropdown() {
     setSaleModalOpen(false);
   };
 
-  const [clientFormData, setClientFormData] = useState<ClientFormData | null>(null);
-  const [saleFormData, setSaleFormData] = useState<SaleFormData | null>(null);
-
   const addClient = (data: ClientFormData) => {
 
     fetch('http://localhost:8080/client', {
