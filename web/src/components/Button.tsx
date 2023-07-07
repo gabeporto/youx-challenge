@@ -28,13 +28,13 @@ const StyledButton = styled.div`
 
 `
 
-type BotaoProps = {
+type ButtonProps = {
     title: string;
     type: string;
     onClick: () => void;
   };
 
-const Button = ({ title, type, onClick }: BotaoProps) => {
+const Button = ({ title, type, onClick }: ButtonProps) => {
     return (
         <StyledButton onClick={onClick}>
             {type === 'add' && ( <AddIcon /> ) }
