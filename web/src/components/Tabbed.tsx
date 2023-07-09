@@ -19,10 +19,6 @@ const TabButtonContainer = styled.div`
     border-radius: 5px 5px 0 0;
 `;
 
-interface ButtonProp {
-    active: string;
-}
-
 const TabButton = styled.button<ButtonProp>`
     width: 335px; 
     height: 70px;
@@ -60,6 +56,10 @@ const ContentDiv = styled.div`
     flex-wrap: wrap;
     gap: 20px;
 `
+
+interface ButtonProp {
+    active: string;
+}
 
 interface TabProps {
     id: number,

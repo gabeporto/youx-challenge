@@ -20,4 +20,13 @@ describe('Button component', () => {
 
     expect(onClickMock).toHaveBeenCalledTimes(1);
   });
+
+  it('does not trigger a hover effect when disabled', () => {
+    const { getByText } = render(<Button title="Click me" disabled />);
+    const buttonElement = getByText('Click me');
+
+    fireEvent.mouseEnter(buttonElement);
+
+    expect(buttonElement).not.toHaveClass('hover');
+  });
 });
