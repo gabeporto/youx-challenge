@@ -1,8 +1,4 @@
-package com.example.youxchallenge.person;
-
-import com.example.youxchallenge.client.Client;
-
-import java.util.List;
+package com.example.youxchallenge.dto.person;
 
 public record PersonRequestDTO(
         String name,

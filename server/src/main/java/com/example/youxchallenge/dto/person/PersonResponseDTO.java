@@ -1,6 +1,6 @@
-package com.example.youxchallenge.person;
+package com.example.youxchallenge.dto.person;
 
-import java.util.List;
+import com.example.youxchallenge.model.Person;
 
 public record PersonResponseDTO(
         Long id,

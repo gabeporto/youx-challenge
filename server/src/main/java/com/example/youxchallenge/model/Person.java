@@ -1,6 +1,7 @@
-package com.example.youxchallenge.person;
+package com.example.youxchallenge.model;
 
-import com.example.youxchallenge.client.Client;
+import com.example.youxchallenge.dto.person.PersonRequestDTO;
+import com.example.youxchallenge.dto.person.PersonUpdateDTO;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

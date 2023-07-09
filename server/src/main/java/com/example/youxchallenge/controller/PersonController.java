@@ -1,6 +1,10 @@
 package com.example.youxchallenge.controller;
 
-import com.example.youxchallenge.person.*;
+import com.example.youxchallenge.dto.person.PersonRequestDTO;
+import com.example.youxchallenge.dto.person.PersonResponseDTO;
+import com.example.youxchallenge.dto.person.PersonUpdateDTO;
+import com.example.youxchallenge.model.Person;
+import com.example.youxchallenge.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

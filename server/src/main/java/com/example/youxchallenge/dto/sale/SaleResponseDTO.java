@@ -1,6 +1,6 @@
-package com.example.youxchallenge.sale;
+package com.example.youxchallenge.dto.sale;
 
-import java.util.Date;
+import com.example.youxchallenge.model.Sale;
 
 public record SaleResponseDTO(
         Long id,

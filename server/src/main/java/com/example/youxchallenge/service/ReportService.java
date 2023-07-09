@@ -1,7 +1,7 @@
 package com.example.youxchallenge.service;
 
-import com.example.youxchallenge.client.ClientRepository;
-import com.example.youxchallenge.sale.SaleRepository;
+import com.example.youxchallenge.repository.ClientRepository;
+import com.example.youxchallenge.repository.SaleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

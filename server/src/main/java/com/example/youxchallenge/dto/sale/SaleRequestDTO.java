@@ -1,8 +1,8 @@
-package com.example.youxchallenge.sale;
+package com.example.youxchallenge.dto.sale;
 
 import java.util.Date;
 
-public record SaleUpdateDTO(
+public record SaleRequestDTO(
         Long clientId,
         Date date,
         String status,

@@ -1,6 +1,6 @@
-package com.example.youxchallenge.client;
+package com.example.youxchallenge.dto.client;
 
-import com.example.youxchallenge.person.Person;
+import com.example.youxchallenge.model.Client;
 
 public record ClientResponseDTO(
         Long id,

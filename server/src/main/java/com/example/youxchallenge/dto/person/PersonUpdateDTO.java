@@ -1,4 +1,4 @@
-package com.example.youxchallenge.person;
+package com.example.youxchallenge.dto.person;
 
 public record PersonUpdateDTO(
         String name,

@@ -1,4 +1,4 @@
-package com.example.youxchallenge.client;
+package com.example.youxchallenge.dto.client;
 
 
 public record ClientRequestDTO(
