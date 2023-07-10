@@ -168,6 +168,7 @@ export default function LoginPage() {
             goToClientPage();
         } catch (error) {
             console.log(error);
+            setErrorLogin(true);
         } 
     }
 

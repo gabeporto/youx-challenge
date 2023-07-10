@@ -35,7 +35,7 @@ const UserName = styled.p`
 const UserRole = styled.p`
     color: #fff;
     font-size: 1rem;
-    font-weight: lighter;
+    font-weight: 300;
     margin-top: 2px;
     cursor: pointer;
 `;
@@ -93,8 +93,8 @@ export default function Header() {
 
                 {!hideUserInformations && (
                     <UserDiv>
-                        <UserName>João da Silva</UserName>
-                        <UserRole>Administrador</UserRole>
+                        <UserName>{auth.name}</UserName>
+                        <UserRole>{auth.role}</UserRole>
                     </UserDiv>
                 )}
 
