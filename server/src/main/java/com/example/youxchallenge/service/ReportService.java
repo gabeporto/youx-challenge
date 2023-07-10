@@ -27,13 +27,13 @@ public class ReportService {
     int CURRENT_MONTH = LocalDate.now().getMonthValue();
 
     // Method to build all information of Report page (Cards, Client Coordinates, Invoicing).
-    public JSONObject buildReportData() {
+    public JSONObject buildReportData(Long personId) {
 
         JSONObject reportData = new JSONObject();
 
-        JSONObject cards = buildCardsInformation();
-        JSONObject clientsCoordinates = buildClientsCoordinates();
-        JSONObject invoicingData = getSalesByLastTwelveMonths();
+        JSONObject cards = buildCardsInformation(personId);
+        JSONObject clientsCoordinates = buildClientsCoordinates(personId);
+        JSONObject invoicingData = getSalesByLastTwelveMonths(personId);
 
         reportData.put("cards", cards);
         reportData.put("clientsCoordinates", clientsCoordinates);
@@ -43,22 +43,22 @@ public class ReportService {
     }
 
     // Method to build all cards information of Report page.
-    public JSONObject buildCardsInformation() {
+    public JSONObject buildCardsInformation(Long personId) {
 
         JSONObject cards = new JSONObject();
 
-        cards.put("salesByYear", getSalesByYearCard());
-        cards.put("clientWithMostQuantityByMonth", getClientWithMostSalesByMonthCard());
-        cards.put("clientWithMostValuesByMonth", getClientWithMostValuesByMonthCard());
-        cards.put("clientWithMostValuesByYear", getClientWithMostValuesByYearCard());
+        cards.put("salesByYear", getSalesByYearCard(personId));
+        cards.put("clientWithMostQuantityByMonth", getClientWithMostSalesByMonthCard(personId));
+        cards.put("clientWithMostValuesByMonth", getClientWithMostValuesByMonthCard(personId));
+        cards.put("clientWithMostValuesByYear", getClientWithMostValuesByYearCard(personId));
 
         return cards;
     }
 
     // Method to get the value sold by year.
-    public JSONObject getSalesByYearCard() {
+    public JSONObject getSalesByYearCard(Long personId) {
 
-        Double value = saleRepository.sumSalesByYear(CURRENT_YEAR);
+        Double value = saleRepository.sumSalesByYear(CURRENT_YEAR, personId);
 
         JSONObject salesPerYearCard = new JSONObject();
         salesPerYearCard.put("name", "Vendas no Ano");
@@ -68,12 +68,17 @@ public class ReportService {
     }
 
     // Method to get the client name and sale quantity with most sale by month.
-    public JSONObject getClientWithMostSalesByMonthCard() {
+    public JSONObject getClientWithMostSalesByMonthCard(Long personId) {
 
-        Object[] result = saleRepository.findClientWithMostSalesByMonth(CURRENT_MONTH);
-        Object client = result[0];
+        Object[] result = saleRepository.findClientWithMostSalesByMonth(CURRENT_MONTH, personId);
 
         JSONObject clientWithMostSalesByMonthCard = new JSONObject();
+
+        if(result.length == 0) {
+            return clientWithMostSalesByMonthCard;
+        }
+
+        Object client = result[0];
 
         if (client != null) {
             Long clientId = (Long) ((Object[]) client)[0];
@@ -90,12 +95,17 @@ public class ReportService {
     }
 
     // Method to get the client name and value with most sale by month.
-    public JSONObject getClientWithMostValuesByMonthCard() {
+    public JSONObject getClientWithMostValuesByMonthCard(Long personId) {
 
-        Object[] result = saleRepository.findClientWithHighestSalesByMonth(CURRENT_MONTH);
-        Object client = result[0];
+        Object[] result = saleRepository.findClientWithHighestSalesByMonth(CURRENT_MONTH, personId);
 
         JSONObject clientWithMostValuesByMonthCard = new JSONObject();
+
+        if(result.length == 0) {
+            return clientWithMostValuesByMonthCard;
+        }
+
+        Object client = result[0];
 
         if (result != null) {
             Long clientId = (Long) ((Object[]) client)[0];
@@ -112,12 +122,18 @@ public class ReportService {
     }
 
     // Method to get the client name and value with most sale by year.
-    public JSONObject getClientWithMostValuesByYearCard() {
+    public JSONObject getClientWithMostValuesByYearCard(Long personId) {
 
-        Object[] result = saleRepository.findClientWithHighestSalesByYear(CURRENT_YEAR);
-        Object client = result[0];
+        Object[] result = saleRepository.findClientWithHighestSalesByYear(CURRENT_YEAR, personId);
 
         JSONObject clientWithMostValuesByYearCard = new JSONObject();
+
+        if(result.length == 0) {
+            return clientWithMostValuesByYearCard;
+        }
+
+        Object client = result[0];
+
 
         if (result != null) {
             Long clientId = (Long) ((Object[]) client)[0];
@@ -134,9 +150,9 @@ public class ReportService {
     }
 
     // Method to get All clients names and coordinates.
-    public JSONObject buildClientsCoordinates() {
+    public JSONObject buildClientsCoordinates(Long personId) {
 
-        List<Object[]> result = clientRepository.getClientCoordinates();
+        List<Object[]> result = clientRepository.getClientCoordinates(personId);
 
         JSONObject clientsCoordinates = new JSONObject();
         List<JSONObject> clientDataList = new ArrayList<>();
@@ -162,9 +178,9 @@ public class ReportService {
     }
 
     // Method to get the quantity and value sold on last 12 months.
-    public JSONObject getSalesByLastTwelveMonths() {
+    public JSONObject getSalesByLastTwelveMonths(Long personId) {
 
-        List<Object[]> salesData = saleRepository.getSalesByMonth();
+        List<Object[]> salesData = saleRepository.getSalesByMonth(personId);
         Map<String, JSONObject> salesByMonth = new LinkedHashMap<>();
 
         int i = 1;

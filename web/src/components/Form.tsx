@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable eqeqeq */
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -611,6 +612,8 @@ interface SaleFormProps {
     
 export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
+    const auth = useAuth();
+
     const [formData, setFormData] = useState<SaleFormData>({
         clientId: "",
         date: new Date(),
@@ -631,7 +634,7 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
     useEffect(() => {
       const fetchClients = async () => {
         try {
-          const response = await fetch('http://localhost:8080/client');
+          const response = await fetch(`http://localhost:8080/client?id=${auth.id}`);
           const data = await response.json();
           const formattedOptions = data.map((client: any) => ({
             value: client.id,
@@ -790,6 +793,8 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
 
 export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }) => {
 
+    const auth = useAuth();
+
     const [formData, setFormData] = useState<SaleFormData>({
         id: data!.id,
         client: data!.client,
@@ -812,7 +817,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     useEffect(() => {
       const fetchClients = async () => {
         try {
-          const response = await fetch('http://localhost:8080/client');
+          const response = await fetch(`http://localhost:8080/client?personId=${auth.id}`);
           const data = await response.json();
           const formattedOptions = data.map((client: any) => ({
             value: client.id,

@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "../../components/Card";
 import Header from "../../components/Header";
@@ -8,7 +10,7 @@ import Map from "../../components/Map";
 import InvoicingChart from '../../components/chart/InvoicingChart';
 import InvoicingTable from '../../components/report/InvoicingTable';
 import ExportButton from '../../components/ExportButton';
-import { useEffect, useState } from "react";
+import { useAuth } from '../../context/AuthProvider/useAuth';
 
 const CardSection = styled.div`
     margin-top: 40px;
@@ -105,6 +107,8 @@ interface TableData {
 
 export default function ReportPage() {
 
+    const auth = useAuth();
+
     const [ data, setData ] = useState<ReportData | null>(null);
     const [ clientMarkers, setClientMarkers ] = useState<Mark[]>([]);
     const [ tableData, setTableData ] = useState<TableData[]>([]);
@@ -115,7 +119,7 @@ export default function ReportPage() {
     const nameColumnsToExport = ["period", "quantity", "value"];
 
     const fetchData = () => {
-        fetch('http://localhost:8080/report')
+        fetch(`http://localhost:8080/report?personId=${auth.id}`)
             .then(response => response.json())
             .then(data => {
 
