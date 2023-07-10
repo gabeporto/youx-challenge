@@ -14,6 +14,7 @@ import { SaleData } from '../interface/SaleData';
 import { formatMoneyValue } from '../utils/formatMoneyValue';
 import { parse  } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { useAuth } from '../context/AuthProvider/useAuth'
 
 const StyledInput = styled.input`
     width: 100%;
@@ -145,7 +146,11 @@ interface ClientFormProps {
   data?: ClientData;
 }
 
+
 export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) => {
+
+  const auth = useAuth();
+
 
   const [formData, setFormData] = useState<ClientFormData>({
     name: '',
@@ -161,7 +166,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
     isUfValid: false,
     isEmailValid: false,
     isMarkValid: false,
-    personId: 1
+    personId: auth?.id
   });
 
   const [ nameValid, setNameValid ] = useState<boolean>(true);
@@ -354,6 +359,8 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
 
 export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onClose }) => {
 
+    const auth = useAuth();
+
     const [formData, setFormData] = useState<ClientFormData>({
         id: data!.id,
         name: data!.name,
@@ -369,7 +376,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
         isUfValid: true,
         isEmailValid: true,
         isMarkValid: true,
-        personId: 1
+        personId: auth?.id
     });
 
     const [ nameValid, setNameValid ] = useState<boolean>(true);

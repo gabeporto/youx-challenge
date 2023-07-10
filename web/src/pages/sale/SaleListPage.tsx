@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import Container from "../../components/Container";
 import Header from "../../components/Header";
@@ -10,6 +11,7 @@ import Table from "../../components/Table";
 import { useEffect, useState } from "react";
 import { SaleFormData } from "../../interface/SaleFormData";
 import { SaleData } from "../../interface/SaleData";
+import { useAuth } from '../../context/AuthProvider/useAuth';
 
 const FlexDiv = styled.div`
   display: flex;
@@ -26,6 +28,8 @@ const TableDiv = styled.div`
 `
 
 export default function SaleListPage() {
+
+  const auth = useAuth();
 
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -110,10 +114,12 @@ export default function SaleListPage() {
     };
 
     const fetchData = () => {
-        fetch('http://localhost:8080/sale')
+      
+        fetch(`http://localhost:8080/sale?personId=${auth.id}`)
           .then(response => response.json())
           .then(data => {
-            const formattedData = data.map((item: { date: string | number | Date; value: { toLocaleString: (arg0: string, arg1: { style: string; currency: string; }) => any; }; }) => {
+            const formattedData = data.map((item: 
+              { date: string | number | Date; value: { toLocaleString: (arg0: string, arg1: { style: string; currency: string; }) => any; }; }) => {
                 const date = new Date(item.date);
                 const formattedDate = date.toLocaleDateString('pt-BR', {
                   day: '2-digit',

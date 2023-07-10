@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect} from "react";
 import Button from "../../components/Button";
 import Container from "../../components/Container";
@@ -117,7 +118,7 @@ export default function ClientListPage() {
   };
 
   const fetchData = () => {
-    fetch(`http://localhost:8080/client?email=${auth.email}`)
+    fetch(`http://localhost:8080/client?id=${auth.id}`)
       .then(response => response.json())
       .then(data => {
         setData(data);

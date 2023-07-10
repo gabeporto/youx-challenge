@@ -30,4 +30,7 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
             "GROUP BY EXTRACT(MONTH FROM gs.month), EXTRACT(YEAR FROM gs.month) " +
             "ORDER BY EXTRACT(YEAR FROM gs.month), EXTRACT(MONTH FROM gs.month)", nativeQuery = true)
     List<Object[]> getSalesByMonth();
+
+    @Query("SELECT s FROM sale s INNER JOIN s.client c WHERE c.person.id = :personId")
+    List<Sale> findAllByPersonId(@Param("personId") Long personId);
 }

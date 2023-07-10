@@ -31,7 +31,7 @@ public class AuthService {
             Person person = optionalPerson.get();
             if (person.getPassword().equals(data.password())) {
                 String token = generateToken(person);
-                return new AuthResponseDTO(true, token, person.getEmail(), person.getName(), person.getRole());
+                return new AuthResponseDTO(true, person.getId(), token, person.getEmail(), person.getName(), person.getRole());
             }
         }
         return new AuthResponseDTO(false, "Credenciais inválidas.");

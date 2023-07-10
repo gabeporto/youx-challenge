@@ -37,9 +37,9 @@ public class ClientController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
-    public List<ClientResponseDTO> getAllClients(@RequestParam("email") String email) {
+    public List<ClientResponseDTO> getAllClients(@RequestParam("id") Long id) {
 
-        Optional<Person> person = personRepository.findByEmail(email);
+        Optional<Person> person = personRepository.findById(id);
 
         List<ClientResponseDTO> clientList = clientRepository.findByPersonId(person.orElseThrow().getId(), Sort.by(Sort.Direction.ASC, "id"))
                 .stream()

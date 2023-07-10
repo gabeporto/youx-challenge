@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("sale")
@@ -37,10 +38,10 @@ public class SaleController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
-    public List<SaleResponseDTO> getAllSales() {
+    public List<SaleResponseDTO> findAllByPersonId(@RequestParam("personId") Long personId) {
 
-        List<SaleResponseDTO> saleList = saleRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(SaleResponseDTO::new).toList();
-        return saleList;
+        List<Sale> sales = saleRepository.findAllByPersonId(personId);
+        return sales.stream().map(SaleResponseDTO::new).collect(Collectors.toList());
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

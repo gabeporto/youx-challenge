@@ -9,8 +9,9 @@ public class AuthResponseDTO {
     private String role;
     private String message;
 
-    public AuthResponseDTO(boolean success, String token, String email, String name, String role) {
+    public AuthResponseDTO(boolean success, Long id, String token, String email, String name, String role) {
         this.success = success;
+        this.id = id;
         this.token = token;
         this.email = email;
         this.name = name;
