@@ -10,12 +10,14 @@ Este projeto é parte do desafio proposto pela empresa YouX Group e consiste em 
   - PostgreSQL
   - Lombok
   - JSON
+  - JSON Web Token (JWT)
   - JUnit
 
 - **Front-end**:
   - React.js
   - TypeScript
   - React Router
+  - Context API
   - Material-UI
   - Styled Components
   - Leaflet.js
@@ -64,5 +66,10 @@ Para executar os testes do Back-end, utilize a sua IDE de preferência ou execut
 - mvn test
 
 Isso iniciará a execução dos testes utilizando o framework JUnit e exibirá os resultados no console.
+
+## Adicionais
+
+- Autenticação com JWT e Context API.
+- Responsividade.
 
 buições são sempre bem-vindas! Se você encontrar algum problema, bug ou tiver sugestões de melhorias, sinta-se à vontade para abrir uma *issue* ou enviar um *pull request*.
