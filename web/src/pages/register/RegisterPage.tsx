@@ -3,6 +3,7 @@ import React, { SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Select } from '../../components/Select';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     display: flex;
@@ -215,7 +216,12 @@ export default function RegisterPage() {
                 password: password
             });
 
-            addPerson(data);
+            addPerson({
+                name: name,
+                email: email,
+                role: role,
+                password: password
+            });
         }
     };
 
@@ -238,7 +244,15 @@ export default function RegisterPage() {
         }
     ]
 
+    const navigate = useNavigate();
+
+    const goToLoginPage = () => {
+        navigate('/login');
+      };
+
     const addPerson = (data: PersonData) => {
+
+
         fetch('http://localhost:8080/person', {
             method: 'POST',
             headers: {
@@ -248,9 +262,9 @@ export default function RegisterPage() {
             })
             .then(response => {
                 if (response.ok) { 
-                console.log(response);
+                    goToLoginPage();
                 } else {
-                console.log(response);
+                    console.log(response);
                 }
             })
             .catch(error => {
