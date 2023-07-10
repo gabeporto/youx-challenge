@@ -117,12 +117,25 @@ const SecondButton = styled(Link)`
     }
 `;
 
+interface PersonData {
+    name: string,
+    email: string,
+    role: number,
+    password: string
+}
+
 export default function RegisterPage() {
 
     const [ name, setName ] = useState<string>('');
     const [ email, setEmail ] = useState<string>('');
     const [ role, setRole ] = useState<number>(0);
     const [ password, setPassword ] = useState<string>('');
+    const [ data, setData ] = useState<PersonData>({
+        name: '',
+        email: '',
+        role: 0,
+        password: '',
+    });
 
     const [ nameValid, setNameValid ] = useState<boolean>(true); 
     const [ emailValid, setEmailValid ] = useState<boolean>(true); 
@@ -177,7 +190,33 @@ export default function RegisterPage() {
         const currentEmail = email;
         const currentRole = role;
         const currentPassword = password;
-        console.log(currentName, currentEmail, currentRole, currentPassword);
+
+        if(currentName.length <= 3) {
+            setNameValid(false);
+        }
+
+        if(!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentEmail.toString()) && currentEmail.length >= 5)) {
+            setEmailValid(false);
+        }
+
+        if(currentRole === 0) {
+            setRoleValid(false);
+        }
+
+        if(currentPassword.length <= 3) {
+            setPasswordValid(false);
+        }
+
+        if(nameValid && emailValid && roleValid && passwordValid) {
+            setData({
+                name: name,
+                email: email,
+                role: role,
+                password: password
+            });
+
+            addPerson(data);
+        }
     };
 
     const roleOptions = [
@@ -199,6 +238,26 @@ export default function RegisterPage() {
         }
     ]
 
+    const addPerson = (data: PersonData) => {
+        fetch('http://localhost:8080/person', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (response.ok) { 
+                console.log(response);
+                } else {
+                console.log(response);
+                }
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+    
     return (
         <Container>
             <Card>

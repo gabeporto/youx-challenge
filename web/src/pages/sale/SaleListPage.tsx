@@ -44,152 +44,9 @@ export default function SaleListPage() {
         { name: "Valor", dataKey: "value" },
     ];
 
-    // Examples
-    const dataExample = [
-        {
-            id: 1,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 2,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 3,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 4,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 5,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 6,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 7,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 8,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 9,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 10,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 11,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 12,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 13,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 14,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 15,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 16,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 17,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 18,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 19,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-        {
-            id: 20,
-            client: 'Comércio de Livros LTDA',
-            date: new Date(),
-            status: 'À caminho',
-            value: 'R$ 350,00',
-        },
-    ];
-
     const [data, setData] = useState<SaleData[]>([]);
     const [filteredData, setFilteredData] = useState<SaleData[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [searchValue, setSearchValue] = useState('');
 
     const handleAdd = (data: SaleFormData) => {
@@ -287,7 +144,7 @@ export default function SaleListPage() {
         fetchData();
       }, []);
     
-      const handleSearch = (value: string) => {
+    const handleSearch = (value: string) => {
         setSearchValue(value);
         const filteredData = data.filter((item) => {
           const searchValueLower = typeof value === 'string' ? value.toLowerCase() : '';
