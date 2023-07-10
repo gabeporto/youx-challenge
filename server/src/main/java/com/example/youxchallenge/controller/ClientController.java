@@ -37,9 +37,15 @@ public class ClientController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @GetMapping
-    public List<ClientResponseDTO> getAllClients() {
+    public List<ClientResponseDTO> getAllClients(@RequestParam("email") String email) {
 
-        List<ClientResponseDTO> clientList = clientRepository.findAll(Sort.by(Sort.Direction.ASC, "id")).stream().map(ClientResponseDTO::new).toList();
+        Optional<Person> person = personRepository.findByEmail(email);
+
+        List<ClientResponseDTO> clientList = clientRepository.findByPersonId(person.orElseThrow().getId(), Sort.by(Sort.Direction.ASC, "id"))
+                .stream()
+                .map(ClientResponseDTO::new)
+                .toList();
+
         return clientList;
     }
 

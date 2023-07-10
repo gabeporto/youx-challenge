@@ -10,6 +10,7 @@ import Subtitle from "../../components/Subtitle";
 import Table from "../../components/Table";
 import { ClientFormData } from "../../interface/ClientFormData"
 import { ClientData } from "../../interface/ClientData";
+import { useAuth } from '../../context/AuthProvider/useAuth';
 
 const FlexDiv = styled.div`
   display: flex;
@@ -26,6 +27,8 @@ const TableDiv = styled.div`
 `
 
 export default function ClientListPage() {
+
+  const auth = useAuth();
   
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -114,7 +117,7 @@ export default function ClientListPage() {
   };
 
   const fetchData = () => {
-    fetch('http://localhost:8080/client')
+    fetch(`http://localhost:8080/client?email=${auth.email}`)
       .then(response => response.json())
       .then(data => {
         setData(data);

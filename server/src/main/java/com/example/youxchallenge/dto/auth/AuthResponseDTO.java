@@ -2,6 +2,7 @@ package com.example.youxchallenge.dto.auth;
 
 public class AuthResponseDTO {
     private boolean success;
+    private Long id;
     private String token;
     private String email;
     private String name;
@@ -23,6 +24,9 @@ public class AuthResponseDTO {
 
     public AuthResponseDTO() {}
 
+    public Long getId() {
+        return id;
+    }
 
     public boolean isSuccess() {
         return success;
