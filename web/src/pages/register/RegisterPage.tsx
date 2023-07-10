@@ -2,6 +2,7 @@
 import React, { SetStateAction, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { Select } from '../../components/Select';
 
 const Container = styled.div`
     display: flex;
@@ -118,34 +119,85 @@ const SecondButton = styled(Link)`
 
 export default function RegisterPage() {
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [role, setRole] = useState('');
-    const [password, setPassword] = useState('');
+    const [ name, setName ] = useState<string>('');
+    const [ email, setEmail ] = useState<string>('');
+    const [ role, setRole ] = useState<number>(0);
+    const [ password, setPassword ] = useState<string>('');
+
+    const [ nameValid, setNameValid ] = useState<boolean>(true); 
+    const [ emailValid, setEmailValid ] = useState<boolean>(true); 
+    const [ roleValid, setRoleValid ] = useState<boolean>(true); 
+    const [ passwordValid, setPasswordValid ] = useState<boolean>(true); 
 
     const nameInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setName(event.target.value);
+
+        if(event.target.value.length <= 3) {
+            setNameValid(false);
+        } else {
+            setNameValid(true);
+            setName(event.target.value);
+        }
     }
 
     const emailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setEmail(event.target.value);
+
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(event.target.value.toString()) && event.target.value.length >= 5;
+
+        if(!isEmailValid) {
+            setEmailValid(false);
+        } else {
+            setEmailValid(true);
+            setEmail(event.target.value);
+        }
     }
 
-    const roleInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setRole(event.target.value);
+    const roleInputChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+
+        if(event.target.value === '0') {
+            setRoleValid(false);
+        } else {
+            setRoleValid(true);
+            setRole(Number(event.target.value));
+        }
     }
 
     const passwordInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        setPassword(event.target.value);
+
+        if(event.target.value.length <= 3) {
+            setPasswordValid(false);
+        } else {
+            setPasswordValid(true);
+            setPassword(event.target.value);
+        }
     }
 
     const submitForm = (event: React.FormEvent) => {
         event.preventDefault();
-        // const currentName = name;
-        // const currentEmail = email;
-        // const currentRole = role;
-        // const currentPassword = password;
+        const currentName = name;
+        const currentEmail = email;
+        const currentRole = role;
+        const currentPassword = password;
+        console.log(currentName, currentEmail, currentRole, currentPassword);
     };
+
+    const roleOptions = [
+        {
+            value: 0,
+            label: 'Selecione uma opção'
+        },
+        {
+            value: 1,
+            label: 'Administrador'
+        },
+        {
+            value: 2,
+            label: 'Engenheiro'
+        },
+        {
+            value: 3,
+            label: 'Analista'
+        }
+    ]
 
     return (
         <Container>
@@ -156,24 +208,24 @@ export default function RegisterPage() {
                 <SecondSection>
                     <FormTitle>Cadastro</FormTitle>
                     <Form>
-                        <StyledLabel>
+                        <StyledLabel className={!nameValid ? 'invalid-label' : ''}>
                         Nome:
-                        <StyledInput type="text" onChange={nameInputChange}/>
+                        <StyledInput type="text" onChange={nameInputChange} className={!nameValid ? 'invalid-input' : ''}/>
                         </StyledLabel>
 
-                        <StyledLabel>
+                        <StyledLabel className={!emailValid ? 'invalid-label' : ''}>
                         Email:
-                        <StyledInput type="email" onChange={emailInputChange}/>
+                        <StyledInput type="email" onChange={emailInputChange} className={!emailValid ? 'invalid-input' : ''}/>
                         </StyledLabel>
 
-                        <StyledLabel>
+                        <StyledLabel className={!roleValid ? 'invalid-label' : ''}>
                         Cargo:
-                        <StyledInput type="text" onChange={roleInputChange}/>
+                        <Select options={roleOptions} onChange={roleInputChange} name="role" className={!roleValid ? 'invalid-input' : ''}/>
                         </StyledLabel>
 
-                        <StyledLabel>
+                        <StyledLabel className={!passwordValid ? 'invalid-label' : ''}>
                         Senha:
-                        <StyledInput type="current-password" onChange={passwordInputChange}/>
+                        <StyledInput type="password" onChange={passwordInputChange} className={!passwordValid ? 'invalid-input' : ''}/>
                         </StyledLabel>
 
                         <FirstButton type="submit" onClick={submitForm}>Cadastrar</FirstButton>

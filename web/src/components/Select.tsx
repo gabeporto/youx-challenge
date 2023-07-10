@@ -9,7 +9,7 @@ export interface SelectOption {
 
 interface SelectProps {
     name: string;
-    defaultValue: number | string;
+    defaultValue?: number | string;
     options: SelectOption[];
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     className?: string;

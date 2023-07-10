@@ -91,7 +91,7 @@ const FormTitle = styled.h1`
     text-align: center;
 `
 
-const FirstButton = styled(Link)`
+const FirstButton = styled.button`
     padding: 10px 20px;
     background-color: #007bff;
     color: #fff;
@@ -125,23 +125,32 @@ const SecondButton = styled(Link)`
     }
 `;
 
+const ErrorLabel = styled.label`
+    text-align: center;
+    margin-bottom: 20px;
+    color: red;
+`
+
 export default function LoginPage() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorLogin, setErrorLogin] = useState<boolean>(false);
 
     const emailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setErrorLogin(false);
         setEmail(event.target.value);
     }
 
     const passwordInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+        setErrorLogin(false);
         setPassword(event.target.value);
     }
 
     const submitForm = (event: React.FormEvent) => {
         event.preventDefault();
-        // const currentEmail = email;
-        // const currentPassword = password;
+        const currentEmail = email;
+        const currentPassword = password;
     };
 
     return (
@@ -152,7 +161,7 @@ export default function LoginPage() {
                 </FirstSection>
                 <SecondSection>
                     <FormTitle>Login</FormTitle>
-                    <Form onSubmit={submitForm}>
+                    <Form>
                         <StyledLabel>
                         Email:
                         <StyledInput type="email" onChange={emailInputChange}/>
@@ -160,10 +169,12 @@ export default function LoginPage() {
 
                         <StyledLabel>
                         Senha:
-                        <StyledInput type="current-password" onChange={passwordInputChange}/>
+                        <StyledInput type="password" onChange={passwordInputChange}/>
                         </StyledLabel>
 
-                        <FirstButton type="submit" to="/">Entrar</FirstButton>
+                        <ErrorLabel hidden={!errorLogin}>Usuário e/ou senha inválidos.</ErrorLabel>
+
+                        <FirstButton type="submit" onClick={submitForm}>Entrar</FirstButton>
                     </Form>
                     <SecondButton to="/register">Cadastrar novo usuário</SecondButton>
                 </SecondSection>
