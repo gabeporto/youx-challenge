@@ -304,14 +304,14 @@ export default function RegisterPage() {
                         <StyledInput type="text" onChange={nameInputChange} className={!nameValid ? 'invalid-input' : ''}/>
                         </StyledLabel>
 
-                        <StyledLabel className={!emailValid ? 'invalid-label' : ''}>
-                        Email:
-                        <StyledInput type="email" onChange={emailInputChange} className={!emailValid ? 'invalid-input' : ''}/>
-                        </StyledLabel>
-
                         <StyledLabel className={!roleValid ? 'invalid-label' : ''}>
                         Cargo:
                         <Select options={roleOptions} onChange={roleInputChange} name="role" className={!roleValid ? 'invalid-input' : ''}/>
+                        </StyledLabel>
+
+                        <StyledLabel className={!emailValid ? 'invalid-label' : ''}>
+                        Email:
+                        <StyledInput type="email" onChange={emailInputChange} className={!emailValid ? 'invalid-input' : ''}/>
                         </StyledLabel>
 
                         <StyledLabel className={!passwordValid ? 'invalid-label' : ''}>

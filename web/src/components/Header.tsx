@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Dropdown from './Dropdown';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthProvider/useAuth'
 
 const HeaderContainer = styled.header`
     display: flex;
@@ -57,6 +58,8 @@ const DropdownDiv = styled.div`
 
 export default function Header() {
 
+    const auth = useAuth();
+
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -95,7 +98,7 @@ export default function Header() {
                     </UserDiv>
                 )}
 
-                <LogoutDiv to="/login">
+                <LogoutDiv to="/login" onClick={auth.logout}>
                     <LogoutIcon />
                 </LogoutDiv>
             </UserContainer>

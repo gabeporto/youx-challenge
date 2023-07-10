@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { SetStateAction, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useAuth } from '../../context/AuthProvider/useAuth'
 
 const Container = styled.div`
     display: flex;
@@ -133,6 +134,8 @@ const ErrorLabel = styled.label`
 
 export default function LoginPage() {
 
+    const auth = useAuth();
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorLogin, setErrorLogin] = useState<boolean>(false);
@@ -149,9 +152,24 @@ export default function LoginPage() {
 
     const submitForm = (event: React.FormEvent) => {
         event.preventDefault();
-        const currentEmail = email;
-        const currentPassword = password;
+        logIn();
     };
+
+    const navigate = useNavigate();
+
+    const goToClientPage = () => {
+        navigate('/client');
+      };
+
+    async function logIn() {
+        
+        try {
+            await auth.authenticate(email, password);
+            goToClientPage();
+        } catch (error) {
+            console.log(error);
+        } 
+    }
 
     return (
         <Container>
