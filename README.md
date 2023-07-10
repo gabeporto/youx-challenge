@@ -1,10 +1,10 @@
-# YouX Challenge
+# 🚀 YouX Challenge
 
-Este projeto é parte do desafio proposto pela empresa YouX Group e consiste em um aplicativo web desenvolvido com Java Spring Boot no backend e React.js com TypeScript no frontend. O objetivo do desafio é criar um sistema completo com funcionalidades de cadastro de clientes e vendas, exibição de relatórios e visualização de dados geográficos.
+Este projeto é parte do desafio proposto pela empresa YouX Group e consiste em um aplicativo web desenvolvido com Java Spring Boot no Back-end e React.js com TypeScript no Front-end. O objetivo do desafio é criar um sistema completo com funcionalidades de cadastro de clientes e vendas, exibição de relatórios e visualização de dados geográficos.
 
 ## Tecnologias Utilizadas
 
-- **Backend**:
+- **Back-end**:
   - Java Spring Boot
   - Spring Data JPA
   - PostgreSQL
@@ -12,7 +12,7 @@ Este projeto é parte do desafio proposto pela empresa YouX Group e consiste em 
   - JSON
   - JUnit
 
-- **Frontend**:
+- **Front-end**:
   - React.js
   - TypeScript
   - React Router
@@ -34,13 +34,13 @@ Este projeto é parte do desafio proposto pela empresa YouX Group e consiste em 
 
 git clone https://github.com/gabeporto/youxchallenge.git
 
-2. **Backend**:
-- Importe o projeto backend (localizado na pasta `server`) em sua IDE de preferência.
+2. **Back-end**:
+- Importe o projeto Back-end (localizado na pasta `server`) em sua IDE de preferência.
 - Aguarde as dependências serem baixadas.
 - Configure o banco de dados PostgreSQL de acordo com as configurações em `application.properties`.
 - Execute o projeto.
 
-3. **Frontend**:
+3. **Front-end**:
 - Abra o terminal e navegue até a pasta `web`.
 - Execute o comando `npm install` para instalar as dependências.
 - Após a instalação, execute o comando `npm start` para iniciar o aplicativo em modo de desenvolvimento.
@@ -48,18 +48,18 @@ git clone https://github.com/gabeporto/youxchallenge.git
 
 ## Testes
 
-### Frontend
+### Front-end
 
-Para executar os testes do frontend, execute o seguinte comando na pasta `web`:
+Para executar os testes do Front-end, execute o seguinte comando na pasta `web`:
 
 - npm test
 
 
 Isso iniciará a execução dos testes utilizando o framework Jest e exibirá os resultados no console.
 
-### Backend
+### Back-end
 
-Para executar os testes do backend, utilize a sua IDE de preferência ou execute o seguinte comando na pasta `server`:
+Para executar os testes do Back-end, utilize a sua IDE de preferência ou execute o seguinte comando na pasta `server`:
 
 - mvn test
 
