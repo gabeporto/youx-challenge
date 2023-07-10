@@ -71,5 +71,3 @@ Isso iniciará a execução dos testes utilizando o framework JUnit e exibirá o
 
 - Autenticação com JWT e Context API.
 - Responsividade.
-
-buições são sempre bem-vindas! Se você encontrar algum problema, bug ou tiver sugestões de melhorias, sinta-se à vontade para abrir uma *issue* ou enviar um *pull request*.
