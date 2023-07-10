@@ -3,8 +3,10 @@ package com.example.youxchallenge.controller;
 import com.example.youxchallenge.dto.person.PersonRequestDTO;
 import com.example.youxchallenge.dto.person.PersonResponseDTO;
 import com.example.youxchallenge.dto.person.PersonUpdateDTO;
+import com.example.youxchallenge.exception.PersonSameEmailException;
 import com.example.youxchallenge.model.Person;
 import com.example.youxchallenge.repository.PersonRepository;
+import com.example.youxchallenge.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +21,20 @@ public class PersonController {
     @Autowired
     private PersonRepository personRepository;
 
+    @Autowired
+    private PersonService personService;
+
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @PostMapping
-    public void addPerson(@RequestBody PersonRequestDTO data) {
-        Person person = new Person(data);
-        personRepository.save(person);
+    public ResponseEntity<String> addPerson(@RequestBody PersonRequestDTO data) {
+
+        if (personService.checkWithHaveSameEmail(data.email())) {
+            throw new PersonSameEmailException("Usuário com o email fornecido já existe");
+        } else {
+            Person person = new Person(data);
+            personRepository.save(person);
+            return ResponseEntity.ok("Usuário cadastrado com sucesso");
+        }
     }
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")

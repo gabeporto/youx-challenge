@@ -118,10 +118,16 @@ const SecondButton = styled(Link)`
     }
 `;
 
+const ErrorLabel = styled.label`
+    text-align: center;
+    margin-bottom: 20px;
+    color: red;
+`
+
 interface PersonData {
     name: string,
     email: string,
-    role: number,
+    role: string,
     password: string
 }
 
@@ -129,12 +135,12 @@ export default function RegisterPage() {
 
     const [ name, setName ] = useState<string>('');
     const [ email, setEmail ] = useState<string>('');
-    const [ role, setRole ] = useState<number>(0);
+    const [ role, setRole ] = useState<string>('0');
     const [ password, setPassword ] = useState<string>('');
     const [ data, setData ] = useState<PersonData>({
         name: '',
         email: '',
-        role: 0,
+        role: '',
         password: '',
     });
 
@@ -142,6 +148,7 @@ export default function RegisterPage() {
     const [ emailValid, setEmailValid ] = useState<boolean>(true); 
     const [ roleValid, setRoleValid ] = useState<boolean>(true); 
     const [ passwordValid, setPasswordValid ] = useState<boolean>(true); 
+    const [ error, setError ] = useState<string>('');
 
     const nameInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
 
@@ -154,6 +161,8 @@ export default function RegisterPage() {
     }
 
     const emailInputChange = (event: { target: { value: SetStateAction<string>; }; }) => {
+
+        setError('');
 
         const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(event.target.value.toString()) && event.target.value.length >= 5;
 
@@ -171,7 +180,7 @@ export default function RegisterPage() {
             setRoleValid(false);
         } else {
             setRoleValid(true);
-            setRole(Number(event.target.value));
+            setRole(event.target.value);
         }
     }
 
@@ -191,24 +200,29 @@ export default function RegisterPage() {
         const currentEmail = email;
         const currentRole = role;
         const currentPassword = password;
+        let invalid = false;
 
         if(currentName.length <= 3) {
             setNameValid(false);
+            invalid = true;
         }
 
         if(!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentEmail.toString()) && currentEmail.length >= 5)) {
             setEmailValid(false);
+            invalid = true;
         }
 
-        if(currentRole === 0) {
+        if(currentRole === '0') {
             setRoleValid(false);
+            invalid = true;
         }
 
         if(currentPassword.length <= 3) {
             setPasswordValid(false);
+            invalid = true;
         }
 
-        if(nameValid && emailValid && roleValid && passwordValid) {
+        if(!invalid) {
             setData({
                 name: name,
                 email: email,
@@ -231,15 +245,15 @@ export default function RegisterPage() {
             label: 'Selecione uma opção'
         },
         {
-            value: 1,
+            value: 'Administrador',
             label: 'Administrador'
         },
         {
-            value: 2,
+            value: 'Engenheiro',
             label: 'Engenheiro'
         },
         {
-            value: 3,
+            value: 'Analista',
             label: 'Analista'
         }
     ]
@@ -264,7 +278,11 @@ export default function RegisterPage() {
                 if (response.ok) { 
                     goToLoginPage();
                 } else {
-                    console.log(response);
+                    return response.text().then(errorMessage => {
+                        setError(errorMessage);
+                        setEmailValid(false);
+                        throw new Error(errorMessage);
+                      });
                 }
             })
             .catch(error => {
@@ -300,6 +318,8 @@ export default function RegisterPage() {
                         Senha:
                         <StyledInput type="password" onChange={passwordInputChange} className={!passwordValid ? 'invalid-input' : ''}/>
                         </StyledLabel>
+
+                        <ErrorLabel hidden={!error}>{error}</ErrorLabel>
 
                         <FirstButton type="submit" onClick={submitForm}>Cadastrar</FirstButton>
                     </Form>
