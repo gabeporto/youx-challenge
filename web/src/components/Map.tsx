@@ -1,7 +1,7 @@
 import { MapContainer, TileLayer, Marker, WMSTileLayer, useMapEvents, Popup } from 'react-leaflet'; 
 import "../styles/styles.css"
 import "leaflet/dist/leaflet.css"
-import { Icon } from 'leaflet';
+import { Icon, LatLng } from 'leaflet';
 import { styled } from 'styled-components';
 import { useState } from 'react';
 
@@ -46,6 +46,9 @@ export default function Map(props : MapProps) {
         longitude: props.currentposition?.longitude || 0
     });
 
+    // current local: Santa Rita do Sapucaí - MG
+    const defaultMark : LatLng = new LatLng(-22.252252, -45.703597);
+
     const customIcon = new Icon({
         iconUrl: require("../assets/icons/marker-icon.png"),
         iconSize: [38, 38]
@@ -65,7 +68,7 @@ export default function Map(props : MapProps) {
 
     return (
         <StyledMapContainer height={props.height} currentposition={props?.currentposition} className={props?.className}>
-            <MapContainer center={[-22.252252, -45.703597]} zoom={13}>
+            <MapContainer center={props.currentposition ? [props.currentposition?.latitude, props.currentposition?.longitude] : [defaultMark.lat, defaultMark.lng]} zoom={13}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
