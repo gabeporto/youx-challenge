@@ -25,14 +25,12 @@ const SelectContainer = styled.div`
 
 const SelectStyled = styled.select`
     width: 100%;
-    appearance: none;
     background-color: transparent;
     border: 1px solid #d3d3d3;
     border-radius: 4px;
     padding: 8px;
     font-size: 16px;
     color: #686868;
-    outline: none;
     height: 46px;
     padding: 10px;
 `;

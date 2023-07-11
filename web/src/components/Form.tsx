@@ -180,16 +180,16 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
 
+    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(e.target.value);
+    const isNameValid = e.target.value.length > 3;
+    const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length >= 10;
+    const isUfValid = e.target.value !== "";
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
+
     setFormData((prevData) => ({
         ...prevData,
         [name]: value,
     }));
-
-    const isNameValid = formData.name.length > 3;
-    const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formData.cnpj);
-    const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
-    const isUfValid = formData.uf !== "";
-    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
 
     if(e.target.name === "name") {
         if(!isNameValid) { setNameValid(false) } else { setNameValid(true)};
@@ -339,7 +339,7 @@ export const AddClientForm: React.FC<ClientFormProps> = ({ onSubmit, onClose }) 
             <StyledLabel className={!emailValid ? 'invalid-label' : ''}>
                 Email *
             </StyledLabel>
-            <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange}
+            <StyledInput type="text" name="email" defaultValue={formData.email} onChange={handleChange} onInputCapture={handleChange as React.FormEventHandler<HTMLInputElement>}
             className={!emailValid ? 'invalid-input' : ''}/>
         </LabelContainer>
       </FlexDiv>
@@ -389,17 +389,17 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = e.target;
-    
+
+        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(e.target.value);
+        const isNameValid = e.target.value.length > 3;
+        const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length >= 10;
+        const isUfValid = e.target.value !== "";
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
+        
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-    
-        const isNameValid = formData.name.length > 3;
-        const isCnpjValid = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/.test(formData.cnpj);
-        const isPhoneValid = formData.phone.replace(/[^0-9]/g, '').length === 11;
-        const isUfValid = formData.uf !== "";
-        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.length >= 5;
     
         if(e.target.name === "name") {
             if(!isNameValid) { setNameValid(false) } else { setNameValid(true)};
@@ -549,7 +549,7 @@ export const EditClientForm: React.FC<ClientFormProps> = ({ data, onSubmit, onCl
                 <StyledLabel className={!emailValid ? 'invalid-label' : ''}>
                     Email *
                 </StyledLabel>
-                <StyledInput type="text" name="email" defaultValue={data?.email} onChange={handleChange}
+                <StyledInput type="text" name="email" defaultValue={data?.email} onChange={handleChange} onInputCapture={handleChange as React.FormEventHandler<HTMLInputElement>}
                 className={!emailValid ? 'invalid-input' : ''}/>
             </LabelContainer>
         </FlexDiv>
@@ -776,7 +776,8 @@ export const AddSaleForm: React.FC<SaleFormProps> = ({ onSubmit, onClose }) => {
             Valor da venda *
         </StyledLabel>
         <StyledMoneyMask 
-            thousandSeparator={true} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00"
+            thousandSeparator={false} allowNegative={false} prefix="R$ " decimalScale={2} fixedDecimalScale={true} placeholder="R$ 0.00" 
+            decimalSeparator=","
             className={!valueValid ? 'invalid-input' : ''}
             name="value" onValueChange={(values: { floatValue: any; }) => {
                 const { floatValue } = values;
