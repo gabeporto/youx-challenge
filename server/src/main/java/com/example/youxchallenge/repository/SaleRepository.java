@@ -15,13 +15,13 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Query("SELECT SUM(s.value) FROM sale s INNER JOIN s.client c WHERE c.person.id = :personId AND YEAR(s.date) = :year")
     Double sumSalesByYear(@Param("year") int year, @Param("personId") Long personId);
 
-    @Query("SELECT s.client.person.id, COUNT(s.id) FROM sale s WHERE s.client.person.id = :personId AND MONTH(s.date) = :month GROUP BY s.client.person.id ORDER BY COUNT(s.id) DESC LIMIT 1")
+    @Query("SELECT s.client.id, COUNT(s.id) FROM sale s WHERE s.client.person.id = :personId AND MONTH(s.date) = :month GROUP BY s.client.id ORDER BY COUNT(s.id) DESC LIMIT 1")
     Object[] findClientWithMostSalesByMonth(@Param("month") int month, @Param("personId") Long personId);
 
-    @Query("SELECT s.client.person.id, SUM(s.value) FROM sale s WHERE s.client.person.id = :personId AND MONTH(s.date) = :month GROUP BY s.client.person.id ORDER BY SUM(s.value) DESC LIMIT 1")
+    @Query("SELECT s.client.id, SUM(s.value) FROM sale s WHERE s.client.person.id = :personId AND MONTH(s.date) = :month GROUP BY s.client.id ORDER BY SUM(s.value) DESC LIMIT 1")
     Object[] findClientWithHighestSalesByMonth(@Param("month") int month, @Param("personId") Long personId);
 
-    @Query("SELECT s.client.person.id, SUM(s.value) FROM sale s WHERE s.client.person.id = :personId AND YEAR(s.date) = :year GROUP BY s.client.person.id ORDER BY SUM(s.value) DESC LIMIT 1")
+    @Query("SELECT s.client.id, SUM(s.value) FROM sale s WHERE s.client.person.id = :personId AND YEAR(s.date) = :year GROUP BY s.client.id ORDER BY SUM(s.value) DESC LIMIT 1")
     Object[] findClientWithHighestSalesByYear(@Param("year") int year, @Param("personId") Long personId);
 
     @Query(value = "SELECT EXTRACT(MONTH FROM gs.month) AS month, EXTRACT(YEAR FROM gs.month) AS year, COUNT(s) AS quantity, COALESCE(SUM(s.value), 0) AS totalValue " +
