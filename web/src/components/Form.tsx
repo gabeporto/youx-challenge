@@ -818,7 +818,7 @@ export const EditSaleForm: React.FC<SaleFormProps> = ({data, onSubmit, onClose }
     useEffect(() => {
       const fetchClients = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/client?personId=${auth.id}`);
+          const response = await fetch(`http://localhost:8080/client?id=${auth.id}`);
           const data = await response.json();
           const formattedOptions = data.map((client: any) => ({
             value: client.id,
