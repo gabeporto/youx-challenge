@@ -22,6 +22,7 @@ Este projeto é parte do desafio proposto pela empresa YouX Group e consiste em 
   - Styled Components
   - Leaflet.js
   - Chart.js
+  - Jest
 
 ## Pré-requisitos
 
