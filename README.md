@@ -55,7 +55,9 @@ git clone https://github.com/gabeporto/youxchallenge.git
 
 Para executar os testes do Front-end, execute o seguinte comando na pasta `web`:
 
-- npm test
+```
+npm test
+```
 
 
 Isso iniciará a execução dos testes utilizando o framework Jest e exibirá os resultados no console.
@@ -64,7 +66,9 @@ Isso iniciará a execução dos testes utilizando o framework Jest e exibirá os
 
 Para executar os testes do Back-end, utilize a sua IDE de preferência ou execute o seguinte comando na pasta `server`:
 
-- mvn test
+```
+mvn test
+```
 
 Isso iniciará a execução dos testes utilizando o framework JUnit e exibirá os resultados no console.
 
